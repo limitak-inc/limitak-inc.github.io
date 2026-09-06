@@ -1,0 +1,26 @@
+---
+const { company, footer } = Astro.props
+const links = footer.links ?? []
+---
+<footer class="site-footer" id="contact">
+  <div class="container footer-inner">
+    <section class="footer-about" id="about">
+      <h2>{company.name}</h2>
+      <address>
+        <span>{company.address}</span>
+        <a href={`tel:${company.phone}`}>{company.phone}</a>
+        <a href={`mailto:${company.email}`}>{company.email}</a>
+      </address>
+    </section>
+    {links.length > 0 && (
+      <nav class="footer-nav" aria-label="پیوندهای پاورقی">
+        <ul>
+          {links.map((link) => (
+            <li><a class="footer-link" href={link.url}>{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    )}
+    <p class="copyright">{footer.copyright}</p>
+  </div>
+</footer>

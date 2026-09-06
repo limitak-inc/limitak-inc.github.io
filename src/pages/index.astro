@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import ProductCard from '../components/ProductCard.astro'
+import Footer from '../components/Footer.astro'
+import { getSite, getProducts, imageSrc, productHref } from '../lib/content.js'
+import { render } from 'astro:content'
+
+const siteEntry = await getSite()
+const products = await getProducts()
+const { company, hero, footer } = siteEntry.data
+const heroBody = (await render(siteEntry)).compiledContent ?? ''
+---
+<Layout company={company.name} description={heroBody.replace(/<[^>]+>/g, '').slice(0, 160)}>
+  <Hero
+    hero={{ title: hero.title, imageSrc: imageSrc(hero.image), eyebrow: company.name }}
+    body={heroBody}
+  />
+  <section class="container products-section" id="products" aria-labelledby="products-title">
+    <header class="section-head">
+      <h2 class="section-title" id="products-title">محصولات</h2>
+      <p class="section-desc">{products.length} محصول</p>
+    </header>
+    <div class="products">
+      {products.map((product) => (
+        <ProductCard
+          href={productHref(product.id)}
+          title={product.data.title}
+          imageSrc={imageSrc(product.data.image)}
+          model={product.data.model}
+        />
+      ))}
+    </div>
+  </section>
+  <Footer slot="footer" company={company} footer={footer} />
+</Layout>

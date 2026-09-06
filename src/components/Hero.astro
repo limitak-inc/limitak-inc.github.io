@@ -1,0 +1,12 @@
+---
+const { hero, body } = Astro.props
+---
+<section class="hero">
+  <img class="hero-bg" src={hero.imageSrc} alt="" aria-hidden="true" loading="eager" decoding="async" />
+  <div class="container hero-inner">
+    <p class="hero-eyebrow">{hero.eyebrow}</p>
+    <h1>{hero.title}</h1>
+    <div class="hero-desc" set:html={body} />
+    <a class="btn btn-primary" href="#products">مشاهده محصولات</a>
+  </div>
+</section>
