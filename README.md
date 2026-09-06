@@ -15,7 +15,7 @@ Pages CMS → Git commit → GitHub Actions → GitHub Pages → live website
 
 1. Editor opens Pages CMS and changes products or site settings
 2. Pages CMS commits to the repository
-3. Push to `main` triggers the deploy workflow
+3. Push to `master` triggers the deploy workflow
 4. GitHub Actions builds the Astro site and publishes to GitHub Pages
 
 ## Repository setup
@@ -26,13 +26,17 @@ Create an organization at [github.com/organizations/plan](https://github.com/org
 
 ### 2. Create repository
 
-1. Create a new repository (e.g. `limitak-neo`)
-2. Push this project to the `main` branch
+Create an **organization Pages repo** named exactly:
+
+**`limitak-ink.github.io`**
+
+Under org **limitak-ink**. Do not add README, license, or `.gitignore` (this project already has them).
+
+Push to `master`:
 
 ```bash
-git branch -M main
-git remote add origin git@github.com:YOUR_ORG/limitak-neo.git
-git push -u origin main
+git remote set-url origin git@github.com:limitak-ink/limitak-ink.github.io.git
+git push -u origin master
 ```
 
 ### 3. Enable GitHub Pages
@@ -41,16 +45,16 @@ git push -u origin main
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**
 3. After the first successful deploy, the site URL appears on the same page
 
-**Project site URL**: `https://YOUR_ORG.github.io/limitak-neo/`
+**Site URL**: `https://limitak-ink.github.io/`
 
-If you use a user/org root site (`YOUR_ORG.github.io`), set `base: '/'` in `astro.config.mjs`.
+Later, add a custom domain in the same Pages settings and update `site` in [`astro.config.mjs`](astro.config.mjs).
 
 ### 4. Connect Pages CMS
 
 1. Go to [app.pagescms.org](https://app.pagescms.org)
 2. Sign in with **GitHub**
 3. Install the **Pages CMS** GitHub App on your repository
-4. Select branch **`main`**
+4. Select branch **`master`**
 5. Pages CMS reads [`.pages.yml`](.pages.yml) automatically
 
 Authentication is GitHub-only via the Pages CMS GitHub App. No custom OAuth setup is required.
@@ -86,7 +90,7 @@ pnpm install
 pnpm run dev
 ```
 
-Open [http://localhost:4321/limitak-neo/](http://localhost:4321/limitak-neo/) (base path matches production).
+Open [http://localhost:4321/](http://localhost:4321/).
 
 ```bash
 pnpm run build    # output in dist/
@@ -102,7 +106,7 @@ content/
 public/images/         # CMS image uploads
 src/                   # Astro pages and components
 .pages.yml             # Pages CMS configuration
-.github/workflows/     # deploy on push to main
+.github/workflows/     # deploy on push to master
 ```
 
 ## Configuration
@@ -113,18 +117,20 @@ src/                   # Astro pages and components
 | [`.pages.yml`](.pages.yml) | CMS fields, media paths, commit messages |
 | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | Build and deploy pipeline |
 
-### Base path
+### Site URL
 
-For a project site (`username.github.io/repo-name/`), keep:
+This project uses an org root site:
 
 ```js
-base: '/limitak-neo/'
+site: 'https://limitak-ink.github.io',
+base: '/',
 ```
 
-For a root site (`username.github.io`), change to:
+When you add a custom domain, change only `site`:
 
 ```js
-base: '/'
+site: 'https://yourdomain.com',
+base: '/',
 ```
 
 ## Troubleshooting
@@ -135,7 +141,7 @@ Check that `base` in `astro.config.mjs` matches your GitHub Pages URL path.
 
 **Pages CMS cannot save**
 
-Confirm the Pages CMS GitHub App is installed on the repository with write access to `main`.
+Confirm the Pages CMS GitHub App is installed on the repository with write access to `master`.
 
 **Images not showing**
 
@@ -143,7 +149,7 @@ CMS stores paths like `/images/photo.webp`. Files must live in `public/images/`.
 
 **Deploy did not run**
 
-Ensure Pages source is **GitHub Actions** (not "Deploy from branch") and the push was to `main`.
+Ensure Pages source is **GitHub Actions** (not "Deploy from branch") and the push was to `master`.
 
 ## License
 
