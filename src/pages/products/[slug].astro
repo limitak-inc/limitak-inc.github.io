@@ -14,9 +14,22 @@ export const getStaticPaths = async () => {
 
 const { product } = Astro.props
 const siteEntry = await getSite()
-const { company, footer } = siteEntry.data
+const { company } = siteEntry.data
 const { Content } = await render(product)
 const home = import.meta.env.BASE_URL
+
+const fields = [
+  ['slug', 'شناسه'],
+  ['model', 'کد کالا'],
+  ['category', 'دسته‌بندی'],
+  ['material', 'جنس'],
+  ['size', 'ابعاد'],
+  ['pcs', 'تعداد در کارتن'],
+  ['order', 'ترتیب'],
+]
+
+const format = (key, val) =>
+  key === 'tags' ? val.join('، ') : String(val)
 ---
 <Layout title={product.data.title} company={company.name}>
   <div class="container product-page">
@@ -31,10 +44,22 @@ const home = import.meta.env.BASE_URL
     <div>
       <h1>{product.data.title}</h1>
       <dl>
-        <dt>مدل</dt>
-        <dd>{product.data.model}</dd>
-        <dt>اندازه</dt>
-        <dd>{product.data.size}</dd>
+        {fields.map(([key, label]) => {
+          const val = product.data[key]
+          if (val === undefined || val === '') return null
+          return (
+            <>
+              <dt>{label}</dt>
+              <dd>{format(key, val)}</dd>
+            </>
+          )
+        })}
+        {product.data.tags?.length && (
+          <>
+            <dt>برچسب‌ها</dt>
+            <dd class="tags">{product.data.tags.map((tag) => <span>{tag}</span>)}</dd>
+          </>
+        )}
       </dl>
       <div class="prose">
         <Content />
@@ -42,5 +67,5 @@ const home = import.meta.env.BASE_URL
     </div>
     </article>
   </div>
-  <Footer slot="footer" company={company} footer={footer} />
+  <Footer slot="footer" company={company} />
 </Layout>

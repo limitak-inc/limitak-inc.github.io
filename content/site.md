@@ -1,18 +1,12 @@
 ---
 company:
-  name: لیمیتک
-  phone: "021-12345678"
-  email: info@limitak.example
-  address: تهران، ایران
+  name: LimitakSteel
+  email: Limitaksteel@gmail.com
+  phones:
+    - label: موبایل
+      number: "09394401029"
 hero:
-  title: کاتالوگ محصولات
-  image: /images/hero.svg
-footer:
-  copyright: "۱۴۰۴ لیمیتک. تمامی حقوق محفوظ است."
-  links:
-    - label: درباره ما
-      url: "#about"
-    - label: تماس
-      url: "#contact"
+  title: استانداردی نوین در لوازم خانه و آشپزخانه
+  image: /images/banner.jpg
 ---
-توضیحات معرفی شرکت و محصولات در این بخش قرار می‌گیرد.
+تولیدکننده محصولات فلزی و چوبی آشپزخانه با کیفیت و رنگ کوره‌ای.

@@ -4,10 +4,16 @@ import { defineCollection, z } from 'astro:content'
 const products = defineCollection({
   loader: glob({ base: './content/products', pattern: '**/*.md' }),
   schema: z.object({
+    slug: z.string(),
     title: z.string(),
     image: z.string(),
-    model: z.string(),
-    size: z.string(),
+    category: z.string().optional(),
+    material: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    model: z.string().optional(),
+    size: z.string().optional(),
+    pcs: z.number().optional(),
+    order: z.number().optional(),
   }),
 })
 
@@ -16,20 +22,15 @@ const site = defineCollection({
   schema: z.object({
     company: z.object({
       name: z.string(),
-      phone: z.string(),
       email: z.string(),
-      address: z.string(),
+      phones: z.array(z.object({
+        label: z.string().optional(),
+        number: z.string(),
+      })),
     }),
     hero: z.object({
       title: z.string(),
       image: z.string(),
-    }),
-    footer: z.object({
-      copyright: z.string(),
-      links: z.array(z.object({
-        label: z.string(),
-        url: z.string(),
-      })).optional(),
     }),
   }),
 })

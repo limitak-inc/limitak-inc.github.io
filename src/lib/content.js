@@ -4,7 +4,10 @@ export const getSite = () => getEntry('site', 'site')
 
 export const getProducts = () =>
   getCollection('products').then((items) =>
-    items.sort((a, b) => a.data.title.localeCompare(b.data.title, 'fa'))
+    items.sort((a, b) =>
+      (a.data.order ?? 999) - (b.data.order ?? 999)
+      || a.data.title.localeCompare(b.data.title, 'fa')
+    )
   )
 
 export const getProduct = (slug) => getEntry('products', slug)

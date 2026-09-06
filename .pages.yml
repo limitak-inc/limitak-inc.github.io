@@ -1,6 +1,6 @@
 media:
   - name: images
-    label: Images
+    label: تصاویر
     input: public/images
     output: /images
     rename: safe
@@ -8,96 +8,105 @@ media:
 
 content:
   - name: products
-    label: Products
+    label: محصولات
     type: collection
     path: content/products
     format: yaml-frontmatter
     filename: "{primary}.md"
     view:
-      fields: [title, model, size, image]
-      primary: title
-      sort: [title]
+      fields: [title, category, model, order, image]
+      primary: slug
+      sort: [order]
       default:
-        sort: title
+        sort: order
         order: asc
     fields:
-      - name: title
-        label: Product Name
+      - name: slug
+        label: شناسه
         type: string
         required: true
+        description: "آدرس محصول، مثلا jaqashqi-1"
+      - name: title
+        label: نام محصول
+        type: string
+        required: true
+      - name: category
+        label: دسته‌بندی
+        type: string
+      - name: material
+        label: جنس
+        type: string
+      - name: tags
+        label: برچسب‌ها
+        type: string
+        list: true
       - name: image
-        label: Product Image
+        label: عکس
         type: image
+        required: true
         options:
           media: images
       - name: model
-        label: Model
+        label: کد کالا
         type: string
+      - name: pcs
+        label: تعداد در کارتن
+        type: number
       - name: size
-        label: Size
+        label: ابعاد
         type: string
+      - name: order
+        label: ترتیب
+        type: number
       - name: body
-        label: Description
+        label: توضیحات
         type: rich-text
         options:
           format: markdown
           media: images
 
   - name: site
-    label: Site Settings
+    label: تنظیمات سایت
     type: file
     path: content/site.md
     format: yaml-frontmatter
     fields:
       - name: company
-        label: Company
+        label: شرکت
         type: object
         fields:
           - name: name
-            label: Company Name
+            label: نام شرکت
             type: string
             required: true
-          - name: phone
-            label: Phone
-            type: string
           - name: email
-            label: Email
+            label: ایمیل
             type: string
-          - name: address
-            label: Address
-            type: text
-      - name: hero
-        label: Hero
-        type: object
-        fields:
-          - name: title
-            label: Hero Title
-            type: string
-          - name: image
-            label: Hero Image
-            type: image
-            options:
-              media: images
-      - name: footer
-        label: Footer
-        type: object
-        fields:
-          - name: copyright
-            label: Copyright
-            type: string
-          - name: links
-            label: Footer Links
+          - name: phones
+            label: تلفن‌ها
             type: object
             list: true
             fields:
               - name: label
-                label: Label
+                label: عنوان
                 type: string
-              - name: url
-                label: URL
+              - name: number
+                label: شماره
                 type: string
+      - name: hero
+        label: صفحه اصلی
+        type: object
+        fields:
+          - name: title
+            label: عنوان
+            type: string
+          - name: image
+            label: عکس هدر
+            type: image
+            options:
+              media: images
       - name: body
-        label: Hero Description
+        label: توضیح هدر
         type: rich-text
         options:
           format: markdown

@@ -1,5 +1,5 @@
 ---
-const { href, title, imageSrc, model } = Astro.props
+const { href, title, imageSrc, model, category } = Astro.props
 ---
 <article class="card">
   <a class="card-link" href={href}>
@@ -8,7 +8,9 @@ const { href, title, imageSrc, model } = Astro.props
     </div>
     <div class="card-body">
       <h2>{title}</h2>
-      {model && <p class="card-meta">{model}</p>}
+      {(category || model) && (
+        <p class="card-meta">{[category, model].filter(Boolean).join(' · ')}</p>
+      )}
     </div>
   </a>
 </article>
