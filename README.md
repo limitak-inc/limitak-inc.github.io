@@ -28,16 +28,18 @@ Create an organization at [github.com/organizations/plan](https://github.com/org
 
 Create an **organization Pages repo** named exactly:
 
-**`limitak-ink.github.io`**
+**`limitak-inc.github.io`**
 
-Under org **limitak-ink**. Do not add README, license, or `.gitignore` (this project already has them).
+Under org **limitak-inc**. Do not add README, license, or `.gitignore` (this project already has them).
 
 Push to `master`:
 
 ```bash
-git remote set-url origin git@github.com:limitak-ink/limitak-ink.github.io.git
+git remote set-url origin git@github-alt:limitak-inc/limitak-inc.github.io.git
 git push -u origin master
 ```
+
+If your SSH config uses a different host alias, replace `github-alt` with that name (not `github.com`).
 
 ### 3. Enable GitHub Pages
 
@@ -45,9 +47,7 @@ git push -u origin master
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**
 3. After the first successful deploy, the site URL appears on the same page
 
-**Site URL**: `https://limitak-ink.github.io/`
-
-Later, add a custom domain in the same Pages settings and update `site` in [`astro.config.mjs`](astro.config.mjs).
+**Site URL**: `https://limitak-inc.github.io/`
 
 ### 4. Connect Pages CMS
 
@@ -122,7 +122,7 @@ src/                   # Astro pages and components
 This project uses an org root site:
 
 ```js
-site: 'https://limitak-ink.github.io',
+site: 'https://limitak-inc.github.io',
 base: '/',
 ```
 
