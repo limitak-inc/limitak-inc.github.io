@@ -35,24 +35,40 @@ const chips = [
     const dragMin = 5
     const maxScroll = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
 
-    const filter = (slug) => {
+    const reveal = (chip, smooth = false) => {
+      if (!maxScroll()) return
+      const r = chip.getBoundingClientRect()
+      const view = bar.getBoundingClientRect()
+      bar.scrollTo({
+        left: bar.scrollLeft + (r.left + r.right) / 2 - (view.left + view.right) / 2,
+        behavior: smooth ? 'smooth' : 'instant',
+      })
+    }
+
+    const filter = (slug, smooth = false) => {
       const cards = [...(grid()?.querySelectorAll('.card') ?? [])]
       for (const card of cards) card.hidden = slug ? card.dataset.category !== slug : false
       for (const btn of bar.querySelectorAll('[data-filter]')) {
         btn.classList.toggle('active', btn.dataset.filter === (slug || ''))
       }
       history.replaceState(null, '', slug ? `?cat=${slug}` : location.pathname)
+      const active = bar.querySelector('.filter-chip.active')
+      if (active) reveal(active, smooth)
     }
 
     bar.addEventListener('click', (event) => {
       const btn = event.target.closest('[data-filter]')
       if (!btn) return
-      filter(btn.dataset.filter || '')
+      filter(btn.dataset.filter || '', true)
     })
 
     filter(new URLSearchParams(location.search).get('cat') || '')
 
-    const updateScrollState = () => wrap.classList.toggle('is-scrollable', maxScroll() > 0)
+    const updateScrollState = () => {
+      wrap.classList.toggle('is-scrollable', maxScroll() > 0)
+      const active = bar.querySelector('.filter-chip.active')
+      if (active && !wrap.classList.contains('is-dragging')) reveal(active)
+    }
     new ResizeObserver(updateScrollState).observe(bar)
     updateScrollState()
 

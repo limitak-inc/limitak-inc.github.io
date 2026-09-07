@@ -5,6 +5,12 @@ media:
     output: /images
     rename: safe
     extensions: [jpg, jpeg, png, webp, avif]
+  - name: logos
+    label: لوگوها
+    input: public/images/logo
+    output: /images/logo
+    rename: safe
+    extensions: [png, svg, webp]
 
 content:
   - name: categories
@@ -12,10 +18,13 @@ content:
     type: collection
     path: content/categories
     format: yaml-frontmatter
-    filename: "{primary}.md"
+    subfolders: false
+    filename:
+      template: "{fields.slug}.md"
+      field: false
     view:
-      fields: [label, order, color]
-      primary: slug
+      fields: [label, slug, order, color]
+      primary: label
       sort: [order]
       default:
         sort: order
@@ -25,6 +34,7 @@ content:
         label: شناسه
         type: string
         required: true
+        pattern: "^[a-z0-9-]+$"
       - name: label
         label: نام
         type: string
@@ -32,6 +42,8 @@ content:
       - name: order
         label: ترتیب
         type: number
+        options:
+          min: 0
       - name: color
         label: رنگ
         type: string
@@ -42,7 +54,10 @@ content:
     type: collection
     path: content/products
     format: yaml-frontmatter
-    filename: "{primary}.md"
+    subfolders: false
+    filename:
+      template: "{fields.slug}.md"
+      field: false
     view:
       fields: [title, category, model, order, image]
       primary: slug
@@ -55,6 +70,7 @@ content:
         label: شناسه
         type: string
         required: true
+        pattern: "^[a-z0-9-]+$"
         description: "آدرس محصول، مثلا jaqashqi-1"
       - name: title
         label: نام محصول
@@ -63,11 +79,12 @@ content:
       - name: category
         label: دسته‌بندی
         type: reference
+        required: true
         options:
           collection: categories
           search: "label,slug"
-          value: "{primary}"
-          label: "{label}"
+          value: "{fields.slug}"
+          label: "{fields.label}"
       - name: material
         label: جنس
         type: select
@@ -92,12 +109,16 @@ content:
       - name: pcs
         label: تعداد در کارتن
         type: number
+        options:
+          min: 0
       - name: size
         label: ابعاد
         type: string
       - name: order
         label: ترتیب
         type: number
+        options:
+          min: 0
       - name: body
         label: توضیحات
         type: rich-text
@@ -110,6 +131,9 @@ content:
     type: file
     path: content/site.md
     format: yaml-frontmatter
+    operations:
+      delete: false
+      rename: false
     fields:
       - name: company
         label: شرکت
@@ -123,17 +147,17 @@ content:
             label: لوگوی نوار
             type: image
             options:
-              media: images
+              media: logos
           - name: logoFooter
             label: لوگوی پاورقی
             type: image
             options:
-              media: images
+              media: logos
           - name: logoFull
             label: لوگوی کامل
             type: image
             options:
-              media: images
+              media: logos
           - name: email
             label: ایمیل
             type: string
@@ -148,9 +172,11 @@ content:
           - name: title
             label: عنوان
             type: string
+            required: true
           - name: image
             label: عکس هدر
             type: image
+            required: true
             options:
               media: images
       - name: social
@@ -180,3 +206,5 @@ settings:
     templates:
       create: "content: add {path}"
       update: "content: update {path}"
+      delete: "content: delete {path}"
+      rename: "content: rename {oldPath} to {newPath}"

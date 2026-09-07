@@ -1,9 +1,9 @@
 ---
 company:
   name: LimitakSteel
-  logo: /logo-main-white.png
-  logoFooter: /logo-white.png
-  logoFull: /logo-origin-full.png
+  logo: /images/logo/logo-main-white.png
+  logoFooter: /images/logo/logo-white.png
+  logoFull: /images/logo/logo-origin-full.png
   email: Limitaksteel@gmail.com
   phones:
     - "09394401029"

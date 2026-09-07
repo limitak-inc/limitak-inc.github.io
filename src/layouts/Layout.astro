@@ -21,9 +21,9 @@ const ogImage = Astro.site && (image || logoFull)
     <meta property="og:title" content={pageTitle} />
     {description && <meta property="og:description" content={description} />}
     {ogImage && <meta property="og:image" content={ogImage} />}
-    <link rel="icon" href={imageSrc('/logo-origin.png')} />
+    <link rel="icon" href={imageSrc(logoFull || '/images/logo/logo-origin.png')} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
-    <link href="https://fonts.bunny.net/css?family=outfit:400,600,700|vazirmatn:400,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700|zain:700,800" rel="stylesheet" />
     <title>{pageTitle}</title>
   </head>
   <body class="site-shell">
@@ -33,5 +33,16 @@ const ogImage = Astro.site && (image || logoFull)
     </main>
     <slot name="footer" />
     <ClientRouter />
+    <script>
+      const back = () => document.querySelector('.product-page:has(.product-detail) .back')?.click()
+      document.addEventListener('click', (event) => {
+        if (!document.querySelector('article.product-detail')) return
+        if (event.target.closest?.('.product-detail > *, .site-footer, a.back')) return
+        back()
+      })
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') back()
+      })
+    </script>
   </body>
 </html>
