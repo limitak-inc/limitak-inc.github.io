@@ -532,6 +532,7 @@ a {
   & .footer-email {
     font-size: 1.0625rem;
     line-height: 1.35;
+    text-transform: lowercase;
   }
   & .footer-phones {
     display: flex;
