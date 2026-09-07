@@ -12,6 +12,11 @@ const [products, categories] = await Promise.all([getProducts(), getCategories()
 const { company, hero, social } = siteEntry.data
 const { Content: HeroBody } = await render(siteEntry)
 const description = (siteEntry.body ?? '').trim().slice(0, 160)
+const counts = products.reduce((map, product) => {
+  const key = product.data.category
+  map[key] = (map[key] ?? 0) + 1
+  return map
+}, {})
 ---
 <Layout company={company} description={description} image={hero.image}>
   <Hero
@@ -19,12 +24,8 @@ const description = (siteEntry.body ?? '').trim().slice(0, 160)
   >
     <HeroBody />
   </Hero>
-  <section class="products-section" id="products" aria-labelledby="products-title">
-    <header class="container section-head">
-      <h2 class="section-title" id="products-title">محصولات</h2>
-      <p class="section-desc" data-product-count>{products.length} محصول</p>
-    </header>
-    <FilterBar categories={categories} total={products.length} />
+  <section class="products-section" id="products" aria-label="محصولات">
+    <FilterBar categories={categories} total={products.length} counts={counts} />
     <div class="container products">
       {products.map((product) => (
         <ProductCard

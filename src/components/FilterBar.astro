@@ -1,15 +1,29 @@
 ---
-const { categories, total } = Astro.props
+const { categories, total, counts } = Astro.props
+const chips = [
+  { id: '', label: 'همه', n: total },
+  ...categories.map((cat) => ({
+    id: cat.id,
+    label: cat.data.label,
+    n: counts[cat.id] ?? 0,
+  })),
+]
 ---
 <div class="filter-scroll" data-filter-scroll>
   <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
-    <button type="button" class="filter-chip active" data-filter="">همه</button>
-    {categories.map((cat) => (
-      <button type="button" class="filter-chip" data-filter={cat.id}>{cat.data.label}</button>
+    {chips.map((chip) => (
+      <button
+        type="button"
+        class:list={['filter-chip', { active: !chip.id }]}
+        data-filter={chip.id}
+        aria-label={`${chip.label}، ${chip.n} محصول`}
+      >
+        {chip.label}<span class="filter-n">{chip.n}</span>
+      </button>
     ))}
   </nav>
 </div>
-<script define:vars={{ total }}>
+<script>
   document.addEventListener('astro:page-load', () => {
     const wrap = document.querySelector('[data-filter-scroll]')
     const bar = wrap?.querySelector('.filter-bar')
@@ -17,19 +31,13 @@ const { categories, total } = Astro.props
     wrap.dataset.bound = '1'
 
     const grid = () => document.querySelector('.products')
-    const count = document.querySelector('[data-product-count]')
     const rtl = document.documentElement.dir === 'rtl'
     const dragMin = 5
     const maxScroll = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
 
-    const setCount = (n) => {
-      if (count) count.textContent = `${n} محصول`
-    }
-
     const filter = (slug) => {
       const cards = [...(grid()?.querySelectorAll('.card') ?? [])]
       for (const card of cards) card.hidden = slug ? card.dataset.category !== slug : false
-      setCount(cards.filter((card) => !card.hidden).length)
       for (const btn of bar.querySelectorAll('[data-filter]')) {
         btn.classList.toggle('active', btn.dataset.filter === (slug || ''))
       }
@@ -42,9 +50,7 @@ const { categories, total } = Astro.props
       filter(btn.dataset.filter || '')
     })
 
-    const initial = new URLSearchParams(location.search).get('cat') || ''
-    filter(initial)
-    if (!initial) setCount(total)
+    filter(new URLSearchParams(location.search).get('cat') || '')
 
     const updateScrollState = () => wrap.classList.toggle('is-scrollable', maxScroll() > 0)
     new ResizeObserver(updateScrollState).observe(bar)
