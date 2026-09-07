@@ -20,7 +20,12 @@ const counts = products.reduce((map, product) => {
 ---
 <Layout company={company} description={description} image={hero.image}>
   <Hero
-    hero={{ title: hero.title, imageSrc: imageSrc(hero.image), eyebrow: company.name }}
+    hero={{
+      title: hero.title,
+      imageSrc: imageSrc(hero.image),
+      logoSrc: company.logo && imageSrc(company.logo),
+      name: company.name,
+    }}
   >
     <HeroBody />
   </Hero>

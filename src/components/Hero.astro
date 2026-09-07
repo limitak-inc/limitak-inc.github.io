@@ -1,12 +1,14 @@
 ---
 const { hero } = Astro.props
+const home = import.meta.env.BASE_URL
 ---
 <section class="hero">
   <img class="hero-bg" src={hero.imageSrc} alt="" aria-hidden="true" loading="eager" decoding="async" />
   <div class="container hero-inner">
-    <p class="hero-eyebrow">{hero.eyebrow}</p>
+    <a class="hero-logo" href={home}>
+      {hero.logoSrc ? <img src={hero.logoSrc} alt={hero.name} /> : hero.name}
+    </a>
     <h1>{hero.title}</h1>
     <div class="hero-desc"><slot /></div>
-    <a class="btn btn-primary" href="#products">مشاهده محصولات</a>
   </div>
 </section>

@@ -2,13 +2,11 @@
   --color-bg-page: oklch(0.13 0.015 280);
   --color-bg-surface: oklch(0.17 0.018 280);
   --color-bg-elevated: oklch(0.21 0.022 280);
-  --color-bg-header: oklch(0.15 0.016 280 / 0.72);
   --color-text-primary: oklch(0.97 0.008 280);
   --color-text-secondary: oklch(0.72 0.02 280);
   --color-text-tertiary: oklch(0.58 0.02 280);
   --color-border: oklch(1 0 0 / 0.1);
   --color-accent-solid: oklch(0.62 0.22 280);
-  --color-accent-hover: oklch(0.68 0.24 280);
   --color-accent-muted: oklch(0.62 0.22 280 / 0.16);
   --color-image-outline: oklch(1 0 0 / 0.1);
   --radius-lg: 1.25rem;
@@ -18,7 +16,6 @@
   --space-group: clamp(1.5rem, 4vw, 3rem);
   --space-item: 0.75rem;
   --max: 72rem;
-  --header-h: 4.5rem;
   --card-min: 14rem;
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.24);
@@ -85,83 +82,10 @@ a {
   }
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  isolation: isolate;
-  backdrop-filter: blur(12px);
-  background: var(--color-bg-header);
-  border-block-end: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  & .header-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem 1.5rem;
-    padding-block: 0.5rem;
-  }
-  & .brand {
-    display: flex;
-    width: fit-content;
-    font-weight: 700;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    text-wrap: balance;
-    transition:
-      color 150ms var(--ease-out),
-      opacity 150ms var(--ease-out);
-    &:hover {
-      color: var(--color-accent-solid);
-    }
-    &:focus-visible {
-      outline: 2px solid var(--color-accent-solid);
-      outline-offset: 3px;
-      border-radius: var(--radius-sm);
-    }
-    &:has(img):hover {
-      color: inherit;
-      opacity: 0.85;
-    }
-    & img {
-      height: clamp(2.5rem, 8vw, 4rem);
-      width: auto;
-      object-fit: contain;
-      mix-blend-mode: lighten;
-    }
-  }
-  & .site-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    & a {
-      padding: 0.375rem 0.625rem;
-      border-radius: var(--radius-sm);
-      color: var(--color-text-secondary);
-      font-size: 0.9375rem;
-      font-weight: 600;
-      transition:
-        color 150ms var(--ease-out),
-        background-color 150ms var(--ease-out);
-      &:hover {
-        color: var(--color-accent-solid);
-        background: var(--color-accent-muted);
-      }
-      &:focus-visible {
-        outline: 2px solid var(--color-accent-solid);
-        outline-offset: 2px;
-      }
-    }
-  }
-}
-
 .hero {
   position: relative;
   min-height: min(72vh, 40rem);
   display: grid;
-  align-items: end;
   padding-block: var(--space-group);
   overflow: clip;
   & .hero-bg {
@@ -189,14 +113,29 @@ a {
   & .hero-inner {
     position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
     padding-block-end: 0.5rem;
   }
-  & .hero-eyebrow {
-    margin: 0 0 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--color-accent-solid);
-    letter-spacing: 0.04em;
+  & .hero-logo {
+    display: flex;
+    width: fit-content;
+    margin-block-end: auto;
+    transition: opacity 150ms var(--ease-out);
+    &:hover {
+      opacity: 0.85;
+    }
+    &:focus-visible {
+      outline: 2px solid var(--color-accent-solid);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+    & img {
+      height: clamp(3.5rem, 12vw, 6.5rem);
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: lighten;
+    }
   }
   & h1 {
     margin: 0 0 1rem;
@@ -207,42 +146,10 @@ a {
     letter-spacing: -0.02em;
   }
   & .hero-desc p {
-    margin: 0 0 1.5rem;
+    margin: 0;
     max-width: 42ch;
     color: var(--color-text-secondary);
-    font-size: 1.0625rem;
-  }
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  padding: 0.625rem 1.375rem;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  transition:
-    background-color 150ms var(--ease-out),
-    transform 150ms var(--ease-out),
-    box-shadow 150ms var(--ease-out);
-  &:active {
-    transform: scale(0.96);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--color-accent-solid);
-    outline-offset: 3px;
-  }
-}
-
-.btn-primary {
-  background: var(--color-accent-solid);
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-md);
-  &:hover {
-    background: var(--color-accent-hover);
-    box-shadow: var(--shadow-lg);
+    font-size: 1.1875rem;
   }
 }
 
@@ -259,24 +166,14 @@ a {
 
 .filter-scroll {
   position: sticky;
-  top: var(--header-h);
+  top: 0;
   z-index: 50;
   width: 100%;
   min-width: 0;
   margin-block-end: var(--space-group);
-  isolation: isolate;
-  background: var(--color-bg-page);
+  background: color-mix(in oklch, var(--color-bg-page) 28%, transparent);
+  backdrop-filter: blur(1.25rem) saturate(1.35);
   user-select: none;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 3rem,
-    white calc(100% - 3rem),
-    transparent
-  );
-  mask-mode: alpha;
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
   &.is-scrollable {
     cursor: grab;
     & .filter-chip {
@@ -301,11 +198,22 @@ a {
   gap: 0.5rem;
   width: 100%;
   min-width: 0;
+  justify-content: center;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
   padding-block: 1rem 1.75rem;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 3rem,
+    white calc(100% - 3rem),
+    transparent
+  );
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
   touch-action: pan-y;
   &::-webkit-scrollbar {
     display: none;
@@ -323,7 +231,7 @@ a {
     color: var(--color-text-secondary);
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.4);
     font: inherit;
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition:
@@ -338,7 +246,7 @@ a {
     &.active {
       color: var(--color-text-primary);
       border-color: var(--color-accent-solid);
-      background: var(--color-accent-muted);
+      background: color-mix(in oklch, var(--color-accent-solid) 58%, var(--color-bg-page));
       box-shadow:
         0 0 0 1px var(--color-accent-solid),
         0 0 1rem color-mix(in oklch, var(--color-accent-solid) 55%, transparent);
@@ -359,7 +267,8 @@ a {
       text-align: center;
       pointer-events: none;
       text-shadow:
-        0 0 0.55rem color-mix(in oklch, var(--color-accent-solid) 80%, transparent),
+        0 0 0.55rem
+          color-mix(in oklch, var(--color-accent-solid) 80%, transparent),
         0 1px 2px oklch(0 0 0 / 0.7);
     }
     &.active .filter-n {
@@ -416,7 +325,7 @@ a {
   }
   & h2 {
     margin: 0;
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.35;
   }
@@ -522,10 +431,15 @@ a {
   box-shadow: 0 -4px 24px oklch(0 0 0 / 0.18);
   & .footer-inner {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem 2rem;
+    gap: 1rem 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    & > * {
+      flex-shrink: 0;
+    }
   }
   & .footer-brand {
     display: flex;
@@ -558,16 +472,19 @@ a {
     }
   }
   & address {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 1.25rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: start;
+    column-gap: 1.25rem;
+    row-gap: 0.2rem;
     margin: 0;
     font-style: normal;
     font-size: 1.0625rem;
     font-variant-numeric: tabular-nums;
+    line-height: 1.35;
     & a {
       color: var(--color-text-secondary);
+      white-space: nowrap;
       text-decoration: underline;
       text-decoration-thickness: from-font;
       text-underline-offset: 0.2em;
@@ -583,10 +500,17 @@ a {
         border-radius: var(--radius-sm);
       }
     }
+    & a[href^="tel"] {
+      grid-column: 1;
+    }
+    & a[href^="mailto"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
   }
   & .footer-social {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 0.75rem;
     color: var(--color-text-secondary);
@@ -597,7 +521,7 @@ a {
       color: var(--color-text-secondary);
       transition: color 150ms var(--ease-out);
       &:hover {
-        color: var(--color-accent-solid);
+        color: var(--brand, var(--color-accent-solid));
       }
       &:focus-visible {
         outline: 2px solid var(--color-accent-solid);
