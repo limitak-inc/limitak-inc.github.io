@@ -5,7 +5,7 @@ image: "/images/img_22.jpg"
 model: "506"
 pcs: 12
 order: 22
-category: "ست سینک"
+category: sinsink
 material: "فلز"
 tags:
   - "تک قلو"

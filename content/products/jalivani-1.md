@@ -5,7 +5,7 @@ image: "/images/img_05.jpg"
 model: "510"
 pcs: 12
 order: 5
-category: "جالیوانی"
+category: jalivani
 material: "فلز"
 tags:
   - "رومیزی"

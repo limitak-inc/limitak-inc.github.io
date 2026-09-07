@@ -5,7 +5,7 @@ image: "/images/img_24.jpg"
 model: "103"
 pcs: 16
 order: 24
-category: "جاقاشقی"
+category: jaqashqi
 material: "استیل"
 tags:
   - "دو قلو"

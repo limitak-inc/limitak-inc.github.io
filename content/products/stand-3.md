@@ -5,7 +5,7 @@ image: "/images/img_38.jpg"
 model: "432"
 pcs: 18
 order: 38
-category: "استند"
+category: stand
 material: "فلز"
 ---
 

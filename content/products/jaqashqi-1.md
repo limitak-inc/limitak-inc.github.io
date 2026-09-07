@@ -5,7 +5,7 @@ image: "/images/img_07.jpg"
 model: "509"
 pcs: 12
 order: 7
-category: "جاقاشقی"
+category: jaqashqi
 material: "چوب"
 tags:
   - "رومیزی"

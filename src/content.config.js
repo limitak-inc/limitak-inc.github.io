@@ -1,6 +1,16 @@
 import { glob } from 'astro/loaders'
 import { defineCollection, z } from 'astro:content'
 
+const categories = defineCollection({
+  loader: glob({ base: './content/categories', pattern: '**/*.md' }),
+  schema: z.object({
+    slug: z.string(),
+    label: z.string(),
+    order: z.number().optional(),
+    color: z.string().optional(),
+  }),
+})
+
 const products = defineCollection({
   loader: glob({ base: './content/products', pattern: '**/*.md' }),
   schema: z.object({
@@ -23,6 +33,8 @@ const site = defineCollection({
     company: z.object({
       name: z.string(),
       logo: z.string().optional(),
+      logoFooter: z.string().optional(),
+      logoFull: z.string().optional(),
       email: z.string().optional(),
       phones: z.array(z.string()),
     }),
@@ -38,4 +50,4 @@ const site = defineCollection({
   }),
 })
 
-export const collections = { products, site }
+export const collections = { categories, products, site }

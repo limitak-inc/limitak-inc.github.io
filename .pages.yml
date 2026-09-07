@@ -7,6 +7,36 @@ media:
     extensions: [jpg, jpeg, png, webp, avif]
 
 content:
+  - name: categories
+    label: دسته‌بندی‌ها
+    type: collection
+    path: content/categories
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      fields: [label, order, color]
+      primary: slug
+      sort: [order]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: slug
+        label: شناسه
+        type: string
+        required: true
+      - name: label
+        label: نام
+        type: string
+        required: true
+      - name: order
+        label: ترتیب
+        type: number
+      - name: color
+        label: رنگ
+        type: string
+        description: "مثلا oklch(0.62 0.22 280)"
+
   - name: products
     label: محصولات
     type: collection
@@ -32,19 +62,12 @@ content:
         required: true
       - name: category
         label: دسته‌بندی
-        type: select
+        type: reference
         options:
-          values:
-            - استند
-            - راف چوبی
-            - جالیوانی
-            - جاقاشقی
-            - جاظرفی
-            - جا اسکاچی
-            - جا دستمال
-            - زیر دیگی
-            - ست سینک
-            - کنار گازی
+          collection: categories
+          search: "label,slug"
+          value: "{primary}"
+          label: "{label}"
       - name: material
         label: جنس
         type: select
@@ -97,7 +120,17 @@ content:
             type: string
             required: true
           - name: logo
-            label: لوگو
+            label: لوگوی نوار
+            type: image
+            options:
+              media: images
+          - name: logoFooter
+            label: لوگوی پاورقی
+            type: image
+            options:
+              media: images
+          - name: logoFull
+            label: لوگوی کامل
             type: image
             options:
               media: images

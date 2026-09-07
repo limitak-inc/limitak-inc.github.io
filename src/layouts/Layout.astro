@@ -1,14 +1,15 @@
 ---
 import '../styles/global.css'
+import { ClientRouter } from 'astro:transitions'
 import { imageSrc } from '../lib/content.js'
 
 const { title, description = '', company = {}, image } = Astro.props
 const name = company.name ?? 'لیمیتک'
 const logo = company.logo
-const favicon = imageSrc(logo || '/logo-white.png')
+const logoFull = company.logoFull
 const pageTitle = title ? `${title} | ${name}` : name
-const ogImage = image && Astro.site
-  ? new URL(imageSrc(image), Astro.site).href
+const ogImage = Astro.site && (image || logoFull)
+  ? new URL(imageSrc(image || logoFull), Astro.site).href
   : undefined
 ---
 <!doctype html>
@@ -21,7 +22,7 @@ const ogImage = image && Astro.site
     <meta property="og:title" content={pageTitle} />
     {description && <meta property="og:description" content={description} />}
     {ogImage && <meta property="og:image" content={ogImage} />}
-    <link rel="icon" href={favicon} />
+    <link rel="icon" href={imageSrc('/logo-origin.png')} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
     <link href="https://fonts.bunny.net/css?family=outfit:400,600,700|vazirmatn:400,600,700" rel="stylesheet" />
     <title>{pageTitle}</title>
@@ -33,11 +34,16 @@ const ogImage = image && Astro.site
         <a class="brand" href={import.meta.env.BASE_URL}>
           {logo ? <img src={imageSrc(logo)} alt={name} /> : name}
         </a>
+        <nav class="site-nav" aria-label="ناوبری">
+          <a href="#products">محصولات</a>
+          <a href="#contact">تماس</a>
+        </nav>
       </div>
     </header>
     <main id="main" class="site-main">
       <slot />
     </main>
     <slot name="footer" />
+    <ClientRouter />
   </body>
 </html>

@@ -5,7 +5,7 @@ image: "/images/img_11.jpg"
 model: "511"
 pcs: 24
 order: 11
-category: "جا اسکاچی"
+category: jaaskachi
 material: "فلز"
 ---
 

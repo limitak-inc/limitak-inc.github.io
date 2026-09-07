@@ -5,7 +5,7 @@ image: "/images/img_28.jpg"
 model: "105"
 pcs: 16
 order: 28
-category: "جاقاشقی"
+category: jaqashqi
 material: "فلز"
 tags:
   - "دو قلو"

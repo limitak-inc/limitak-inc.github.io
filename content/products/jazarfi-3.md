@@ -5,7 +5,7 @@ image: "/images/img_35.jpg"
 model: "422"
 pcs: 4
 order: 35
-category: "جاظرفی"
+category: jazarfi
 material: "فلز"
 tags:
   - "صبا"

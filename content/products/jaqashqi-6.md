@@ -5,7 +5,7 @@ image: "/images/img_26.jpg"
 model: "301"
 pcs: 24
 order: 26
-category: "جاقاشقی"
+category: jaqashqi
 material: "فلز"
 tags:
   - "تک قلو"

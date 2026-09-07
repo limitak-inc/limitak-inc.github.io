@@ -1,0 +1,99 @@
+---
+const { categories, total } = Astro.props
+---
+<div class="filter-scroll" data-filter-scroll>
+  <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
+    <button type="button" class="filter-chip active" data-filter="">همه</button>
+    {categories.map((cat) => (
+      <button type="button" class="filter-chip" data-filter={cat.id}>{cat.data.label}</button>
+    ))}
+  </nav>
+</div>
+<script define:vars={{ total }}>
+  document.addEventListener('astro:page-load', () => {
+    const wrap = document.querySelector('[data-filter-scroll]')
+    const bar = wrap?.querySelector('.filter-bar')
+    if (!wrap || !bar || wrap.dataset.bound) return
+    wrap.dataset.bound = '1'
+
+    const grid = () => document.querySelector('.products')
+    const count = document.querySelector('[data-product-count]')
+    const rtl = document.documentElement.dir === 'rtl'
+    const dragMin = 5
+    const maxScroll = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
+
+    const setCount = (n) => {
+      if (count) count.textContent = `${n} محصول`
+    }
+
+    const filter = (slug) => {
+      const cards = [...(grid()?.querySelectorAll('.card') ?? [])]
+      for (const card of cards) card.hidden = slug ? card.dataset.category !== slug : false
+      setCount(cards.filter((card) => !card.hidden).length)
+      for (const btn of bar.querySelectorAll('[data-filter]')) {
+        btn.classList.toggle('active', btn.dataset.filter === (slug || ''))
+      }
+      history.replaceState(null, '', slug ? `?cat=${slug}` : location.pathname)
+    }
+
+    bar.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-filter]')
+      if (!btn) return
+      filter(btn.dataset.filter || '')
+    })
+
+    const initial = new URLSearchParams(location.search).get('cat') || ''
+    filter(initial)
+    if (!initial) setCount(total)
+
+    const updateScrollState = () => wrap.classList.toggle('is-scrollable', maxScroll() > 0)
+    new ResizeObserver(updateScrollState).observe(bar)
+    updateScrollState()
+
+    let startX = 0
+    let startScroll = 0
+    let pressing = false
+    let moved = false
+
+    wrap.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || !maxScroll()) return
+      pressing = true
+      moved = false
+      startX = event.clientX
+      startScroll = bar.scrollLeft
+    })
+
+    wrap.addEventListener('pointermove', (event) => {
+      if (!pressing) return
+      const dx = event.clientX - startX
+      if (Math.abs(dx) <= dragMin) return
+      if (!moved) {
+        moved = true
+        wrap.classList.add('is-dragging')
+        wrap.setPointerCapture(event.pointerId)
+      }
+      bar.scrollLeft = startScroll - dx
+    })
+
+    const endPress = (event) => {
+      pressing = false
+      wrap.classList.remove('is-dragging')
+      if (event && wrap.hasPointerCapture(event.pointerId)) wrap.releasePointerCapture(event.pointerId)
+    }
+    wrap.addEventListener('pointerup', endPress)
+    wrap.addEventListener('pointercancel', endPress)
+
+    wrap.addEventListener('click', (event) => {
+      if (!moved) return
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      moved = false
+    }, true)
+
+    wrap.addEventListener('wheel', (event) => {
+      if (!maxScroll() || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
+      bar.scrollLeft += rtl ? -event.deltaY : event.deltaY
+      event.preventDefault()
+    }, { passive: false })
+  })
+</script>

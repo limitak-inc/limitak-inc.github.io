@@ -5,7 +5,7 @@ image: "/images/img_34.jpg"
 model: "416"
 pcs: 24
 order: 34
-category: "کنار گازی"
+category: konargazi
 material: "فلز"
 tags:
   - "صبا"

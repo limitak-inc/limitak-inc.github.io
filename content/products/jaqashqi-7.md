@@ -5,7 +5,7 @@ image: "/images/img_27.jpg"
 model: "101"
 pcs: 26
 order: 27
-category: "جاقاشقی"
+category: jaqashqi
 material: "فلز"
 tags:
   - "دوقلو"

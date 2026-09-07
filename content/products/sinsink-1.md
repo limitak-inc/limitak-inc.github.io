@@ -5,7 +5,7 @@ image: "/images/img_21.jpg"
 model: "507"
 pcs: 12
 order: 21
-category: "ست سینک"
+category: sinsink
 material: "فلز"
 tags:
   - "دوقلو"

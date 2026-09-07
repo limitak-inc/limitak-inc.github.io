@@ -5,7 +5,7 @@ image: "/images/img_13.jpg"
 model: "502"
 pcs: 6
 order: 13
-category: "جاظرفی"
+category: jazarfi
 material: "فلز"
 ---
 

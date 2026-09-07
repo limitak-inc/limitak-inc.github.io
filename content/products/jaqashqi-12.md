@@ -5,7 +5,7 @@ image: "/images/img_37.jpg"
 model: "417"
 pcs: 24
 order: 37
-category: "جاقاشقی"
+category: jaqashqi
 material: "چوب"
 tags:
   - "تک قلو"

@@ -5,7 +5,7 @@ image: "/images/img_08.jpg"
 model: "306"
 pcs: 24
 order: 8
-category: "جاقاشقی"
+category: jaqashqi
 material: "فلز"
 tags:
   - "آویز"

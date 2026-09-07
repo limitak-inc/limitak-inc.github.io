@@ -5,7 +5,7 @@ image: "/images/img_02.jpg"
 model: "500"
 pcs: 12
 order: 2
-category: "استند"
+category: stand
 material: "فلز"
 ---
 

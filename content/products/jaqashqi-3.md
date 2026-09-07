@@ -5,7 +5,7 @@ image: "/images/img_23.jpg"
 model: "104"
 pcs: 20
 order: 23
-category: "جاقاشقی"
+category: jaqashqi
 material: "استیل"
 tags:
   - "تک قلو"

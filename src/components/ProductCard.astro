@@ -1,16 +1,20 @@
 ---
-const { href, title, imageSrc, model, category } = Astro.props
+const { href, title, imageSrc, slug, id } = Astro.props
+const transition = id ? `product-${id}` : undefined
 ---
-<article class="card">
+<article class="card" data-category={slug ?? ''}>
   <a class="card-link" href={href}>
     <div class="card-media">
-      <img src={imageSrc} alt={title} loading="lazy" decoding="async" />
+      <img
+        src={imageSrc}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        transition:name={transition}
+      />
     </div>
     <div class="card-body">
       <h2>{title}</h2>
-      {(category || model) && (
-        <p class="card-meta">{[category, model].filter(Boolean).join(' · ')}</p>
-      )}
     </div>
   </a>
 </article>

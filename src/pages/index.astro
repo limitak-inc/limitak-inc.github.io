@@ -2,12 +2,13 @@
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import ProductCard from '../components/ProductCard.astro'
+import FilterBar from '../components/FilterBar.astro'
 import Footer from '../components/Footer.astro'
-import { getSite, getProducts, imageSrc, productHref } from '../lib/content.js'
+import { getSite, getProducts, getCategories, imageSrc, productHref } from '../lib/content.js'
 import { render } from 'astro:content'
 
 const siteEntry = await getSite()
-const products = await getProducts()
+const [products, categories] = await Promise.all([getProducts(), getCategories()])
 const { company, hero, social } = siteEntry.data
 const { Content: HeroBody } = await render(siteEntry)
 const description = (siteEntry.body ?? '').trim().slice(0, 160)
@@ -18,19 +19,20 @@ const description = (siteEntry.body ?? '').trim().slice(0, 160)
   >
     <HeroBody />
   </Hero>
-  <section class="container products-section" id="products" aria-labelledby="products-title">
-    <header class="section-head">
+  <section class="products-section" id="products" aria-labelledby="products-title">
+    <header class="container section-head">
       <h2 class="section-title" id="products-title">محصولات</h2>
-      <p class="section-desc">{products.length} محصول</p>
+      <p class="section-desc" data-product-count>{products.length} محصول</p>
     </header>
-    <div class="products">
+    <FilterBar categories={categories} total={products.length} />
+    <div class="container products">
       {products.map((product) => (
         <ProductCard
+          id={product.id}
           href={productHref(product.id)}
           title={product.data.title}
           imageSrc={imageSrc(product.data.image)}
-          model={product.data.model}
-          category={product.data.category}
+          slug={product.data.category}
         />
       ))}
     </div>
