@@ -22,16 +22,19 @@ const site = defineCollection({
   schema: z.object({
     company: z.object({
       name: z.string(),
-      email: z.string(),
-      phones: z.array(z.object({
-        label: z.string().optional(),
-        number: z.string(),
-      })),
+      logo: z.string().optional(),
+      email: z.string().optional(),
+      phones: z.array(z.string()),
     }),
     hero: z.object({
       title: z.string(),
       image: z.string(),
     }),
+    social: z.object({
+      instagram: z.string().optional(),
+      telegram: z.string().optional(),
+      handle: z.string().optional(),
+    }).optional(),
   }),
 })
 

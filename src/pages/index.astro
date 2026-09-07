@@ -8,14 +8,16 @@ import { render } from 'astro:content'
 
 const siteEntry = await getSite()
 const products = await getProducts()
-const { company, hero } = siteEntry.data
-const heroBody = (await render(siteEntry)).compiledContent ?? ''
+const { company, hero, social } = siteEntry.data
+const { Content: HeroBody } = await render(siteEntry)
+const description = (siteEntry.body ?? '').trim().slice(0, 160)
 ---
-<Layout company={company.name} description={heroBody.replace(/<[^>]+>/g, '').slice(0, 160)}>
+<Layout company={company} description={description} image={hero.image}>
   <Hero
     hero={{ title: hero.title, imageSrc: imageSrc(hero.image), eyebrow: company.name }}
-    body={heroBody}
-  />
+  >
+    <HeroBody />
+  </Hero>
   <section class="container products-section" id="products" aria-labelledby="products-title">
     <header class="section-head">
       <h2 class="section-title" id="products-title">محصولات</h2>
@@ -33,5 +35,5 @@ const heroBody = (await render(siteEntry)).compiledContent ?? ''
       ))}
     </div>
   </section>
-  <Footer slot="footer" company={company} />
+  <Footer slot="footer" company={company} social={social} />
 </Layout>

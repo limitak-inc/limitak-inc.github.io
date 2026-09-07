@@ -1,12 +1,17 @@
 ---
 company:
   name: LimitakSteel
+  logo: /logo-white.png
   email: Limitaksteel@gmail.com
   phones:
-    - label: موبایل
-      number: "09394401029"
+    - "09394401029"
+    - "0214401029"
 hero:
   title: استانداردی نوین در لوازم خانه و آشپزخانه
   image: /images/banner.jpg
+social:
+  instagram: https://instagram.com/limitaksteel
+  telegram: https://t.me/limitaksteel
+  handle: "@Limitaksteel"
 ---
 تولیدکننده محصولات فلزی و چوبی آشپزخانه با کیفیت و رنگ کوره‌ای.

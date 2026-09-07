@@ -14,24 +14,19 @@ export const getStaticPaths = async () => {
 
 const { product } = Astro.props
 const siteEntry = await getSite()
-const { company } = siteEntry.data
+const { company, social } = siteEntry.data
 const { Content } = await render(product)
 const home = import.meta.env.BASE_URL
 
 const fields = [
-  ['slug', 'شناسه'],
   ['model', 'کد کالا'],
   ['category', 'دسته‌بندی'],
   ['material', 'جنس'],
   ['size', 'ابعاد'],
   ['pcs', 'تعداد در کارتن'],
-  ['order', 'ترتیب'],
 ]
-
-const format = (key, val) =>
-  key === 'tags' ? val.join('، ') : String(val)
 ---
-<Layout title={product.data.title} company={company.name}>
+<Layout title={product.data.title} company={company} image={product.data.image}>
   <div class="container product-page">
     <a class="back" href={home}>← بازگشت به کاتالوگ</a>
     <article class="product-detail">
@@ -50,7 +45,7 @@ const format = (key, val) =>
           return (
             <>
               <dt>{label}</dt>
-              <dd>{format(key, val)}</dd>
+              <dd>{String(val)}</dd>
             </>
           )
         })}
@@ -67,5 +62,5 @@ const format = (key, val) =>
     </div>
     </article>
   </div>
-  <Footer slot="footer" company={company} />
+  <Footer slot="footer" company={company} social={social} />
 </Layout>

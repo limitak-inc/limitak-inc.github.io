@@ -20,17 +20,9 @@ Pages CMS → Git commit → GitHub Actions → GitHub Pages → live website
 
 ## Repository setup
 
-### 1. Create GitHub organization (optional)
+### 1. Create repository
 
-Create an organization at [github.com/organizations/plan](https://github.com/organizations/plan) if you want a shared org account.
-
-### 2. Create repository
-
-Create an **organization Pages repo** named exactly:
-
-**`limitak-inc.github.io`**
-
-Under org **limitak-inc**. Do not add README, license, or `.gitignore` (this project already has them).
+Create an **organization Pages repo** named exactly **`limitak-inc.github.io`** under org **limitak-inc**. Do not add README, license, or `.gitignore` (this project already has them).
 
 Push to `master`:
 
@@ -41,7 +33,7 @@ git push -u origin master
 
 If your SSH config uses a different host alias, replace `github-alt` with that name (not `github.com`).
 
-### 3. Enable GitHub Pages
+### 2. Enable GitHub Pages
 
 1. Open **Settings → Pages**
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**
@@ -49,7 +41,7 @@ If your SSH config uses a different host alias, replace `github-alt` with that n
 
 **Site URL**: `https://limitak-inc.github.io/`
 
-### 4. Connect Pages CMS
+### 3. Connect Pages CMS
 
 1. Go to [app.pagescms.org](https://app.pagescms.org)
 2. Sign in with **GitHub**
@@ -57,28 +49,28 @@ If your SSH config uses a different host alias, replace `github-alt` with that n
 4. Select branch **`master`**
 5. Pages CMS reads [`.pages.yml`](.pages.yml) automatically
 
-Authentication is GitHub-only via the Pages CMS GitHub App. No custom OAuth setup is required.
+Authentication is GitHub-only via the Pages CMS GitHub App.
 
-## How to update content (non-technical editor)
+## How to update content
 
 ### Add or edit a product
 
 1. Open [app.pagescms.org](https://app.pagescms.org) and select the repository
-2. Go to **Products**
+2. Go to **محصولات**
 3. Click **Add** or open an existing product
-4. Fill in: name, image, model, size, description
+4. Fill in: slug, title, image, category, material, model, pcs, size, tags, description
 5. Click **Save** (Pages CMS commits to Git automatically)
 
 ### Upload images
 
 Use the image picker in any product or site field. Files are saved to `public/images/` and referenced as `/images/filename.ext`.
 
-### Edit company information
+### Edit site settings
 
-1. Open **Site Settings** in Pages CMS
-2. Update company name, phone, email, address
-3. Update hero title, hero image, hero description
-4. Update footer links and copyright
+1. Open **تنظیمات سایت** in Pages CMS
+2. Company: name, logo, email, phones
+3. Hero: title, image, description (body)
+4. Social: handle, Instagram URL, Telegram URL
 5. Save
 
 Changes appear on the live site after GitHub Actions finishes deploying (usually 1–2 minutes).
@@ -101,7 +93,7 @@ pnpm run preview  # preview production build
 
 ```
 content/
-  site.md              # company, hero, footer settings
+  site.md              # company, hero, social
   products/*.md        # one file per product
 public/images/         # CMS image uploads
 src/                   # Astro pages and components

@@ -1,8 +1,15 @@
 ---
 import '../styles/global.css'
+import { imageSrc } from '../lib/content.js'
 
-const { title, description = '' } = Astro.props
-const pageTitle = title ? `${title} | ${Astro.props.company ?? 'لیمیتک'}` : (Astro.props.company ?? 'لیمیتک')
+const { title, description = '', company = {}, image } = Astro.props
+const name = company.name ?? 'لیمیتک'
+const logo = company.logo
+const favicon = imageSrc(logo || '/logo-white.png')
+const pageTitle = title ? `${title} | ${name}` : name
+const ogImage = image && Astro.site
+  ? new URL(imageSrc(image), Astro.site).href
+  : undefined
 ---
 <!doctype html>
 <html lang="fa" dir="rtl">
@@ -10,15 +17,22 @@ const pageTitle = title ? `${title} | ${Astro.props.company ?? 'لیمیتک'}` 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#1c1a22" />
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <link rel="icon" href={favicon} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
-    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=outfit:400,600,700|vazirmatn:400,600,700" rel="stylesheet" />
     <title>{pageTitle}</title>
   </head>
   <body class="site-shell">
     <a class="skip" href="#main">رفتن به محتوا</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href={import.meta.env.BASE_URL}>{Astro.props.company ?? 'لیمیتک'}</a>
+        <a class="brand" href={import.meta.env.BASE_URL}>
+          {logo ? <img src={imageSrc(logo)} alt={name} /> : name}
+        </a>
       </div>
     </header>
     <main id="main" class="site-main">

@@ -32,10 +32,27 @@ content:
         required: true
       - name: category
         label: دسته‌بندی
-        type: string
+        type: select
+        options:
+          values:
+            - استند
+            - راف چوبی
+            - جالیوانی
+            - جاقاشقی
+            - جاظرفی
+            - جا اسکاچی
+            - جا دستمال
+            - زیر دیگی
+            - ست سینک
+            - کنار گازی
       - name: material
         label: جنس
-        type: string
+        type: select
+        options:
+          values:
+            - فلز
+            - استیل
+            - چوب
       - name: tags
         label: برچسب‌ها
         type: string
@@ -79,20 +96,18 @@ content:
             label: نام شرکت
             type: string
             required: true
+          - name: logo
+            label: لوگو
+            type: image
+            options:
+              media: images
           - name: email
             label: ایمیل
             type: string
           - name: phones
             label: تلفن‌ها
-            type: object
+            type: string
             list: true
-            fields:
-              - name: label
-                label: عنوان
-                type: string
-              - name: number
-                label: شماره
-                type: string
       - name: hero
         label: صفحه اصلی
         type: object
@@ -105,6 +120,19 @@ content:
             type: image
             options:
               media: images
+      - name: social
+        label: شبکه‌های اجتماعی
+        type: object
+        fields:
+          - name: handle
+            label: نام کاربری
+            type: string
+          - name: instagram
+            label: اینستاگرام
+            type: string
+          - name: telegram
+            label: تلگرام
+            type: string
       - name: body
         label: توضیح هدر
         type: rich-text

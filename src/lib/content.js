@@ -10,8 +10,6 @@ export const getProducts = () =>
     )
   )
 
-export const getProduct = (slug) => getEntry('products', slug)
-
 export const productHref = (slug) => `${import.meta.env.BASE_URL}products/${slug}/`
 
 export const imageSrc = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
