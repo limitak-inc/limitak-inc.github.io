@@ -7,4 +7,7 @@ pcs: 12
 order: 5
 category: jalivani
 material: فلز
+tags:
+  - felani
+  - oon yeki
 ---
