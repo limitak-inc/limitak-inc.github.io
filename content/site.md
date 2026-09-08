@@ -10,12 +10,18 @@ company:
     - "09394401029"
     - "0214401029"
 hero:
-  title: استانداردی نوین در لوازم خانه و آشپزخانه
+  title: لیمیتاک استیل
   image: /images/banner.jpg
 social:
   instagram: https://instagram.com/limitaksteel
   telegram: https://t.me/limitaksteel
   handle: "@Limitaksteel"
+seo:
+  noindex: false
 ---
+**Premium / luxury tone**  
+- **کیفیت ماندگار، برای خانه‌ای **  
+- **ظرافت در طراحی، کیفیت در ساخت**  
+- **استانداردی نوین در تولید لوازم خانه و آشپزخانه**  
+- 
 
-تولیدکننده محصولات فلزی و چوبی آشپزخانه با کیفیت و رنگ کوره‌ای.
