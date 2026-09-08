@@ -1,7 +1,5 @@
 ---
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { webpPath } from '../lib/image.js'
+import { webpPath, webpReady } from '../lib/image.js'
 
 const {
   src,
@@ -11,17 +9,12 @@ const {
   loading = 'lazy',
   class: className,
   fetchpriority,
-  transitionName,
 } = Astro.props
-const vt = transitionName
-  ? `view-transition-name:${transitionName};view-transition-class:product`
-  : undefined
 
-const publicPath = src.replace(import.meta.env.BASE_URL, '').replace(/^\//, '')
 const webp = webpPath(src)
-const hasWebp = existsSync(join(process.cwd(), 'public', publicPath.replace(/\.(jpe?g|png)$/i, '.webp')))
+const modern = webpReady(src)
 ---
-{hasWebp ? (
+{modern ? (
   <picture>
     <source srcset={webp} type="image/webp" />
     <img
@@ -33,7 +26,7 @@ const hasWebp = existsSync(join(process.cwd(), 'public', publicPath.replace(/\.(
       decoding="async"
       class={className}
       fetchpriority={fetchpriority}
-      style={vt}
+      draggable="false"
     />
   </picture>
 ) : (
@@ -46,6 +39,6 @@ const hasWebp = existsSync(join(process.cwd(), 'public', publicPath.replace(/\.(
     decoding="async"
     class={className}
     fetchpriority={fetchpriority}
-    style={vt}
+    draggable="false"
   />
 )}

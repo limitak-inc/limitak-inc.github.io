@@ -66,12 +66,8 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
       <slot />
     </main>
     <slot name="footer" />
-    {import.meta.env.PUBLIC_ANALYTICS && (
+    {import.meta.env.PROD && import.meta.env.PUBLIC_ANALYTICS && (
       <script defer src={import.meta.env.PUBLIC_ANALYTICS} data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} />
     )}
-    <div class="product-dialog" hidden role="dialog" aria-modal="true" aria-label="محصول"></div>
-    <script>
-      import '../lib/overlay.js'
-    </script>
   </body>
 </html>

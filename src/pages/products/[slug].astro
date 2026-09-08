@@ -66,17 +66,18 @@ const crumbs = [
   })} />
   <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
   <div class="container product-page">
-    <a class="back" href={`${home}#products`}>← بازگشت به کاتالوگ</a>
+    <a class="back" href={`${home}#products`} data-home={home}>← بازگشت به کاتالوگ</a>
     <article class="product-detail">
-      <Picture
-        src={imageSrc(product.data.image)}
-        alt={product.data.title}
-        width={w}
-        height={h}
-        loading="eager"
-        fetchpriority="high"
-        transitionName={`product-${product.id}`}
-      />
+      <div class="product-media" transition:name={`product-${product.id}`}>
+        <Picture
+          src={imageSrc(product.data.image)}
+          alt={product.data.title}
+          width={w}
+          height={h}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
       <div>
         <h1>{product.data.title}</h1>
         <dl>
@@ -107,3 +108,14 @@ const crumbs = [
   </div>
   <Footer slot="footer" company={company} social={social} />
 </Layout>
+<script>
+  const backHref = () => {
+    const back = document.querySelector('.product-page .back')
+    if (!back) return
+    const home = back.dataset.home ?? '/'
+    const cat = new URLSearchParams(location.search).get('category')
+    back.href = cat ? `${home}?category=${cat}#products` : `${home}#products`
+  }
+
+  backHref()
+</script>

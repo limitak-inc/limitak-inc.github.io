@@ -1,7 +1,3 @@
-@view-transition {
-  navigation: auto;
-}
-
 :root {
   --color-bg-page: hsl(240 10% 14% / 1);
   --color-bg-surface: hsl(240 25% 10% / 0.6);
@@ -233,24 +229,9 @@ a {
   width: 100%;
   min-width: 0;
   margin-block-end: var(--space-group);
+  scroll-margin-top: 0;
   background: color-mix(in hsl, var(--color-bg-page) 28%, transparent);
   backdrop-filter: blur(1.25rem) saturate(1.35);
-  &.is-scrollable {
-    cursor: grab;
-    & .filter-chip {
-      cursor: grab;
-    }
-  }
-  &.is-scrollable:active {
-    cursor: grabbing;
-  }
-  &.is-dragging {
-    cursor: grabbing;
-    & .filter-chip {
-      pointer-events: none;
-      cursor: grabbing;
-    }
-  }
 }
 
 .filter-bar {
@@ -278,7 +259,7 @@ a {
   mask-mode: alpha;
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
-  touch-action: pan-y;
+  touch-action: pan-x;
   &::before,
   &::after {
     content: "";
@@ -365,15 +346,17 @@ a {
   & .card-media {
     padding: var(--space-item);
     padding-block-end: 0;
+    overflow: clip;
+    border-radius: calc(var(--radius-lg) - var(--space-item));
     & picture,
     & img {
       display: block;
       width: 100%;
       aspect-ratio: 4 / 3;
       object-fit: cover;
-      border-radius: calc(var(--radius-lg) - var(--space-item));
       outline: 1px solid var(--color-image-outline);
       outline-offset: -1px;
+      pointer-events: none;
     }
   }
   & .card-body {
@@ -391,25 +374,6 @@ a {
 
 .product-page {
   padding-block: var(--space-group);
-}
-
-.product-dialog {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  overflow: auto;
-  background: var(--color-bg-page);
-  color: inherit;
-  cursor: pointer;
-}
-
-html:has(.product-dialog:not([hidden])) {
-  overflow: hidden;
-}
-
-.site-main:has(.product-detail),
-.product-dialog:has(.product-detail) {
-  cursor: pointer;
 }
 
 .back {
@@ -445,14 +409,19 @@ html:has(.product-dialog:not([hidden])) {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   gap: var(--space-group);
   align-items: start;
-  & picture,
-  & > img {
-    display: block;
-    width: 100%;
+  & .product-media {
+    overflow: clip;
     border-radius: var(--radius-lg);
     outline: 1px solid var(--color-image-outline);
     outline-offset: -1px;
     box-shadow: var(--shadow-md);
+    & picture,
+    & img {
+      display: block;
+      width: 100%;
+      pointer-events: none;
+      user-select: none;
+    }
   }
   & h1 {
     color: var(--color-accent-solid);
@@ -684,39 +653,17 @@ html:has(.product-dialog:not([hidden])) {
   }
 }
 
-::view-transition-group(*) {
-  animation-duration: 280ms;
-  animation-timing-function: var(--ease-out);
-}
-
-::view-transition-group(root) {
-  animation-duration: 0s;
-}
-
-::view-transition-old(root) {
-  display: none;
-}
-
-::view-transition-old(.product),
-::view-transition-new(.product) {
-  height: 100%;
-  object-fit: cover;
-  overflow: clip;
-  mix-blend-mode: normal;
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
   *,
   *::before,
   *::after {
     animation: none !important;
     transition: none !important;
-  }
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
   }
 }

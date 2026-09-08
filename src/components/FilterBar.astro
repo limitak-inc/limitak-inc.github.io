@@ -1,148 +1,64 @@
 ---
+import { categoryHref } from '../lib/content.js'
+
 const { categories } = Astro.props
+const home = import.meta.env.BASE_URL
 const chips = [
-  { id: '', label: 'همه' },
+  { id: '', label: 'همه', href: `${home}#products` },
   ...categories.map((cat) => ({
     id: cat.data.slug,
     label: cat.data.label,
+    href: categoryHref(cat.data.slug),
   })),
 ]
 ---
 <div class="filter-scroll" id="products">
   <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
     {chips.map((chip) => (
-      <button
-        type="button"
+      <a
         class:list={['filter-chip', { active: chip.id === '' }]}
+        href={chip.href}
         data-category={chip.id}
         aria-label={chip.label}
-        aria-pressed={chip.id === '' ? 'true' : 'false'}
+        aria-current={chip.id === '' ? 'page' : undefined}
       >
         {chip.label}
-      </button>
+      </a>
     ))}
   </nav>
 </div>
 <script>
-  const init = () => {
+  const sync = () => {
     const wrap = document.querySelector('.filter-scroll')
     const bar = wrap?.querySelector('.filter-bar')
-    if (!wrap || !bar || wrap.dataset.bound) return
-    wrap.dataset.bound = '1'
     const grid = document.querySelector('.products')
-    const chips = [...bar.querySelectorAll('.filter-chip')]
-    const ids = new Set(chips.map((chip) => chip.dataset.category))
-    const rtl = document.documentElement.dir === 'rtl'
-    const overflow = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
-    const drag = { x: 0, scroll: 0, pressing: false, moved: false }
+    if (!wrap || !bar || !grid) return
 
-    const pin = (smooth = false) => {
-      let y = 0
-      for (let node = wrap; node; node = node.offsetParent) y += node.offsetTop
-      scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' })
+    const category = new URLSearchParams(location.search).get('category') ?? ''
+
+    for (const chip of bar.querySelectorAll('.filter-chip')) {
+      const id = chip.dataset.category ?? ''
+      const active = id === category
+      chip.classList.toggle('active', active)
+      chip.setAttribute('aria-current', active ? 'page' : 'false')
     }
 
-    const reveal = (chip, smooth = false) => {
-      if (!overflow()) return
-      const r = chip.getBoundingClientRect()
-      const view = bar.getBoundingClientRect()
-      bar.scrollTo({
-        left: bar.scrollLeft + (r.left + r.right) / 2 - (view.left + view.right) / 2,
-        behavior: smooth ? 'smooth' : 'instant',
-      })
+    for (const card of grid.querySelectorAll('.card')) {
+      card.hidden = category && card.dataset.category !== category
     }
 
-    const apply = (id, smooth = false) => {
-      const category = ids.has(id) ? id : ''
-      for (const chip of chips) {
-        const active = chip.dataset.category === category
-        chip.classList.toggle('active', active)
-        chip.setAttribute('aria-pressed', String(active))
-      }
-      for (const card of grid?.querySelectorAll('.card') ?? []) {
-        card.hidden = category && card.dataset.category !== category
-      }
-      const url = new URL(location.href)
-      category
-        ? url.searchParams.set('category', category)
-        : url.searchParams.delete('category')
-      url.hash = 'products'
-      history.replaceState(history.state, '', url)
-      const active = bar.querySelector('.filter-chip.active')
-      if (active) reveal(active, smooth)
-      if (smooth) pin(true)
+    for (const link of grid.querySelectorAll('.card-link')) {
+      const url = new URL(link.getAttribute('href'), location.href)
+      if (category) url.searchParams.set('category', category)
+      else url.searchParams.delete('category')
+      link.setAttribute('href', `${url.pathname}${url.search}`)
     }
 
-    bar.addEventListener('click', (event) => {
-      const chip = event.target.closest('.filter-chip')
-      if (!chip) return
-      apply(chip.dataset.category ?? '', true)
-    })
+    bar.querySelector('.filter-chip.active')
+      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' })
 
-    grid?.addEventListener('click', (event) => {
-      if (!event.target.closest('.card-link')) return
-      const url = new URL(location.href)
-      url.hash = 'products'
-      history.replaceState(history.state, '', url)
-    })
-
-    const initial = new URLSearchParams(location.search).get('category') ?? ''
-    if (initial) apply(initial)
-
-    const snap = () => {
-      if (location.hash !== '#products') return
-      history.scrollRestoration = 'manual'
-      pin()
-    }
-    snap()
-    addEventListener('pageshow', snap)
-
-    const sync = () => {
-      wrap.classList.toggle('is-scrollable', overflow() > 0)
-      const active = bar.querySelector('.filter-chip.active')
-      if (active && !wrap.classList.contains('is-dragging')) reveal(active)
-    }
-    new ResizeObserver(sync).observe(bar)
-    sync()
-
-    wrap.addEventListener('pointerdown', (event) => {
-      if (event.button !== 0 || !overflow()) return
-      Object.assign(drag, { x: event.clientX, scroll: bar.scrollLeft, pressing: true, moved: false })
-    })
-
-    wrap.addEventListener('pointermove', (event) => {
-      if (!drag.pressing) return
-      const dx = event.clientX - drag.x
-      if (Math.abs(dx) <= 5) return
-      if (!drag.moved) {
-        drag.moved = true
-        wrap.classList.add('is-dragging')
-        wrap.setPointerCapture(event.pointerId)
-      }
-      bar.scrollLeft = drag.scroll - dx
-    })
-
-    const endPress = (event) => {
-      drag.pressing = false
-      wrap.classList.remove('is-dragging')
-      if (event && wrap.hasPointerCapture(event.pointerId)) wrap.releasePointerCapture(event.pointerId)
-    }
-    wrap.addEventListener('pointerup', endPress)
-    wrap.addEventListener('pointercancel', endPress)
-
-    wrap.addEventListener('click', (event) => {
-      if (!drag.moved) return
-      event.preventDefault()
-      event.stopImmediatePropagation()
-      drag.moved = false
-    }, true)
-
-    wrap.addEventListener('wheel', (event) => {
-      if (!overflow() || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
-      bar.scrollLeft += rtl ? -event.deltaY : event.deltaY
-      event.preventDefault()
-    }, { passive: false })
+    if (location.hash === '#products') wrap.scrollIntoView({ block: 'start', behavior: 'instant' })
   }
-  init()
-  document.addEventListener('astro:page-load', init)
+
+  sync()
 </script>

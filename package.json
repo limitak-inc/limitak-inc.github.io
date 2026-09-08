@@ -4,7 +4,7 @@
   "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/webp.mjs && node scripts/llms-full.mjs",
+    "prebuild": "node scripts/webp.mjs",
     "build": "astro build",
     "preview": "astro preview"
   },

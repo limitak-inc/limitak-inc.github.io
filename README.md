@@ -63,7 +63,14 @@ Authentication is GitHub-only via the Pages CMS GitHub App.
 
 ### Upload images
 
-Use the image picker in any product or site field. Files are saved to `public/images/` and referenced as `/images/filename.ext`.
+Use the image picker in any product or site field. Supported formats: **JPEG, PNG, WebP, AVIF**.
+
+Files are saved to `public/images/` and referenced as `/images/filename.ext`.
+
+- **JPEG or PNG**: build converts a WebP sibling for modern browsers (`img_09.jpg` → `img_09.webp`). The original stays in the repo for CMS preview and fallback.
+- **WebP or AVIF**: served as uploaded, no conversion.
+
+Run `pnpm prebuild` (or `node scripts/webp.mjs`) locally after adding JPEG/PNG if you want WebP in dev. CI installs `cwebp` automatically.
 
 ### Edit site settings
 
@@ -83,6 +90,13 @@ pnpm run dev
 ```
 
 Open [http://localhost:4321/](http://localhost:4321/).
+
+JPEG/PNG images serve as-is in dev unless WebP siblings exist. To match production locally:
+
+```bash
+sudo pacman -S libwebp   # provides cwebp
+pnpm prebuild            # generates public/images/*.webp
+```
 
 ```bash
 pnpm run build    # output in dist/
@@ -159,7 +173,7 @@ Pages CMS exposes per-page SEO under **SEO** on site settings and products. Leav
 ### AI discovery
 
 - [`public/llms.txt`](public/llms.txt) - site summary for AI crawlers
-- `public/llms-full.txt` - regenerated on each build with product catalog facts
+- `llms-full.txt` - built from content collections at build time (`src/pages/llms-full.txt.ts`)
 
 ## Troubleshooting
 
@@ -173,7 +187,7 @@ Confirm the Pages CMS GitHub App is installed on the repository with write acces
 
 **Images not showing**
 
-CMS stores paths like `/images/photo.webp`. Files must live in `public/images/`.
+CMS stores paths like `/images/photo.jpg`. Files must live in `public/images/`. JPEG and PNG get a WebP variant at build time; WebP uploads are served directly.
 
 **Deploy did not run**
 
