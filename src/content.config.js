@@ -61,6 +61,7 @@ const site = defineCollection({
     social: z.object({
       instagram: z.string().optional(),
       telegram: z.string().optional(),
+      whatsapp: z.string().optional(),
       handle: z.string().optional(),
     }).optional(),
     seo,

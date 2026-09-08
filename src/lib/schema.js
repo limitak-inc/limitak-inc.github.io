@@ -16,7 +16,7 @@ export const organizationSchema = ({ site, company, social = {} }) => ({
     areaServed: 'IR',
     availableLanguage: 'Persian',
   })),
-  sameAs: [social.instagram, social.telegram].filter(Boolean),
+  sameAs: [social.instagram, social.telegram, social.whatsapp].filter(Boolean),
 })
 
 export const websiteSchema = ({ site, company }) => ({

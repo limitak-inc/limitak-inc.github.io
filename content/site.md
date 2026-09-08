@@ -12,13 +12,14 @@ hero:
   title: لیمیتاک استیل
   image: /images/banner.jpg
 theme:
-  bg-page: "hsl(240 10% 14% / 1)"
-  bg-surface: "hsl(240 25% 10% / 0.6)"
+  bg-page: "hsl(229 85% 5%)"
+  bg-surface: "hsl(217 36% 18% / 0.6)"
   accent-solid: "hsl(30 100% 45%)"
   accent-muted: "hsl(30 100% 45% / 0.16)"
 social:
   instagram: https://instagram.com/limitaksteel
   telegram: https://t.me/limitaksteel
+  whatsapp: https://wa.me/989394401029
   handle: "@Limitaksteel"
 seo:
   noindex: false
