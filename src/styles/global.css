@@ -214,6 +214,18 @@ a {
   scroll-margin-top: 0;
   background: color-mix(in hsl, var(--color-bg-page) 28%, transparent);
   backdrop-filter: blur(1.25rem) saturate(1.35);
+  user-select: none;
+  &.is-scrollable {
+    cursor: grab;
+    & .filter-chip { cursor: grab; }
+  }
+  &.is-dragging {
+    cursor: grabbing;
+    & .filter-chip {
+      pointer-events: none;
+      cursor: grabbing;
+    }
+  }
 }
 
 .filter-bar {

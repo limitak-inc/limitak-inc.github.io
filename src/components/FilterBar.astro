@@ -19,6 +19,7 @@ const chips = [
         class:list={['filter-chip', { active: chip.id === active }]}
         id={chip.id ? `category-${chip.id}` : undefined}
         href={chip.href}
+        draggable="false"
         aria-current={chip.id === active ? 'page' : undefined}
       >
         {chip.label}
@@ -26,3 +27,50 @@ const chips = [
     ))}
   </nav>
 </div>
+<script>
+  const wrap = document.querySelector('.filter-scroll')
+  const bar = wrap.querySelector('.filter-bar')
+  const overflow = () => bar.scrollWidth > bar.clientWidth
+  const drag = { x: 0, scroll: 0, pressing: false, moved: false }
+
+  const sync = () => wrap.classList.toggle('is-scrollable', overflow())
+  new ResizeObserver(sync).observe(bar)
+
+  wrap.addEventListener('pointerdown', (event) => {
+    if (event.button || event.pointerType === 'touch' || !overflow()) return
+    Object.assign(drag, { x: event.clientX, scroll: bar.scrollLeft, pressing: true, moved: false })
+  })
+
+  addEventListener('pointermove', (event) => {
+    if (!drag.pressing) return
+    const dx = event.clientX - drag.x
+    if (Math.abs(dx) <= 5) return
+    if (!drag.moved) {
+      drag.moved = true
+      wrap.classList.add('is-dragging')
+    }
+    bar.scrollLeft = drag.scroll - dx
+  })
+
+  const eatClick = (event) => {
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    drag.moved = false
+    removeEventListener('click', eatClick, true)
+  }
+
+  const endPress = () => {
+    if (!drag.pressing) return
+    drag.pressing = false
+    wrap.classList.remove('is-dragging')
+    if (drag.moved) addEventListener('click', eatClick, true)
+  }
+  addEventListener('pointerup', endPress)
+  addEventListener('pointercancel', endPress)
+
+  wrap.addEventListener('wheel', (event) => {
+    if (!overflow() || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
+    bar.scrollLeft += document.documentElement.dir === 'rtl' ? -event.deltaY : event.deltaY
+    event.preventDefault()
+  }, { passive: false })
+</script>
