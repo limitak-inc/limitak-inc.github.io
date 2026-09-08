@@ -11,6 +11,7 @@ const {
   image,
   seo = {},
   siteSeo = {},
+  social = {},
   theme: themeConfig = {},
   type = 'website',
   noindex = false,
@@ -46,6 +47,7 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     <meta property="og:description" content={meta.metaDescription} />
     <meta property="og:type" content={type} />
     <meta property="og:locale" content="fa_IR" />
+    {company.name && <meta property="og:site_name" content={company.name} />}
     {meta.canonical && <meta property="og:url" content={meta.canonical} />}
     {meta.canonical && <link rel="canonical" href={meta.canonical} />}
     {meta.ogImage && <meta property="og:image" content={meta.ogImage} />}
@@ -53,6 +55,7 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     <meta name="twitter:title" content={meta.metaTitle} />
     <meta name="twitter:description" content={meta.metaDescription} />
     {meta.ogImage && <meta name="twitter:image" content={meta.ogImage} />}
+    {social.handle && <meta name="twitter:site" content={social.handle} />}
     <link rel="icon" href={assetSrc(favicon)} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
     <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700&display=swap" rel="stylesheet" />

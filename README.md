@@ -161,7 +161,7 @@ Copy [`.env.example`](.env.example) to `.env` and set:
 
 ### CMS SEO fields
 
-Pages CMS exposes per-page SEO under **SEO** on site settings and products. Leave fields empty to use auto-generated titles and descriptions.
+Pages CMS exposes per-page SEO under **SEO** on site settings, categories, and products (title, meta description, share image, noindex). Leave fields empty to use auto-generated titles and descriptions.
 
 ### AI discovery
 

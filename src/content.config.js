@@ -16,6 +16,7 @@ const categories = defineCollection({
     slug: z.string(),
     label: z.string(),
     order: z.number().optional(),
+    seo,
   }),
 })
 

@@ -1,0 +1,18 @@
+---
+import Catalog from '../../layouts/Catalog.astro'
+import { getCategories, getProducts } from '../../lib/content.js'
+
+export const getStaticPaths = async () => {
+  const [categories, products] = await Promise.all([getCategories(), getProducts()])
+  const used = new Set(products.map((product) => product.data.category))
+  return categories
+    .filter((category) => used.has(category.data.slug))
+    .map((category) => ({
+      params: { slug: category.data.slug },
+      props: { category },
+    }))
+}
+
+const { category } = Astro.props
+---
+<Catalog category={category} />

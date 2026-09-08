@@ -79,6 +79,9 @@ content:
         type: number
         options:
           min: 0
+      - name: seo
+        component: seo
+        label: SEO
 
   # ──────────────────────────────────────────────────────────────────
 

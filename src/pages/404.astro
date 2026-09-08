@@ -7,7 +7,7 @@ const siteEntry = await getSite()
 const { company, social, theme } = siteEntry.data
 const home = import.meta.env.BASE_URL
 ---
-<Layout title="یافت نشد" company={company} description="صفحه پیدا نشد" theme={theme} noindex>
+<Layout title="یافت نشد" company={company} description="صفحه پیدا نشد" social={social} theme={theme} noindex>
   <div class="container product-page">
     <a class="back" href={home}>بازگشت به کاتالوگ</a>
     <h1 class="section-title">صفحه پیدا نشد</h1>

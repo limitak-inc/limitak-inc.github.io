@@ -1,0 +1,79 @@
+---
+import { render } from 'astro:content'
+import FilterBar from '../components/FilterBar.astro'
+import Footer from '../components/Footer.astro'
+import Hero from '../components/Hero.astro'
+import JsonLd from '../components/JsonLd.astro'
+import ProductCard from '../components/ProductCard.astro'
+import { getCategories, getProducts, getSite, productHref } from '../lib/content.js'
+import { assetSrc } from '../lib/image.js'
+import { faqSchema, organizationSchema, websiteSchema } from '../lib/schema.js'
+import { plainText } from '../lib/seo.js'
+import Layout from './Layout.astro'
+
+const { category } = Astro.props
+const siteEntry = await getSite()
+const [allProducts, allCategories] = await Promise.all([getProducts(), getCategories()])
+const { company, hero, social, theme, seo: siteSeo, faq = [] } = siteEntry.data
+const { Content: HeroBody } = await render(siteEntry)
+const active = category?.data.slug ?? ''
+const products = active
+  ? allProducts.filter((product) => product.data.category === active)
+  : allProducts
+const used = new Set(allProducts.map((product) => product.data.category))
+const categories = allCategories.filter((item) => used.has(item.data.slug))
+const description = plainText([
+  category && `محصولات ${category.data.label} ${company.name}.`,
+  siteEntry.body,
+].filter(Boolean).join(' '))
+---
+<Layout
+  title={category?.data.label}
+  company={company}
+  description={description}
+  image={hero.image}
+  seo={category?.data.seo}
+  siteSeo={siteSeo}
+  social={social}
+  theme={theme}
+>
+  <JsonLd
+    slot="head"
+    data={organizationSchema({
+      site: Astro.site,
+      company,
+      social,
+      logo: assetSrc(company.logoFull),
+    })}
+  />
+  <JsonLd slot="head" data={websiteSchema({ site: Astro.site, company })} />
+  {faq.length > 0 && <JsonLd slot="head" data={faqSchema({ faqs: faq })} />}
+  <Hero hero={{ title: hero.title, image: hero.image, logo: company.logo, name: company.name }}>
+    <HeroBody />
+  </Hero>
+  <section class="products-section" aria-label={category?.data.label ?? 'محصولات'}>
+    <FilterBar categories={categories} active={active} />
+    <div class="container products">
+      {products.map((product) => (
+        <ProductCard
+          id={product.id}
+          href={productHref(product.id)}
+          title={product.data.title}
+          image={product.data.image}
+        />
+      ))}
+    </div>
+  </section>
+  {faq.length > 0 && (
+    <section class="container faq-section" aria-label="سوالات متداول">
+      <h2 class="section-title">سوالات متداول</h2>
+      {faq.map((item) => (
+        <details>
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </section>
+  )}
+  <Footer slot="footer" company={company} social={social} />
+</Layout>
