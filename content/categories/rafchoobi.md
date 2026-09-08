@@ -1,5 +1,5 @@
 ---
-slug: rafchoobi
-label: راف چوبی
+slug: raf
+label: راف
 order: 2
 ---
