@@ -73,7 +73,7 @@ const crumbs = [
   })} />
   <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
   <div class="container product-page">
-    <a class="back" href={`${categoryHref(catSlug)}#category-${catSlug}`}>← بازگشت به کاتالوگ</a>
+    <a class="back" href={categoryHref(catSlug)}>← بازگشت به کاتالوگ</a>
     <article class="product-detail">
       <div class="product-media" style={`view-transition-name: product-${product.id}`}>
         <Image

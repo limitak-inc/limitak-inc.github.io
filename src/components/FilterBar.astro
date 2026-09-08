@@ -8,7 +8,7 @@ const chips = [
   ...categories.map((cat) => ({
     id: cat.data.slug,
     label: cat.data.label,
-    href: `${categoryHref(cat.data.slug)}#category-${cat.data.slug}`,
+    href: categoryHref(cat.data.slug),
   })),
 ]
 ---
@@ -17,7 +17,6 @@ const chips = [
     {chips.map((chip) => (
       <a
         class:list={['filter-chip', { active: chip.id === active }]}
-        id={chip.id ? `category-${chip.id}` : undefined}
         href={chip.href}
         draggable="false"
         aria-current={chip.id === active ? 'page' : undefined}
