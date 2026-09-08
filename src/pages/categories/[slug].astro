@@ -28,16 +28,11 @@ export const getStaticPaths = async () => {
 const { category, products } = Astro.props
 const siteEntry = await getSite()
 const allCategories = await getCategories()
-const allProducts = await getProducts()
 const { company, social, seo: siteSeo } = siteEntry.data
 const home = import.meta.env.BASE_URL
 const description = category.data.description
   ?? category.data.seo?.description
   ?? `محصولات ${category.data.label} از ${company.name}`
-const counts = allProducts.reduce((map, product) => {
-  map[product.data.category] = (map[product.data.category] ?? 0) + 1
-  return map
-}, {})
 const crumbs = [
   { name: 'خانه', url: home },
   { name: category.data.label, url: `categories/${category.id}/` },
@@ -58,12 +53,7 @@ const crumbs = [
     {description && <p class="category-desc">{description}</p>}
   </div>
   <section class="products-section" aria-label={category.data.label}>
-    <FilterBar
-      categories={allCategories}
-      total={allProducts.length}
-      counts={counts}
-      active={category.id}
-    />
+    <FilterBar categories={allCategories} active={category.id} />
     <div class="container products">
       {products.map((product) => (
         <ProductCard

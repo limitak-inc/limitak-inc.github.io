@@ -1,14 +1,13 @@
 ---
 import { categoryHref } from '../lib/content.js'
 
-const { categories, total, counts, active = '' } = Astro.props
+const { categories, active = '' } = Astro.props
 const home = import.meta.env.BASE_URL
 const chips = [
-  { id: '', label: 'همه', n: total, href: home },
+  { id: '', label: 'همه', href: home },
   ...categories.map((cat) => ({
     id: cat.id,
     label: cat.data.label,
-    n: counts[cat.id] ?? 0,
     href: categoryHref(cat.id),
   })),
 ]
@@ -19,10 +18,10 @@ const chips = [
       <a
         class:list={['filter-chip', { active: chip.id === active }]}
         href={chip.href}
-        aria-label={`${chip.label}، ${chip.n} محصول`}
+        aria-label={chip.label}
         aria-current={chip.id === active ? 'page' : undefined}
       >
-        {chip.label}<span class="filter-n">{chip.n}</span>
+        {chip.label}
       </a>
     ))}
   </nav>

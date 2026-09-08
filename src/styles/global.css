@@ -1,6 +1,6 @@
 :root {
   --color-bg-page: hsl(240 10% 14% / 1);
-  --color-bg-surface: hsl(240 25% 10% / 0.8);
+  --color-bg-surface: hsl(240 25% 10% / 0.6);
   --color-bg-elevated: hsl(240 20% 10%);
   --color-text-primary: hsl(230 43% 100%);
   --color-text-secondary: hsl(230 10% 70%);
@@ -129,7 +129,7 @@ a {
     backdrop-filter: blur(10px);
     border-radius: 22px;
     padding: 10px 14px;
-    background: #ffffff33;
+    background: #ffffff55;
     gap: 0.85rem;
     width: fit-content;
     margin-block-end: clamp(1.5rem, 5vh, 2.75rem);
@@ -143,7 +143,7 @@ a {
       border-radius: var(--radius-sm);
     }
     & img {
-      height: clamp(2rem, 8vw, 6rem);
+      height: clamp(4rem, 10vw, 6rem);
       width: auto;
       object-fit: contain;
     }
@@ -157,12 +157,12 @@ a {
     letter-spacing: -0.02em;
     /* color: var(--color-text-secondary); */
     color: var(--color-accent-solid);
-    text-shadow: 0 0 10px black;
+    text-shadow: 0 0 6px black;
   }
   & .hero-desc p {
     margin: 0;
     max-width: 60ch;
-    color: var(--color-text-secondary);
+    color: black;
     text-shadow: 0 0 8px black;
     font-size: 1.1875rem;
   }
@@ -218,7 +218,7 @@ a {
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  padding-block: 1rem 1.75rem;
+  padding-block: 1rem;
   scroll-padding-inline: var(--filter-fade);
   mask-image: linear-gradient(
     to right,
@@ -243,7 +243,6 @@ a {
   & .filter-chip {
     display: inline-flex;
     align-items: center;
-    position: relative;
     flex: 0 0 auto;
     min-height: 2.25rem;
     padding: 0.375rem 0.875rem;
@@ -277,27 +276,6 @@ a {
     &:focus-visible {
       outline: 2px solid var(--color-accent-solid);
       outline-offset: 3px;
-    }
-    & .filter-n {
-      display: none;
-      position: absolute;
-      inset-block-start: calc(100% + 0.45rem);
-      inset-inline: 0;
-      width: fit-content;
-      margin-inline: auto;
-      padding: 0.2rem 0.6rem 0.2rem 0.6rem;
-      border-radius: 14px;
-      background: var(--color-bg-page);
-      color: var(--color-accent-solid);
-      font-size: 0.6875rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      line-height: 1;
-      text-align: center;
-      pointer-events: none;
-    }
-    &.active .filter-n {
-      display: block;
     }
   }
 }
