@@ -24,34 +24,97 @@ const chips = [
   </nav>
 </div>
 <script>
+  const wrap = document.querySelector('.filter-scroll')
+  const bar = wrap.querySelector('.filter-bar')
   const grid = document.querySelector('.products')
-  const chips = [...document.querySelectorAll('.filter-chip')]
+  const chips = [...bar.querySelectorAll('.filter-chip')]
   const ids = new Set(chips.map((chip) => chip.dataset.category))
+  const rtl = document.documentElement.dir === 'rtl'
+  const overflow = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
+  const drag = { x: 0, scroll: 0, pressing: false, moved: false }
 
-  const apply = (id) => {
+  const reveal = (chip, smooth = false) => {
+    if (!overflow()) return
+    const r = chip.getBoundingClientRect()
+    const view = bar.getBoundingClientRect()
+    bar.scrollTo({
+      left: bar.scrollLeft + (r.left + r.right) / 2 - (view.left + view.right) / 2,
+      behavior: smooth ? 'smooth' : 'instant',
+    })
+  }
+
+  const apply = (id, smooth = false) => {
     const category = ids.has(id) ? id : ''
-    chips.forEach((chip) => {
+    for (const chip of chips) {
       const active = chip.dataset.category === category
       chip.classList.toggle('active', active)
-      chip.setAttribute('aria-pressed', active ? 'true' : 'false')
-    })
-    grid?.querySelectorAll('.card').forEach((card) => {
+      chip.setAttribute('aria-pressed', String(active))
+    }
+    for (const card of grid?.querySelectorAll('.card') ?? []) {
       card.hidden = category && card.dataset.category !== category
-    })
+    }
     const url = new URL(location.href)
     category
       ? url.searchParams.set('category', category)
       : url.searchParams.delete('category')
     url.hash = category ? 'products' : ''
     history.replaceState(null, '', url)
+    const active = bar.querySelector('.filter-chip.active')
+    if (active) reveal(active, smooth)
   }
 
-  document.querySelector('.filter-bar')?.addEventListener('click', (event) => {
+  bar.addEventListener('click', (event) => {
     const chip = event.target.closest('.filter-chip')
     if (!chip) return
-    apply(chip.dataset.category ?? '')
+    apply(chip.dataset.category ?? '', true)
   })
 
   const initial = new URLSearchParams(location.search).get('category') ?? ''
   if (initial) apply(initial)
+
+  const sync = () => {
+    wrap.classList.toggle('is-scrollable', overflow() > 0)
+    const active = bar.querySelector('.filter-chip.active')
+    if (active && !wrap.classList.contains('is-dragging')) reveal(active)
+  }
+  new ResizeObserver(sync).observe(bar)
+  sync()
+
+  wrap.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0 || !overflow()) return
+    Object.assign(drag, { x: event.clientX, scroll: bar.scrollLeft, pressing: true, moved: false })
+  })
+
+  wrap.addEventListener('pointermove', (event) => {
+    if (!drag.pressing) return
+    const dx = event.clientX - drag.x
+    if (Math.abs(dx) <= 5) return
+    if (!drag.moved) {
+      drag.moved = true
+      wrap.classList.add('is-dragging')
+      wrap.setPointerCapture(event.pointerId)
+    }
+    bar.scrollLeft = drag.scroll - dx
+  })
+
+  const endPress = (event) => {
+    drag.pressing = false
+    wrap.classList.remove('is-dragging')
+    if (event && wrap.hasPointerCapture(event.pointerId)) wrap.releasePointerCapture(event.pointerId)
+  }
+  wrap.addEventListener('pointerup', endPress)
+  wrap.addEventListener('pointercancel', endPress)
+
+  wrap.addEventListener('click', (event) => {
+    if (!drag.moved) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    drag.moved = false
+  }, true)
+
+  wrap.addEventListener('wheel', (event) => {
+    if (!overflow() || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
+    bar.scrollLeft += rtl ? -event.deltaY : event.deltaY
+    event.preventDefault()
+  }, { passive: false })
 </script>
