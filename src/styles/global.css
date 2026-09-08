@@ -318,6 +318,7 @@ a {
   &:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-3px);
+    color: var(--color-accent-solid);
   }
   &:focus-within {
     outline: 2px solid var(--color-accent-solid);

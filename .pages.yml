@@ -23,7 +23,7 @@ content:
       template: "{fields.slug}.md"
       field: false
     view:
-      fields: [label, slug, order, color]
+      fields: [label, slug, order]
       primary: label
       sort: [order]
       default:
@@ -44,10 +44,6 @@ content:
         type: number
         options:
           min: 0
-      - name: color
-        label: رنگ
-        type: string
-        description: "مثلا oklch(0.62 0.22 280)"
 
   - name: products
     label: محصولات
@@ -59,8 +55,8 @@ content:
       template: "{fields.slug}.md"
       field: false
     view:
-      fields: [title, category, model, order, image]
-      primary: slug
+      fields: [title, slug, category, model, order, image]
+      primary: title
       sort: [order]
       default:
         sort: order
@@ -93,6 +89,8 @@ content:
             - فلز
             - استیل
             - چوب
+            - چوب و فلز
+            - چوب و استیل
       - name: tags
         label: برچسب‌ها
         type: string

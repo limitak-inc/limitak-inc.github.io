@@ -7,7 +7,6 @@ const categories = defineCollection({
     slug: z.string(),
     label: z.string(),
     order: z.number().optional(),
-    color: z.string().optional(),
   }),
 })
 
@@ -17,7 +16,7 @@ const products = defineCollection({
     slug: z.string(),
     title: z.string(),
     image: z.string(),
-    category: z.string().optional(),
+    category: z.string(),
     material: z.string().optional(),
     tags: z.array(z.string()).optional(),
     model: z.string().optional(),
