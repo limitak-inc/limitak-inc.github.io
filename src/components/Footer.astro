@@ -1,7 +1,7 @@
 ---
-import { imageSrc } from '../lib/content.js'
+import { imageSrc, categoryHref } from '../lib/content.js'
 
-const { company, social = {} } = Astro.props
+const { company, social = {}, categories = [] } = Astro.props
 const phones = (company.phones ?? []).filter(Boolean)
 const logoFooter = company.logoFooter
 const home = import.meta.env.BASE_URL
@@ -10,9 +10,16 @@ const home = import.meta.env.BASE_URL
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href={home}>
-        {logoFooter ? <img src={imageSrc(logoFooter)} alt={company.name} /> : company.name}
+        {logoFooter ? <img src={imageSrc(logoFooter)} alt={company.name} width="120" height="40" /> : company.name}
       </a>
     </div>
+    {categories.length > 0 && (
+      <nav class="footer-cats" aria-label="دسته‌بندی محصولات">
+        {categories.map((cat) => (
+          <a href={categoryHref(cat.id)}>{cat.data.label}</a>
+        ))}
+      </nav>
+    )}
     {(social.handle || social.instagram || social.telegram) && (
       <div class="footer-social">
         {social.handle && <bdi class="footer-handle">{social.handle}</bdi>}

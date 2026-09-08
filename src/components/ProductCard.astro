@@ -1,17 +1,14 @@
 ---
-const { href, title, imageSrc, slug, id } = Astro.props
-const transition = id ? `product-${id}` : undefined
+import Picture from './Picture.astro'
+import { dims } from '../lib/image.js'
+
+const { href, title, imageSrc, slug } = Astro.props
+const { w, h } = dims.card
 ---
 <article class="card" data-category={slug ?? ''}>
   <a class="card-link" href={href}>
     <div class="card-media">
-      <img
-        src={imageSrc}
-        alt={title}
-        loading="lazy"
-        decoding="async"
-        transition:name={transition}
-      />
+      <Picture src={imageSrc} alt={title} width={w} height={h} loading="lazy" />
     </div>
     <div class="card-body">
       <h2>{title}</h2>

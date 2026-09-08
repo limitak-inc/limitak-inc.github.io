@@ -1,7 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import Footer from '../../components/Footer.astro'
-import { getSite, getProducts, getCategories, categoryLabel, imageSrc } from '../../lib/content.js'
+import Picture from '../../components/Picture.astro'
+import JsonLd from '../../components/JsonLd.astro'
+import {
+  getSite,
+  getProducts,
+  getCategories,
+  categoryLabel,
+  categoryHref,
+  imageSrc,
+} from '../../lib/content.js'
+import { productDescription } from '../../lib/seo.js'
+import { productSchema, breadcrumbSchema } from '../../lib/schema.js'
+import { dims } from '../../lib/image.js'
 import { render } from 'astro:content'
 
 export const getStaticPaths = async () => {
@@ -15,55 +27,82 @@ export const getStaticPaths = async () => {
 const { product } = Astro.props
 const siteEntry = await getSite()
 const categories = await getCategories()
-const { company, social } = siteEntry.data
+const { company, social, seo: siteSeo } = siteEntry.data
 const { Content } = await render(product)
 const home = import.meta.env.BASE_URL
+const catSlug = product.data.category
+const catName = categoryLabel(categories, catSlug)
+const description = productDescription(product, catName)
+const { w, h } = dims.product
 
 const fields = [
   ['model', 'کد کالا'],
-  ['category', 'دسته‌بندی'],
   ['material', 'جنس'],
   ['size', 'ابعاد'],
   ['pcs', 'تعداد در کارتن'],
 ]
+
+const crumbs = [
+  { name: 'خانه', url: home },
+  { name: catName, url: categoryHref(catSlug) },
+  { name: product.data.title, url: `products/${product.id}/` },
+]
 ---
-<Layout title={product.data.title} company={company} image={product.data.image}>
+<Layout
+  title={product.data.title}
+  description={description}
+  company={company}
+  image={product.data.image}
+  seo={product.data.seo}
+  siteSeo={siteSeo}
+  type="product"
+>
+  <JsonLd slot="head" data={productSchema({
+    site: Astro.site,
+    product,
+    categoryLabel: catName,
+    description,
+    companyName: company.name,
+  })} />
+  <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
   <div class="container product-page">
     <a class="back" href={`${home}#products`}>← بازگشت به کاتالوگ</a>
     <article class="product-detail">
-    <img
-      src={imageSrc(product.data.image)}
-      alt={product.data.title}
-      loading="eager"
-      decoding="async"
-      transition:name={`product-${product.id}`}
-    />
-    <div>
-      <h1>{product.data.title}</h1>
-      <dl>
-        {fields.map(([key, label]) => {
-          const val = product.data[key]
-          if (val === undefined || val === '') return null
-          const display = key === 'category' ? categoryLabel(categories, val) : String(val)
-          return (
+      <Picture
+        src={imageSrc(product.data.image)}
+        alt={product.data.title}
+        width={w}
+        height={h}
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div>
+        <h1>{product.data.title}</h1>
+        <dl>
+          <dt>دسته‌بندی</dt>
+          <dd><a href={categoryHref(catSlug)}>{catName}</a></dd>
+          {fields.map(([key, label]) => {
+            const val = product.data[key]
+            if (val === undefined || val === '') return null
+            return (
+              <>
+                <dt>{label}</dt>
+                <dd>{String(val)}</dd>
+              </>
+            )
+          })}
+          {product.data.tags?.length && (
             <>
-              <dt>{label}</dt>
-              <dd>{display}</dd>
+              <dt>برچسب‌ها</dt>
+              <dd class="tags">{product.data.tags.map((tag) => <span>{tag}</span>)}</dd>
             </>
-          )
-        })}
-        {product.data.tags?.length && (
-          <>
-            <dt>برچسب‌ها</dt>
-            <dd class="tags">{product.data.tags.map((tag) => <span>{tag}</span>)}</dd>
-          </>
-        )}
-      </dl>
-      <div class="prose">
-        <Content />
+          )}
+        </dl>
+        <div class="prose">
+          <Content />
+        </div>
       </div>
-    </div>
     </article>
   </div>
-  <Footer slot="footer" company={company} social={social} />
+  <Footer slot="footer" company={company} social={social} categories={categories} />
 </Layout>

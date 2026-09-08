@@ -4,10 +4,12 @@
   "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/webp.mjs && node scripts/llms-full.mjs",
     "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.1"
   }
 }

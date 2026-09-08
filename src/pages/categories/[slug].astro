@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import FilterBar from '../../components/FilterBar.astro'
+import Footer from '../../components/Footer.astro'
+import JsonLd from '../../components/JsonLd.astro'
+import {
+  getSite,
+  getProducts,
+  getCategories,
+  productHref,
+  imageSrc,
+} from '../../lib/content.js'
+import { itemListSchema, breadcrumbSchema } from '../../lib/schema.js'
+
+export const getStaticPaths = async () => {
+  const categories = await getCategories()
+  const products = await getProducts()
+  return categories.map((category) => ({
+    params: { slug: category.id },
+    props: {
+      category,
+      products: products.filter((p) => p.data.category === category.id),
+    },
+  }))
+}
+
+const { category, products } = Astro.props
+const siteEntry = await getSite()
+const allCategories = await getCategories()
+const allProducts = await getProducts()
+const { company, social, seo: siteSeo } = siteEntry.data
+const home = import.meta.env.BASE_URL
+const description = category.data.description
+  ?? category.data.seo?.description
+  ?? `محصولات ${category.data.label} از ${company.name}`
+const counts = allProducts.reduce((map, product) => {
+  map[product.data.category] = (map[product.data.category] ?? 0) + 1
+  return map
+}, {})
+const crumbs = [
+  { name: 'خانه', url: home },
+  { name: category.data.label, url: `categories/${category.id}/` },
+]
+---
+<Layout
+  title={category.data.label}
+  description={description}
+  company={company}
+  seo={category.data.seo}
+  siteSeo={siteSeo}
+>
+  <JsonLd slot="head" data={itemListSchema({ site: Astro.site, category, products })} />
+  <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
+  <div class="container category-page">
+    <a class="back" href={home}>← بازگشت به خانه</a>
+    <h1>{category.data.label}</h1>
+    {description && <p class="category-desc">{description}</p>}
+  </div>
+  <section class="products-section" aria-label={category.data.label}>
+    <FilterBar
+      categories={allCategories}
+      total={allProducts.length}
+      counts={counts}
+      active={category.id}
+    />
+    <div class="container products">
+      {products.map((product) => (
+        <ProductCard
+          href={productHref(product.id)}
+          title={product.data.title}
+          imageSrc={imageSrc(product.data.image)}
+          slug={product.data.category}
+        />
+      ))}
+    </div>
+  </section>
+  <Footer slot="footer" company={company} social={social} categories={allCategories} />
+</Layout>

@@ -1,31 +1,59 @@
 ---
 import '../styles/global.css'
-import { ClientRouter } from 'astro:transitions'
 import { imageSrc } from '../lib/content.js'
+import { resolveMeta } from '../lib/seo.js'
 
-const { title, description = '', company = {}, image } = Astro.props
-const name = company.name ?? 'لیمیتک'
-const logoFull = company.logoFull
+const {
+  title,
+  description = '',
+  company = {},
+  image,
+  seo = {},
+  siteSeo = {},
+  type = 'website',
+  noindex = false,
+  preload,
+} = Astro.props
+
 const favicon = company.favicon || '/assets/logo-mono.png'
-const pageTitle = title ? `${title} | ${name}` : name
-const ogImage = Astro.site && (image || logoFull)
-  ? new URL(imageSrc(image || logoFull), Astro.site).href
-  : undefined
+const meta = resolveMeta({
+  title,
+  description,
+  image,
+  seo,
+  siteSeo,
+  company,
+  site: Astro.site,
+  canonicalPath: Astro.url.pathname,
+  type,
+})
+const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
 ---
 <!doctype html>
 <html lang="fa" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
+    <meta name="description" content={meta.metaDescription} />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content="#1c1a22" />
-    <meta property="og:title" content={pageTitle} />
-    {description && <meta property="og:description" content={description} />}
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:title" content={meta.metaTitle} />
+    <meta property="og:description" content={meta.metaDescription} />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="fa_IR" />
+    {meta.canonical && <meta property="og:url" content={meta.canonical} />}
+    {meta.canonical && <link rel="canonical" href={meta.canonical} />}
+    {meta.ogImage && <meta property="og:image" content={meta.ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={meta.metaTitle} />
+    <meta name="twitter:description" content={meta.metaDescription} />
+    {meta.ogImage && <meta name="twitter:image" content={meta.ogImage} />}
     <link rel="icon" href={imageSrc(favicon)} />
+    {preload && <link rel="preload" as="image" href={preload} fetchpriority="high" />}
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
-    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700|zain:700,800" rel="stylesheet" />
-    <title>{pageTitle}</title>
+    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700|zain:700,800&display=swap" rel="stylesheet" />
+    <title>{meta.metaTitle}</title>
+    <slot name="head" />
   </head>
   <body class="site-shell">
     <a class="skip" href="#main">رفتن به محتوا</a>
@@ -33,7 +61,9 @@ const ogImage = Astro.site && (image || logoFull)
       <slot />
     </main>
     <slot name="footer" />
-    <ClientRouter />
+    {import.meta.env.PUBLIC_ANALYTICS && (
+      <script defer src={import.meta.env.PUBLIC_ANALYTICS} data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} />
+    )}
     <script>
       const back = () => document.querySelector('#main:has(.product-detail) .back')
       document.addEventListener('click', (event) => {

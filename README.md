@@ -125,6 +125,42 @@ site: 'https://yourdomain.com',
 base: '/',
 ```
 
+Then update `Sitemap:` in [`public/robots.txt`](public/robots.txt) to match.
+
+## SEO and marketing
+
+### After deploy
+
+1. Open [Google Search Console](https://search.google.com/search-console) and add the site property
+2. Submit `https://limitak-inc.github.io/sitemap-index.xml`
+3. Open [Bing Webmaster Tools](https://www.bing.com/webmasters) and submit the same sitemap
+4. Check indexing after a few days (home, products, categories)
+
+### Analytics (optional)
+
+Copy [`.env.example`](.env.example) to `.env` and set:
+
+- `PUBLIC_ANALYTICS` - script URL (Plausible, Cloudflare Web Analytics, etc.)
+- `PUBLIC_ANALYTICS_DOMAIN` - site hostname
+
+### Custom domain migration
+
+1. Set `site` in [`astro.config.mjs`](astro.config.mjs)
+2. Configure DNS / CNAME for GitHub Pages
+3. Enable HTTPS in repo Settings → Pages
+4. Update sitemap URL in [`public/robots.txt`](public/robots.txt)
+5. Add the new domain in Search Console and resubmit sitemap
+6. Update social links if they still point to the old URL
+
+### CMS SEO fields
+
+Pages CMS exposes per-page SEO under **SEO** on site settings, products, and categories. Leave fields empty to use auto-generated titles and descriptions.
+
+### AI discovery
+
+- [`public/llms.txt`](public/llms.txt) - site summary for AI crawlers
+- `public/llms-full.txt` - regenerated on each build with product catalog facts
+
 ## Troubleshooting
 
 **Site loads but CSS/images are broken**

@@ -3,12 +3,21 @@ import { defineCollection, z } from 'astro:content'
 
 const materials = ['فلز', 'استیل', 'چوب', 'چوب و فلز', 'چوب و استیل']
 
+const seo = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  noindex: z.boolean().optional(),
+}).optional()
+
 const categories = defineCollection({
   loader: glob({ base: './content/categories', pattern: '**/*.md' }),
   schema: z.object({
     slug: z.string(),
     label: z.string(),
     order: z.number().optional(),
+    description: z.string().optional(),
+    seo,
   }),
 })
 
@@ -25,6 +34,7 @@ const products = defineCollection({
     size: z.string().optional(),
     pcs: z.number().optional(),
     order: z.number().optional(),
+    seo,
   }),
 })
 
@@ -49,6 +59,11 @@ const site = defineCollection({
       telegram: z.string().optional(),
       handle: z.string().optional(),
     }).optional(),
+    seo,
+    faq: z.array(z.object({
+      q: z.string(),
+      a: z.string(),
+    })).optional(),
   }),
 })
 

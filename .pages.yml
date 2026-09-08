@@ -12,6 +12,27 @@ media:
     rename: safe
     extensions: [png, svg, webp]
 
+components:
+  seo:
+    type: object
+    label: SEO
+    fields:
+      - name: title
+        label: عنوان متا
+        type: string
+        description: "خالی = عنوان صفحه"
+      - name: description
+        label: توضیح متا
+        type: text
+      - name: image
+        label: تصویر اشتراک‌گذاری
+        type: image
+        options:
+          media: images
+      - name: noindex
+        label: عدم نمایه‌سازی
+        type: boolean
+
 content:
   - name: categories
     label: دسته‌بندی‌ها
@@ -44,6 +65,12 @@ content:
         type: number
         options:
           min: 0
+      - name: description
+        label: توضیح دسته
+        type: text
+      - name: seo
+        component: seo
+        label: SEO
 
   - name: products
     label: محصولات
@@ -123,6 +150,9 @@ content:
         options:
           format: markdown
           media: images
+      - name: seo
+        component: seo
+        label: SEO
 
   - name: site
     label: تنظیمات سایت
@@ -201,6 +231,20 @@ content:
         options:
           format: markdown
           media: images
+      - name: seo
+        component: seo
+        label: SEO
+      - name: faq
+        label: سوالات متداول
+        type: object
+        list: true
+        fields:
+          - name: q
+            label: سوال
+            type: string
+          - name: a
+            label: پاسخ
+            type: text
 
 settings:
   content:

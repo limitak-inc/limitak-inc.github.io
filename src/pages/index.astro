@@ -4,25 +4,36 @@ import Hero from '../components/Hero.astro'
 import ProductCard from '../components/ProductCard.astro'
 import FilterBar from '../components/FilterBar.astro'
 import Footer from '../components/Footer.astro'
+import JsonLd from '../components/JsonLd.astro'
 import { getSite, getProducts, getCategories, imageSrc, productHref } from '../lib/content.js'
+import { organizationSchema, websiteSchema, faqSchema } from '../lib/schema.js'
 import { render } from 'astro:content'
 
 const siteEntry = await getSite()
 const [products, categories] = await Promise.all([getProducts(), getCategories()])
-const { company, hero, social } = siteEntry.data
+const { company, hero, social, seo: siteSeo, faq = [] } = siteEntry.data
 const { Content: HeroBody } = await render(siteEntry)
 const description = (siteEntry.body ?? '').trim().slice(0, 160)
 const counts = products.reduce((map, product) => {
-  const key = product.data.category
-  map[key] = (map[key] ?? 0) + 1
+  map[product.data.category] = (map[product.data.category] ?? 0) + 1
   return map
 }, {})
+const heroImage = imageSrc(hero.image)
 ---
-<Layout company={company} description={description} image={hero.image}>
+<Layout
+  company={company}
+  description={description}
+  image={hero.image}
+  siteSeo={siteSeo}
+  preload={heroImage}
+>
+  <JsonLd slot="head" data={organizationSchema({ site: Astro.site, company, social })} />
+  <JsonLd slot="head" data={websiteSchema({ site: Astro.site, company })} />
+  {faq.length > 0 && <JsonLd slot="head" data={faqSchema({ faqs: faq })} />}
   <Hero
     hero={{
       title: hero.title,
-      imageSrc: imageSrc(hero.image),
+      imageSrc: heroImage,
       logoSrc: company.logo && imageSrc(company.logo),
       name: company.name,
     }}
@@ -34,7 +45,6 @@ const counts = products.reduce((map, product) => {
     <div class="container products">
       {products.map((product) => (
         <ProductCard
-          id={product.id}
           href={productHref(product.id)}
           title={product.data.title}
           imageSrc={imageSrc(product.data.image)}
@@ -43,5 +53,16 @@ const counts = products.reduce((map, product) => {
       ))}
     </div>
   </section>
-  <Footer slot="footer" company={company} social={social} />
+  {faq.length > 0 && (
+    <section class="container faq-section" aria-label="سوالات متداول">
+      <h2 class="section-title">سوالات متداول</h2>
+      {faq.map((item) => (
+        <details>
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </section>
+  )}
+  <Footer slot="footer" company={company} social={social} categories={categories} />
 </Layout>

@@ -1,121 +1,29 @@
 ---
-const { categories, total, counts } = Astro.props
+import { categoryHref } from '../lib/content.js'
+
+const { categories, total, counts, active = '' } = Astro.props
+const home = import.meta.env.BASE_URL
 const chips = [
-  { id: '', label: 'همه', n: total },
+  { id: '', label: 'همه', n: total, href: home },
   ...categories.map((cat) => ({
     id: cat.id,
     label: cat.data.label,
     n: counts[cat.id] ?? 0,
+    href: categoryHref(cat.id),
   })),
 ]
 ---
-<div class="filter-scroll" data-filter-scroll>
+<div class="filter-scroll">
   <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
     {chips.map((chip) => (
-      <button
-        type="button"
-        class:list={['filter-chip', { active: !chip.id }]}
-        data-filter={chip.id}
+      <a
+        class:list={['filter-chip', { active: chip.id === active }]}
+        href={chip.href}
         aria-label={`${chip.label}، ${chip.n} محصول`}
+        aria-current={chip.id === active ? 'page' : undefined}
       >
         {chip.label}<span class="filter-n">{chip.n}</span>
-      </button>
+      </a>
     ))}
   </nav>
 </div>
-<script>
-  document.addEventListener('astro:page-load', () => {
-    const wrap = document.querySelector('[data-filter-scroll]')
-    const bar = wrap?.querySelector('.filter-bar')
-    if (!wrap || !bar || wrap.dataset.bound) return
-    wrap.dataset.bound = '1'
-
-    const grid = () => document.querySelector('.products')
-    const rtl = document.documentElement.dir === 'rtl'
-    const dragMin = 5
-    const maxScroll = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
-
-    const reveal = (chip, smooth = false) => {
-      if (!maxScroll()) return
-      const r = chip.getBoundingClientRect()
-      const view = bar.getBoundingClientRect()
-      bar.scrollTo({
-        left: bar.scrollLeft + (r.left + r.right) / 2 - (view.left + view.right) / 2,
-        behavior: smooth ? 'smooth' : 'instant',
-      })
-    }
-
-    const filter = (slug, smooth = false) => {
-      const cards = [...(grid()?.querySelectorAll('.card') ?? [])]
-      for (const card of cards) card.hidden = slug ? card.dataset.category !== slug : false
-      for (const btn of bar.querySelectorAll('[data-filter]')) {
-        btn.classList.toggle('active', btn.dataset.filter === (slug || ''))
-      }
-      history.replaceState(null, '', slug ? `?cat=${slug}` : location.pathname)
-      const active = bar.querySelector('.filter-chip.active')
-      if (active) reveal(active, smooth)
-    }
-
-    bar.addEventListener('click', (event) => {
-      const btn = event.target.closest('[data-filter]')
-      if (!btn) return
-      filter(btn.dataset.filter || '', true)
-    })
-
-    filter(new URLSearchParams(location.search).get('cat') || '')
-
-    const updateScrollState = () => {
-      wrap.classList.toggle('is-scrollable', maxScroll() > 0)
-      const active = bar.querySelector('.filter-chip.active')
-      if (active && !wrap.classList.contains('is-dragging')) reveal(active)
-    }
-    new ResizeObserver(updateScrollState).observe(bar)
-    updateScrollState()
-
-    let startX = 0
-    let startScroll = 0
-    let pressing = false
-    let moved = false
-
-    wrap.addEventListener('pointerdown', (event) => {
-      if (event.button !== 0 || !maxScroll()) return
-      pressing = true
-      moved = false
-      startX = event.clientX
-      startScroll = bar.scrollLeft
-    })
-
-    wrap.addEventListener('pointermove', (event) => {
-      if (!pressing) return
-      const dx = event.clientX - startX
-      if (Math.abs(dx) <= dragMin) return
-      if (!moved) {
-        moved = true
-        wrap.classList.add('is-dragging')
-        wrap.setPointerCapture(event.pointerId)
-      }
-      bar.scrollLeft = startScroll - dx
-    })
-
-    const endPress = (event) => {
-      pressing = false
-      wrap.classList.remove('is-dragging')
-      if (event && wrap.hasPointerCapture(event.pointerId)) wrap.releasePointerCapture(event.pointerId)
-    }
-    wrap.addEventListener('pointerup', endPress)
-    wrap.addEventListener('pointercancel', endPress)
-
-    wrap.addEventListener('click', (event) => {
-      if (!moved) return
-      event.preventDefault()
-      event.stopImmediatePropagation()
-      moved = false
-    }, true)
-
-    wrap.addEventListener('wheel', (event) => {
-      if (!maxScroll() || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
-      bar.scrollLeft += rtl ? -event.deltaY : event.deltaY
-      event.preventDefault()
-    }, { passive: false })
-  })
-</script>
