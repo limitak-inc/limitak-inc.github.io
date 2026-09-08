@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css'
-import { imageSrc } from '../lib/content.js'
+import { imageSrc, getSite } from '../lib/content.js'
 import { resolveMeta } from '../lib/seo.js'
 
 const {
@@ -15,6 +15,11 @@ const {
   preload,
 } = Astro.props
 
+const theme = (await getSite())?.data?.theme ?? {}
+const themeStyle = Object.entries(theme)
+  .map(([key, value]) => value && `--color-${key}:${value}`)
+  .filter(Boolean)
+  .join(';')
 const favicon = company.favicon || '/assets/logo-mono.png'
 const meta = resolveMeta({
   title,
@@ -30,13 +35,13 @@ const meta = resolveMeta({
 const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
 ---
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" style={themeStyle || undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={meta.metaDescription} />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#1c1a22" />
+    <meta name="theme-color" content={theme['bg-page'] || 'hsl(240 10% 14%)'} />
     <meta property="og:title" content={meta.metaTitle} />
     <meta property="og:description" content={meta.metaDescription} />
     <meta property="og:type" content={type} />

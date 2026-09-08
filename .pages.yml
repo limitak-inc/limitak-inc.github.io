@@ -206,6 +206,112 @@ content:
             required: true
             options:
               media: images
+      - name: theme
+        label: ظاهر
+        type: object
+        fields:
+          - name: bg-page
+            label: پس‌زمینه صفحه
+            type: select
+            options:
+              values:
+                - { name: "hsl(240 10% 14% / 1)", label: دودی }
+                - { name: "hsl(0 0% 7%)", label: مشکی }
+                - { name: "hsl(0 0% 9%)", label: ذغالی }
+                - { name: "hsl(30 10% 8%)", label: قهوه‌ای سوخته }
+                - { name: "hsl(25 15% 8%)", label: اسپرسو }
+                - { name: "hsl(270 14% 10%)", label: بادمجانی }
+                - { name: "hsl(222 47% 11%)", label: سرمه‌ای }
+                - { name: "hsl(150 22% 10%)", label: جنگلی }
+                - { name: "hsl(40 12% 10%)", label: برنز تیره }
+                - { name: "hsl(20 8% 15%)", label: سنگ }
+                - { name: "hsl(217 33% 17%)", label: تخته‌سنگی }
+                - { name: "hsl(240 4% 16%)", label: گرافیت }
+                - { name: "hsl(240 5% 26%)", label: خاکستری }
+                - { name: "hsl(30 6% 25%)", label: خاکستری گرم }
+                - { name: "hsl(230 35% 8%)", label: شب }
+                - { name: "hsl(270 40% 10%)", label: انگوری }
+                - { name: "hsl(150 70% 8%)", label: جنگل شب }
+                - { name: "hsl(0 0% 4%)", label: شب مطلق }
+                - { name: "hsl(200 20% 10%)", label: نفتی }
+                - { name: "hsl(15 25% 9%)", label: آجری تیره }
+          - name: bg-surface
+            label: سطح
+            type: select
+            options:
+              values:
+                - { name: "hsl(240 25% 10% / 0.6)", label: دودی }
+                - { name: "hsl(0 0% 8% / 0.6)", label: مشکی }
+                - { name: "hsl(0 0% 10% / 0.65)", label: ذغالی }
+                - { name: "hsl(30 20% 9% / 0.6)", label: قهوه‌ای }
+                - { name: "hsl(25 18% 8% / 0.6)", label: اسپرسو }
+                - { name: "hsl(270 22% 10% / 0.6)", label: بادمجانی }
+                - { name: "hsl(222 40% 10% / 0.6)", label: سرمه‌ای }
+                - { name: "hsl(150 25% 9% / 0.6)", label: جنگلی }
+                - { name: "hsl(40 18% 10% / 0.6)", label: برنز }
+                - { name: "hsl(20 10% 12% / 0.6)", label: سنگ }
+                - { name: "hsl(217 30% 14% / 0.6)", label: تخته‌سنگی }
+                - { name: "hsl(240 8% 12% / 0.6)", label: گرافیت }
+                - { name: "hsl(240 6% 18% / 0.7)", label: خاکستری }
+                - { name: "hsl(30 8% 16% / 0.65)", label: خاکستری گرم }
+                - { name: "hsl(240 20% 10%)", label: دودی مات }
+                - { name: "hsl(0 0% 10%)", label: ذغالی مات }
+                - { name: "hsl(222 35% 11%)", label: سرمه‌ای مات }
+                - { name: "hsl(240 25% 12% / 0.5)", label: شیشه‌ای }
+          - name: accent-solid
+            label: تاکید
+            type: select
+            options:
+              values:
+                - { name: "hsl(30 100% 45%)", label: نارنجی }
+                - { name: "hsl(38 90% 44%)", label: کهربایی }
+                - { name: "hsl(18 70% 46%)", label: مسی }
+                - { name: "hsl(46 70% 46%)", label: برنجی }
+                - { name: "hsl(45 85% 46%)", label: طلایی }
+                - { name: "hsl(25 90% 38%)", label: زنگاری }
+                - { name: "hsl(0 75% 50%)", label: قرمز }
+                - { name: "hsl(345 80% 35%)", label: زرشکی }
+                - { name: "hsl(350 80% 50%)", label: گل‌بهی }
+                - { name: "hsl(330 75% 50%)", label: صورتی }
+                - { name: "hsl(292 75% 48%)", label: سرخابی }
+                - { name: "hsl(263 70% 55%)", label: بنفش }
+                - { name: "hsl(239 70% 55%)", label: نیلی }
+                - { name: "hsl(221 80% 53%)", label: آبی }
+                - { name: "hsl(200 90% 32%)", label: فولادی }
+                - { name: "hsl(189 90% 36%)", label: فیروزه‌ای }
+                - { name: "hsl(173 80% 32%)", label: سبزآبی }
+                - { name: "hsl(160 90% 32%)", label: زمردی }
+                - { name: "hsl(84 80% 35%)", label: زیتونی }
+                - { name: "hsl(82 70% 44%)", label: مغزپسته‌ای }
+                - { name: "hsl(25 80% 30%)", label: قهوه‌ای }
+                - { name: "hsl(30 8% 65%)", label: نقره‌ای }
+          - name: accent-muted
+            label: تاکید ملایم
+            type: select
+            options:
+              values:
+                - { name: "hsl(30 100% 45% / 0.16)", label: نارنجی }
+                - { name: "hsl(38 90% 44% / 0.16)", label: کهربایی }
+                - { name: "hsl(18 70% 46% / 0.16)", label: مسی }
+                - { name: "hsl(46 70% 46% / 0.16)", label: برنجی }
+                - { name: "hsl(45 85% 46% / 0.16)", label: طلایی }
+                - { name: "hsl(25 90% 38% / 0.16)", label: زنگاری }
+                - { name: "hsl(0 75% 50% / 0.16)", label: قرمز }
+                - { name: "hsl(345 80% 35% / 0.16)", label: زرشکی }
+                - { name: "hsl(350 80% 50% / 0.16)", label: گل‌بهی }
+                - { name: "hsl(330 75% 50% / 0.16)", label: صورتی }
+                - { name: "hsl(292 75% 48% / 0.16)", label: سرخابی }
+                - { name: "hsl(263 70% 55% / 0.16)", label: بنفش }
+                - { name: "hsl(239 70% 55% / 0.16)", label: نیلی }
+                - { name: "hsl(221 80% 53% / 0.16)", label: آبی }
+                - { name: "hsl(200 90% 32% / 0.16)", label: فولادی }
+                - { name: "hsl(189 90% 36% / 0.16)", label: فیروزه‌ای }
+                - { name: "hsl(173 80% 32% / 0.16)", label: سبزآبی }
+                - { name: "hsl(160 90% 32% / 0.16)", label: زمردی }
+                - { name: "hsl(84 80% 35% / 0.16)", label: زیتونی }
+                - { name: "hsl(82 70% 44% / 0.16)", label: مغزپسته‌ای }
+                - { name: "hsl(25 80% 30% / 0.16)", label: قهوه‌ای }
+                - { name: "hsl(30 8% 65% / 0.16)", label: نقره‌ای }
       - name: social
         label: شبکه‌های اجتماعی
         type: object
