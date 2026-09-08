@@ -122,20 +122,43 @@ a {
   & .hero-inner {
     position: relative;
     z-index: 2;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "tagline brand"
+      "desc brand";
+    align-items: start;
+    align-content: start;
+    column-gap: clamp(1rem, 2vw, 2rem);
+    row-gap: 0.75rem;
     padding-block-end: 0.5rem;
+    @media (width < 64rem) {
+      grid-template-areas:
+        "tagline brand"
+        "desc desc";
+    }
+    @media (width < 40rem) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "brand"
+        "tagline"
+        "desc";
+    }
   }
   & .hero-brand {
+    grid-area: brand;
     display: flex;
     align-items: center;
-    backdrop-filter: blur(10px);
-    border-radius: 22px;
-    padding: 10px 14px;
-    background: #ffffff55;
+    /* backdrop-filter: blur(10px); */
+    /* border-radius: 22px; */
+    /* padding: 10px 14px; */
+    /* background: #ffffff55; */
     gap: 0.85rem;
     width: fit-content;
-    margin-block-end: clamp(1.5rem, 5vh, 2.75rem);
+    justify-self: left;
     transition: opacity 150ms var(--ease-out);
     &:hover {
       opacity: 0.85;
@@ -146,27 +169,38 @@ a {
       border-radius: var(--radius-sm);
     }
     & img {
-      height: clamp(4rem, 10vw, 6rem);
+      height: clamp(4.25rem, 2.5rem + 6.5vw, 10rem);
       width: auto;
       object-fit: contain;
     }
   }
   & .hero-tagline {
-    margin: 0 0 1rem;
+    grid-area: tagline;
+    margin: 0;
     max-width: 18ch;
-    font-size: clamp(1.375rem, 4vw, 2.125rem);
+    font-size: clamp(1.5rem, 0.7rem + 2.4vw, 3.5rem);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
     color: var(--color-accent-solid);
-    text-shadow: 0 0 4px black;
+    text-shadow:
+      2px 2px 1px black,
+      2px 2px 1px black,
+      3px 3px 1px black,
+      1px 3px 1px black,
+      0 0 2px black;
   }
   & .hero-desc {
+    grid-area: desc;
     margin: 0;
     max-width: 60ch;
     color: black;
-    text-shadow: 0 0 2px black;
-    font-size: 1.1875rem;
+    text-shadow:
+      1px 1px 2px white,
+      -1px 1px 2px white,
+      1px -1px 2px white,
+      -1px -1px 2px white;
+    font-size: clamp(1.125rem, 0.85rem + 0.9vw, 2rem);
     font-weight: bold;
     /* backdrop-filter: blur(4px); */
     /* background: #ffffff24; */
