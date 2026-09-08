@@ -8,7 +8,7 @@ const chips = [
   })),
 ]
 ---
-<div class="filter-scroll">
+<div class="filter-scroll" id="products">
   <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
     {chips.map((chip) => (
       <button
@@ -32,6 +32,12 @@ const chips = [
   const rtl = document.documentElement.dir === 'rtl'
   const overflow = () => Math.max(0, bar.scrollWidth - bar.clientWidth)
   const drag = { x: 0, scroll: 0, pressing: false, moved: false }
+
+  const pin = (smooth = false) => {
+    let y = 0
+    for (let node = wrap; node; node = node.offsetParent) y += node.offsetTop
+    scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' })
+  }
 
   const reveal = (chip, smooth = false) => {
     if (!overflow()) return
@@ -57,10 +63,11 @@ const chips = [
     category
       ? url.searchParams.set('category', category)
       : url.searchParams.delete('category')
-    url.hash = category ? 'products' : ''
+    url.hash = 'products'
     history.replaceState(null, '', url)
     const active = bar.querySelector('.filter-chip.active')
     if (active) reveal(active, smooth)
+    if (smooth) pin(true)
   }
 
   bar.addEventListener('click', (event) => {
@@ -69,8 +76,23 @@ const chips = [
     apply(chip.dataset.category ?? '', true)
   })
 
+  grid?.addEventListener('click', (event) => {
+    if (!event.target.closest('.card-link')) return
+    const url = new URL(location.href)
+    url.hash = 'products'
+    history.replaceState(null, '', url)
+  })
+
   const initial = new URLSearchParams(location.search).get('category') ?? ''
   if (initial) apply(initial)
+
+  const snap = () => {
+    if (location.hash !== '#products') return
+    history.scrollRestoration = 'manual'
+    pin()
+  }
+  snap()
+  addEventListener('pageshow', snap)
 
   const sync = () => {
     wrap.classList.toggle('is-scrollable', overflow() > 0)

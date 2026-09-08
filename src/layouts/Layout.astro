@@ -66,12 +66,25 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     )}
     <script>
       const back = () => document.querySelector('#main:has(.product-detail) .back')
+      const fromSite = () => {
+        const ref = document.referrer
+        return ref && new URL(ref).origin === location.origin
+      }
       document.addEventListener('click', (event) => {
-        if (!event.target.closest?.('#main') || event.target.closest('a.back')) return
-        back()?.click()
+        const link = back()
+        if (!link) return
+        if (event.target.closest('a.back')) {
+          if (!fromSite()) return
+          event.preventDefault()
+          history.back()
+          return
+        }
+        if (!event.target.closest?.('#main')) return
+        fromSite() ? history.back() : link.click()
       })
       document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') back()?.click()
+        if (event.key !== 'Escape' || !back()) return
+        fromSite() ? history.back() : back().click()
       })
     </script>
   </body>

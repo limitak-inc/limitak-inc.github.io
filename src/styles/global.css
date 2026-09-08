@@ -293,6 +293,8 @@ a {
     minmax(min(100%, var(--card-min)), 1fr)
   );
   gap: var(--space-group);
+  align-items: start;
+  min-height: 100dvh;
 }
 
 .card {
