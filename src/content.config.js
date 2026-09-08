@@ -1,6 +1,8 @@
 import { glob } from 'astro/loaders'
 import { defineCollection, z } from 'astro:content'
 
+const materials = ['فلز', 'استیل', 'چوب', 'چوب و فلز', 'چوب و استیل']
+
 const categories = defineCollection({
   loader: glob({ base: './content/categories', pattern: '**/*.md' }),
   schema: z.object({
@@ -17,7 +19,7 @@ const products = defineCollection({
     title: z.string(),
     image: z.string(),
     category: z.string(),
-    material: z.string().optional(),
+    material: z.enum(materials).optional(),
     tags: z.array(z.string()).optional(),
     model: z.string().optional(),
     size: z.string().optional(),
@@ -36,7 +38,7 @@ const site = defineCollection({
       logoFull: z.string().optional(),
       favicon: z.string().optional(),
       email: z.string().optional(),
-      phones: z.array(z.string()),
+      phones: z.array(z.string()).optional(),
     }),
     hero: z.object({
       title: z.string(),
