@@ -1,3 +1,7 @@
+@view-transition {
+  navigation: auto;
+}
+
 :root {
   --color-bg-page: hsl(240 10% 14% / 1);
   --color-bg-surface: hsl(240 25% 10% / 0.6);
@@ -7,7 +11,7 @@
   --color-text-tertiary: hsl(230 6% 50%);
   --color-border: hsl(0 0% 100% / 0.1);
   --color-accent-solid: hsl(30 100% 45%);
-  --color-accent-muted: hsl(30 100% 45% / 0.16);
+  --color-accent-muted: hsl(from var(--color-accent-solid) h s l / 0.16);
   --color-image-outline: hsl(0 0% 100% / 0.1);
   --radius-lg: 1.25rem;
   --radius-md: 0.875rem;
@@ -389,7 +393,22 @@ a {
   padding-block: var(--space-group);
 }
 
-.site-main:has(.product-detail) {
+.product-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: auto;
+  background: var(--color-bg-page);
+  color: inherit;
+  cursor: pointer;
+}
+
+html:has(.product-dialog:not([hidden])) {
+  overflow: hidden;
+}
+
+.site-main:has(.product-detail),
+.product-dialog:has(.product-detail) {
   cursor: pointer;
 }
 
@@ -665,7 +684,31 @@ a {
   }
 }
 
+::view-transition-group(*) {
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-group(root) {
+  animation-duration: 0s;
+}
+
+::view-transition-old(root) {
+  display: none;
+}
+
+::view-transition-old(.product),
+::view-transition-new(.product) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+  mix-blend-mode: normal;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
   *,
   *::before,
   *::after {

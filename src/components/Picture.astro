@@ -11,7 +11,11 @@ const {
   loading = 'lazy',
   class: className,
   fetchpriority,
+  transitionName,
 } = Astro.props
+const vt = transitionName
+  ? `view-transition-name:${transitionName};view-transition-class:product`
+  : undefined
 
 const publicPath = src.replace(import.meta.env.BASE_URL, '').replace(/^\//, '')
 const webp = webpPath(src)
@@ -29,6 +33,7 @@ const hasWebp = existsSync(join(process.cwd(), 'public', publicPath.replace(/\.(
       decoding="async"
       class={className}
       fetchpriority={fetchpriority}
+      style={vt}
     />
   </picture>
 ) : (
@@ -41,5 +46,6 @@ const hasWebp = existsSync(join(process.cwd(), 'public', publicPath.replace(/\.(
     decoding="async"
     class={className}
     fetchpriority={fetchpriority}
+    style={vt}
   />
 )}

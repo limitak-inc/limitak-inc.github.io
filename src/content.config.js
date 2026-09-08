@@ -53,10 +53,8 @@ const site = defineCollection({
       image: z.string(),
     }),
     theme: z.object({
-      'bg-page': z.string().optional(),
-      'bg-surface': z.string().optional(),
-      'accent-solid': z.string().optional(),
-      'accent-muted': z.string().optional(),
+      bg: z.enum(['lead', 'metal', 'stone', 'lilac', 'mist', 'olive']).optional(),
+      accent: z.enum(['orange', 'copper', 'gold']).optional(),
     }).optional(),
     social: z.object({
       instagram: z.string().optional(),

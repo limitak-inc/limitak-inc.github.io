@@ -12,10 +12,8 @@ hero:
   title: لیمیتاک استیل
   image: /images/banner.jpg
 theme:
-  bg-page: "hsl(229 85% 5%)"
-  bg-surface: "hsl(217 36% 18% / 0.6)"
-  accent-solid: "hsl(30 100% 45%)"
-  accent-muted: "hsl(30 100% 45% / 0.16)"
+  bg: lead
+  accent: orange
 social:
   instagram: https://instagram.com/limitaksteel
   telegram: https://t.me/limitaksteel

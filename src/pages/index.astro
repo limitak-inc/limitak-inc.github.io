@@ -41,6 +41,7 @@ const heroImage = imageSrc(hero.image)
     <div class="container products">
       {products.map((product) => (
         <ProductCard
+          id={product.id}
           href={productHref(product.id)}
           title={product.data.title}
           imageSrc={imageSrc(product.data.image)}

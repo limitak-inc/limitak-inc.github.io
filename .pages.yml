@@ -1,3 +1,6 @@
+#  ┏━─────────━┓
+#  │  GALLERY  │
+#  ┗━─────────━┛
 media:
   - name: images
     label: تصاویر
@@ -12,7 +15,13 @@ media:
     rename: safe
     extensions: [png, svg, webp]
 
+#  ┏━────────────━┓
+#  │  COMPONENTS  │
+#  ┗━────────────━┛
 components:
+  #-----------+
+  #  CONTENT  |
+  #-----------+
   seo:
     type: object
     label: SEO
@@ -33,7 +42,12 @@ components:
         label: عدم نمایه‌سازی
         type: boolean
 
+# ──────────────────────────────────────────────────────────────────
+
 content:
+  #------------+
+  #  CATEGORY  |
+  #------------+
   - name: categories
     label: دسته‌بندی‌ها
     type: collection
@@ -66,6 +80,11 @@ content:
         options:
           min: 0
 
+  # ──────────────────────────────────────────────────────────────────
+
+  #------------+
+  #  PRODUCTS  |
+  #------------+
   - name: products
     label: محصولات
     type: collection
@@ -148,6 +167,11 @@ content:
         component: seo
         label: SEO
 
+  # ──────────────────────────────────────────────────────────────────
+
+  #----------+
+  #  FOOTER  |
+  #----------+
   - name: site
     label: تنظیمات سایت
     type: file
@@ -192,6 +216,12 @@ content:
             label: تلفن‌ها
             type: string
             list: true
+
+      # ──────────────────────────────────────────────────────────────────
+
+      #--------+
+      #  HERO  |
+      #--------+
       - name: hero
         label: صفحه اصلی
         type: object
@@ -206,48 +236,41 @@ content:
             required: true
             options:
               media: images
+
+      # ──────────────────────────────────────────────────────────────────
+
+      #---------+
+      #  THEME  |
+      #---------+
       - name: theme
         label: ظاهر
         type: object
         fields:
-          - name: bg-page
-            label: پس‌زمینه صفحه
+          - name: bg
+            label: پس‌زمینه
             type: select
             options:
               values:
-                - { name: "hsl(229 85% 5%)", label: سربی }
-                - { name: "hsl(240 11% 4%)", label: فلزی }
-                - { name: "hsl(20 14% 4%)", label: سنگی }
-                - { name: "hsl(300 14% 4%)", label: یاسی }
-                - { name: "hsl(200 14% 4%)", label: مه‌آلود }
-                - { name: "hsl(60 14% 4%)", label: زیتونی }
-          - name: bg-surface
-            label: سطح
-            type: select
-            options:
-              values:
-                - { name: "hsl(217 36% 18% / 0.6)", label: سربی }
-                - { name: "hsl(240 4% 16% / 0.6)", label: فلزی }
-                - { name: "hsl(12 7% 15% / 0.6)", label: سنگی }
-                - { name: "hsl(289 14% 15% / 0.6)", label: یاسی }
-                - { name: "hsl(193 12% 15% / 0.6)", label: مه‌آلود }
-                - { name: "hsl(60 12% 15% / 0.6)", label: زیتونی }
-          - name: accent-solid
+                - { name: lead, label: سربی }
+                - { name: metal, label: فلزی }
+                - { name: stone, label: سنگی }
+                - { name: lilac, label: یاسی }
+                - { name: mist, label: مه‌آلود }
+                - { name: olive, label: زیتونی }
+          - name: accent
             label: تاکید
             type: select
             options:
               values:
-                - { name: "hsl(30 100% 45%)", label: نارنجی }
-                - { name: "hsl(16 100% 40%)", label: مسی }
-                - { name: "hsl(34 100% 33%)", label: طلایی }
-          - name: accent-muted
-            label: تاکید ملایم
-            type: select
-            options:
-              values:
-                - { name: "hsl(30 100% 45% / 0.16)", label: نارنجی }
-                - { name: "hsl(16 100% 40% / 0.16)", label: مسی }
-                - { name: "hsl(34 100% 33% / 0.16)", label: طلایی }
+                - { name: orange, label: نارنجی }
+                - { name: copper, label: مسی }
+                - { name: gold, label: طلایی }
+
+      # ──────────────────────────────────────────────────────────────────
+
+      #----------+
+      #  SOCIAL  |
+      #----------+
       - name: social
         label: شبکه‌های اجتماعی
         type: object
@@ -264,15 +287,21 @@ content:
           - name: whatsapp
             label: واتساپ
             type: string
+
+      # ──────────────────────────────────────────────────────────────────
+
+      #-------+
+      #  SEO  |
+      #-------+
+      - name: seo
+        component: seo
+        label: SEO
       - name: body
         label: توضیح هدر
         type: rich-text
         options:
           format: markdown
           media: images
-      - name: seo
-        component: seo
-        label: SEO
       - name: faq
         label: سوالات متداول
         type: object
@@ -285,6 +314,9 @@ content:
             label: پاسخ
             type: text
 
+#  ┏━──────────━┓
+#  │  SETTINGS  │
+#  ┗━──────────━┛
 settings:
   content:
     merge: true

@@ -75,6 +75,7 @@ const crumbs = [
         height={h}
         loading="eager"
         fetchpriority="high"
+        transitionName={`product-${product.id}`}
       />
       <div>
         <h1>{product.data.title}</h1>

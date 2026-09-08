@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css'
-import { imageSrc, getSite } from '../lib/content.js'
+import { imageSrc, getSite, resolveTheme } from '../lib/content.js'
 import { resolveMeta } from '../lib/seo.js'
 
 const {
@@ -15,7 +15,7 @@ const {
   preload,
 } = Astro.props
 
-const theme = (await getSite())?.data?.theme ?? {}
+const theme = resolveTheme((await getSite())?.data?.theme)
 const themeStyle = Object.entries(theme)
   .map(([key, value]) => value && `--color-${key}:${value}`)
   .filter(Boolean)
@@ -69,28 +69,9 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     {import.meta.env.PUBLIC_ANALYTICS && (
       <script defer src={import.meta.env.PUBLIC_ANALYTICS} data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} />
     )}
+    <div class="product-dialog" hidden role="dialog" aria-modal="true" aria-label="محصول"></div>
     <script>
-      const back = () => document.querySelector('#main:has(.product-detail) .back')
-      const fromSite = () => {
-        const ref = document.referrer
-        return ref && new URL(ref).origin === location.origin
-      }
-      document.addEventListener('click', (event) => {
-        const link = back()
-        if (!link) return
-        if (event.target.closest('a.back')) {
-          if (!fromSite()) return
-          event.preventDefault()
-          history.back()
-          return
-        }
-        if (!event.target.closest?.('#main')) return
-        fromSite() ? history.back() : link.click()
-      })
-      document.addEventListener('keydown', (event) => {
-        if (event.key !== 'Escape' || !back()) return
-        fromSite() ? history.back() : back().click()
-      })
+      import '../lib/overlay.js'
     </script>
   </body>
 </html>

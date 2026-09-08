@@ -5,15 +5,18 @@ Email:
 Instagram: 
 
 ## Categories
+- گیره_قلاب_شلف (hanger)
 - جا اسکاچی (jaaskachi)
 - جا دستمال (jadastmal)
 - جالیوانی (jalivani)
 - جاقاشقی (jaqashqi)
 - جاظرفی (jazarfi)
 - کنار گازی (konargazi)
-- راف چوبی (rafchoobi)
+- راف (raf)
 - ست سینک (sinsink)
+- جاادویه (spicerack)
 - استند (stand)
+- ترولی (trolley)
 - زیر دیگی (zirdighi)
 
 ## Products
@@ -36,14 +39,14 @@ Instagram:
 - جاقاشقی دوقلو ساده (jaqashqi-7): جاقاشقی, فلز, code 101
 - جاقاشقی دو قلو لیوان بزرگ (jaqashqi-8): جاقاشقی, فلز, code 105
 - جاقاشقی تک قلو چاپدار جااسکاچدار (jaqashqi-9): جاقاشقی, فلز, code 304
-- جاظرفی 1.5 طبقه (jazarfi-1): جاظرفی, فلز, code 503
-- جاظرفی یک طبقه (jazarfi-2): جاظرفی, فلز, code 502
+- Proجاظرفی 1.5 طبقه مدل (jazarfi-1): جاظرفی, فلز, code 503
+-  Proجاظرفی یک طبقه مدل (jazarfi-2): جاظرفی, فلز, code 502
 - جاظرفی دو طبقه مدل صبا (jazarfi-3): جاظرفی, فلز, code 422
+- جاظرفی یک طبقه مدل صبا (jazarfi): جاظرفی, چوب و فلز, code 418
 - کنار گازی مدل صبا (konargazi-1): کنار گازی, فلز, code 416
-- راف چوبی (rafchoobi-1): راف چوبی, چوب, code 501
+- راف چوبی (rafchoobi-1): rafchoobi, چوب, code 501
 - ست سینک دوقلو (sinsink-1): ست سینک, فلز, code 507
 - ست سینک تک قلو (sinsink-2): ست سینک, فلز, code 506
 - استند همه کاره سایز 2 (stand-1): استند, فلز, code 500
-- استند همه کاره سایز 2 رنگ دوم (stand-2): استند, فلز, code 500
 - استند همه کاره (stand-3): استند, فلز, code 432
 - زیر دیگی (zirdighi-1): زیر دیگی, فلز, code 508
