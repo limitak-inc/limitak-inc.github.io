@@ -1,0 +1,4 @@
+---
+slug: spicerack
+label: جاادویه
+---
