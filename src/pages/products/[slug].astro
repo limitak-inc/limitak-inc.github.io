@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import Footer from '../../components/Footer.astro'
-import Picture from '../../components/Picture.astro'
+import { Image } from 'astro:assets'
 import JsonLd from '../../components/JsonLd.astro'
 import {
   getSite,
@@ -9,11 +9,11 @@ import {
   getCategories,
   categoryLabel,
   categoryHref,
-  imageSrc,
+  productHref,
 } from '../../lib/content.js'
 import { productDescription } from '../../lib/seo.js'
 import { productSchema, breadcrumbSchema } from '../../lib/schema.js'
-import { dims } from '../../lib/image.js'
+import { asset, share } from '../../lib/image.js'
 import { render } from 'astro:content'
 
 export const getStaticPaths = async () => {
@@ -27,13 +27,13 @@ export const getStaticPaths = async () => {
 const { product } = Astro.props
 const siteEntry = await getSite()
 const categories = await getCategories()
-const { company, social, seo: siteSeo } = siteEntry.data
+const { company, social, theme, seo: siteSeo } = siteEntry.data
 const { Content } = await render(product)
 const home = import.meta.env.BASE_URL
 const catSlug = product.data.category
 const catName = categoryLabel(categories, catSlug)
 const description = productDescription(product, catName)
-const { w, h } = dims.product
+const shareImage = await share(product.data.image)
 
 const fields = [
   ['model', 'کد کالا'],
@@ -41,11 +41,14 @@ const fields = [
   ['size', 'ابعاد'],
   ['pcs', 'تعداد در کارتن'],
 ]
+const specs = fields
+  .map(([key, label]) => [label, product.data[key]])
+  .filter(([, value]) => value !== undefined && value !== '')
 
 const crumbs = [
   { name: 'خانه', url: home },
   { name: catName, url: categoryHref(catSlug) },
-  { name: product.data.title, url: `products/${product.id}/` },
+  { name: product.data.title, url: productHref(product.id) },
 ]
 ---
 <Layout
@@ -55,27 +58,31 @@ const crumbs = [
   image={product.data.image}
   seo={product.data.seo}
   siteSeo={siteSeo}
+  theme={theme}
   type="product"
 >
   <JsonLd slot="head" data={productSchema({
     site: Astro.site,
     product,
+    image: shareImage,
+    url: productHref(product.id),
     categoryLabel: catName,
     description,
     companyName: company.name,
   })} />
   <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
   <div class="container product-page">
-    <a class="back" href={`${home}#products`} data-home={home}>← بازگشت به کاتالوگ</a>
+    <a class="back" href={`${categoryHref(catSlug)}#category-${catSlug}`}>← بازگشت به کاتالوگ</a>
     <article class="product-detail">
-      <div class="product-media" transition:name={`product-${product.id}`}>
-        <Picture
-          src={imageSrc(product.data.image)}
+      <div class="product-media" style={`view-transition-name: product-${product.id}`}>
+        <Image
+          src={asset(product.data.image)}
           alt={product.data.title}
-          width={w}
-          height={h}
+          width={1088}
+          format="webp"
           loading="eager"
           fetchpriority="high"
+          draggable="false"
         />
       </div>
       <div>
@@ -83,16 +90,12 @@ const crumbs = [
         <dl>
           <dt>دسته‌بندی</dt>
           <dd><a href={categoryHref(catSlug)}>{catName}</a></dd>
-          {fields.map(([key, label]) => {
-            const val = product.data[key]
-            if (val === undefined || val === '') return null
-            return (
-              <>
-                <dt>{label}</dt>
-                <dd>{String(val)}</dd>
-              </>
-            )
-          })}
+          {specs.map(([label, value]) => (
+            <>
+              <dt>{label}</dt>
+              <dd>{String(value)}</dd>
+            </>
+          ))}
           {product.data.tags?.length && (
             <>
               <dt>برچسب‌ها</dt>
@@ -108,14 +111,3 @@ const crumbs = [
   </div>
   <Footer slot="footer" company={company} social={social} />
 </Layout>
-<script>
-  const backHref = () => {
-    const back = document.querySelector('.product-page .back')
-    if (!back) return
-    const home = back.dataset.home ?? '/'
-    const cat = new URLSearchParams(location.search).get('category')
-    back.href = cat ? `${home}?category=${cat}#products` : `${home}#products`
-  }
-
-  backHref()
-</script>

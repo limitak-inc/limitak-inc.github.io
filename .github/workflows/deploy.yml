@@ -24,7 +24,6 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: sudo apt-get update && sudo apt-get install -y webp
       - run: pnpm run build
       - uses: actions/upload-pages-artifact@v5
         with:

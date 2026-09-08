@@ -65,12 +65,10 @@ Authentication is GitHub-only via the Pages CMS GitHub App.
 
 Use the image picker in any product or site field. Supported formats: **JPEG, PNG, WebP, AVIF**.
 
-Files are saved to `public/images/` and referenced as `/images/filename.ext`.
+Product media is saved to `src/assets/images/`; logos are saved to `src/assets/logos/`.
+Pages CMS writes their logical `/images/...` and `/assets/...` paths into content.
 
-- **JPEG or PNG**: build converts a WebP sibling for modern browsers (`img_09.jpg` → `img_09.webp`). The original stays in the repo for CMS preview and fallback.
-- **WebP or AVIF**: served as uploaded, no conversion.
-
-Run `pnpm prebuild` (or `node scripts/webp.mjs`) locally after adding JPEG/PNG if you want WebP in dev. CI installs `cwebp` automatically.
+Astro owns optimization. Every image goes through `astro:assets` at build time, which emits hashed WebP variants under `/_astro/` at the sizes each layout actually needs. Upload originals at full resolution and leave the rest alone.
 
 ### Edit site settings
 
@@ -91,13 +89,6 @@ pnpm run dev
 
 Open [http://localhost:4321/](http://localhost:4321/).
 
-JPEG/PNG images serve as-is in dev unless WebP siblings exist. To match production locally:
-
-```bash
-sudo pacman -S libwebp   # provides cwebp
-pnpm prebuild            # generates public/images/*.webp
-```
-
 ```bash
 pnpm run build    # output in dist/
 pnpm run preview  # preview production build
@@ -108,8 +99,10 @@ pnpm run preview  # preview production build
 ```
 content/
   site.md              # company, hero, social
+  categories/*.md      # category labels and order
   products/*.md        # one file per product
-public/images/         # CMS image uploads
+src/assets/images/     # CMS image uploads, optimized by Astro
+src/assets/logos/      # CMS logo uploads, optimized by Astro
 src/                   # Astro pages and components
 .pages.yml             # Pages CMS configuration
 .github/workflows/     # deploy on push to master
@@ -172,8 +165,8 @@ Pages CMS exposes per-page SEO under **SEO** on site settings and products. Leav
 
 ### AI discovery
 
-- [`public/llms.txt`](public/llms.txt) - site summary for AI crawlers
-- `llms-full.txt` - built from content collections at build time (`src/pages/llms-full.txt.ts`)
+- `llms.txt` - site summary built from site content (`src/pages/llms.txt.js`)
+- `llms-full.txt` - full catalog built from content collections (`src/pages/llms-full.txt.js`)
 
 ## Troubleshooting
 
@@ -187,7 +180,8 @@ Confirm the Pages CMS GitHub App is installed on the repository with write acces
 
 **Images not showing**
 
-CMS stores paths like `/images/photo.jpg`. Files must live in `public/images/`. JPEG and PNG get a WebP variant at build time; WebP uploads are served directly.
+CMS stores logical paths like `/images/photo.jpg` and `/assets/logo.png`.
+`src/lib/image.js` maps them to their matching files under `src/assets/`.
 
 **Deploy did not run**
 

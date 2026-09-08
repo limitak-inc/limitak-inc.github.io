@@ -1,9 +1,13 @@
-import { imageSrc } from './content.js'
+export const plainText = (text, max = 160) =>
+  text
+    ?.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`~>#-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, max) ?? ''
 
-const trim = (text, max = 160) =>
-  text?.replace(/\s+/g, ' ').trim().slice(0, max) ?? ''
-
-export const seoTitle = (title, siteName) =>
+const seoTitle = (title, siteName) =>
   title ? `${title} | ${siteName}` : siteName
 
 export const absUrl = (site, path = '/') => {
@@ -13,7 +17,7 @@ export const absUrl = (site, path = '/') => {
 }
 
 export const productDescription = (product, categoryLabel) => {
-  const body = trim(product.body, 160)
+  const body = plainText(product.body, 160)
   if (body) return body
   const parts = [
     product.data.title,
@@ -34,18 +38,14 @@ export const resolveMeta = ({
   company = {},
   site,
   canonicalPath,
-  type = 'website',
 }) => {
   const siteName = company.name ?? 'لیمیتک'
   const pageTitle = seo.title || title
   const metaTitle = seoTitle(pageTitle, siteName)
-  const metaDescription = trim(seo.description || description || siteSeo.description)
-  const shareImage = seo.image || image || siteSeo.image || company.logoFull
-  const ogImage = site && shareImage
-    ? absUrl(site, imageSrc(shareImage))
-    : undefined
+  const metaDescription = plainText(seo.description || description || siteSeo.description)
+  const ogImage = site && image ? absUrl(site, image) : undefined
   const canonical = site ? absUrl(site, canonicalPath ?? '/') : undefined
   const noindex = seo.noindex ?? false
 
-  return { siteName, metaTitle, metaDescription, ogImage, canonical, type, noindex }
+  return { metaTitle, metaDescription, ogImage, canonical, noindex }
 }

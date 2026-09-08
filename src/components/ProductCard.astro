@@ -1,23 +1,21 @@
 ---
-import Picture from './Picture.astro'
-import { dims } from '../lib/image.js'
+import { Image } from 'astro:assets'
+import { asset } from '../lib/image.js'
 
-const { href, title, imageSrc, slug, id } = Astro.props
-const { w, h } = dims.card
+const { id, href, title, image } = Astro.props
 ---
-<article class="card" data-category={slug ?? ''} data-product={id}>
+<article class="card">
   <a class="card-link" href={href}>
-    <div class="card-media" transition:name={`product-${id}`}>
-      <Picture
-        src={imageSrc}
+    <div class="card-media" style={`view-transition-name: product-${id}`}>
+      <Image
+        src={asset(image)}
         alt={title}
-        width={w}
-        height={h}
+        width={640}
+        format="webp"
         loading="lazy"
+        draggable="false"
       />
     </div>
-    <div class="card-body">
-      <h2>{title}</h2>
-    </div>
+    <h2>{title}</h2>
   </a>
 </article>

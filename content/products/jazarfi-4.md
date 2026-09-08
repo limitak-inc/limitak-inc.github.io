@@ -1,5 +1,5 @@
 ---
-slug: jazarfi
+slug: jazarfi-4
 title: جاظرفی یک طبقه مدل صبا
 category: jazarfi
 material: چوب و فلز

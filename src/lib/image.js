@@ -1,18 +1,25 @@
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { getImage } from 'astro:assets'
 
-export const dims = {
-  hero: { w: 1280, h: 547 },
-  product: { w: 1200, h: 1200 },
-  card: { w: 400, h: 400 },
+const files = import.meta.glob('/src/assets/{images,logos}/*', {
+  eager: true,
+  import: 'default',
+})
+const assets = Object.fromEntries(
+  Object.entries(files).map(([path, image]) => [
+    path.replace('/src/assets/images', '/images').replace('/src/assets/logos', '/assets'),
+    image,
+  ]),
+)
+
+/** Pages CMS path -> imported Astro asset */
+export const asset = (src) => assets[src]
+
+/** Pages CMS path -> emitted source URL */
+export const assetSrc = (src) => asset(src)?.src ?? src
+
+/** Pages CMS path -> optimized social image URL */
+export const share = async (src) => {
+  const image = asset(src)
+  if (!image) return src
+  return (await getImage({ src: image, width: 1200, format: 'jpeg' })).src
 }
-
-export const raster = (path) => /\.(jpe?g|png)$/i.test(path)
-
-export const webpPath = (path) => path.replace(/\.(jpe?g|png)$/i, '.webp')
-
-export const publicRel = (src) =>
-  src.replace(import.meta.env.BASE_URL, '').replace(/^\//, '')
-
-export const webpReady = (src) =>
-  raster(src) && existsSync(join(process.cwd(), 'public', webpPath(publicRel(src))))

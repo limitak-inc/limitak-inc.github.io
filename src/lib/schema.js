@@ -1,12 +1,12 @@
-import { absUrl } from '../lib/seo.js'
+import { absUrl } from './seo.js'
 
-/** @param {{ site: URL, company: object, social?: object }} props */
-export const organizationSchema = ({ site, company, social = {} }) => ({
+/** @param {{ site: URL, company: object, social?: object, logo?: string }} props */
+export const organizationSchema = ({ site, company, social = {}, logo }) => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: company.name,
   url: site.href,
-  logo: company.logoFull ? absUrl(site, company.logoFull) : undefined,
+  logo: logo ? absUrl(site, logo) : undefined,
   email: company.email,
   telephone: company.phones?.[0],
   contactPoint: company.phones?.map((phone) => ({
@@ -27,13 +27,14 @@ export const websiteSchema = ({ site, company }) => ({
   inLanguage: 'fa-IR',
 })
 
-/** @param {{ site: URL, product: object, categoryLabel: string, description: string, companyName: string }} props */
-export const productSchema = ({ site, product, categoryLabel, description, companyName }) => ({
+/** @param {{ site: URL, product: object, image: string, url: string, categoryLabel: string, description: string, companyName: string }} props */
+export const productSchema = ({ site, product, image, url, categoryLabel, description, companyName }) => ({
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: product.data.title,
   description,
-  image: absUrl(site, product.data.image),
+  image: absUrl(site, image),
+  url: absUrl(site, url),
   sku: product.data.model,
   brand: { '@type': 'Brand', name: companyName },
   category: categoryLabel,

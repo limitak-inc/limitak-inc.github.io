@@ -1,25 +1,25 @@
 ---
-import Picture from './Picture.astro'
-import { dims } from '../lib/image.js'
+import { Image } from 'astro:assets'
+import { asset } from '../lib/image.js'
 
 const { hero } = Astro.props
 const home = import.meta.env.BASE_URL
-const { w, h } = dims.hero
 ---
 <section class="hero">
-  <Picture
+  <Image
     class="hero-bg"
-    src={hero.imageSrc}
+    src={asset(hero.image)}
     alt=""
-    width={w}
-    height={h}
+    width={1280}
+    format="webp"
     loading="eager"
     fetchpriority="high"
+    draggable="false"
   />
   <div class="container hero-inner">
     <a class="hero-brand" href={home}>
-      {hero.logoSrc && (
-        <img src={hero.logoSrc} alt={hero.name} width="160" height="48" decoding="async" />
+      {hero.logo && (
+        <Image src={asset(hero.logo)} alt={hero.name} format="webp" loading="eager" />
       )}
     </a>
     <h1 class="hero-tagline">{hero.title}</h1>

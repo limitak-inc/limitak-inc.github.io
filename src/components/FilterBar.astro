@@ -1,14 +1,14 @@
 ---
 import { categoryHref } from '../lib/content.js'
 
-const { categories } = Astro.props
+const { categories, active = '' } = Astro.props
 const home = import.meta.env.BASE_URL
 const chips = [
   { id: '', label: 'همه', href: `${home}#products` },
   ...categories.map((cat) => ({
     id: cat.data.slug,
     label: cat.data.label,
-    href: categoryHref(cat.data.slug),
+    href: `${categoryHref(cat.data.slug)}#category-${cat.data.slug}`,
   })),
 ]
 ---
@@ -16,49 +16,13 @@ const chips = [
   <nav class="filter-bar" aria-label="فیلتر دسته‌بندی">
     {chips.map((chip) => (
       <a
-        class:list={['filter-chip', { active: chip.id === '' }]}
+        class:list={['filter-chip', { active: chip.id === active }]}
+        id={chip.id ? `category-${chip.id}` : undefined}
         href={chip.href}
-        data-category={chip.id}
-        aria-label={chip.label}
-        aria-current={chip.id === '' ? 'page' : undefined}
+        aria-current={chip.id === active ? 'page' : undefined}
       >
         {chip.label}
       </a>
     ))}
   </nav>
 </div>
-<script>
-  const sync = () => {
-    const wrap = document.querySelector('.filter-scroll')
-    const bar = wrap?.querySelector('.filter-bar')
-    const grid = document.querySelector('.products')
-    if (!wrap || !bar || !grid) return
-
-    const category = new URLSearchParams(location.search).get('category') ?? ''
-
-    for (const chip of bar.querySelectorAll('.filter-chip')) {
-      const id = chip.dataset.category ?? ''
-      const active = id === category
-      chip.classList.toggle('active', active)
-      chip.setAttribute('aria-current', active ? 'page' : 'false')
-    }
-
-    for (const card of grid.querySelectorAll('.card')) {
-      card.hidden = category && card.dataset.category !== category
-    }
-
-    for (const link of grid.querySelectorAll('.card-link')) {
-      const url = new URL(link.getAttribute('href'), location.href)
-      if (category) url.searchParams.set('category', category)
-      else url.searchParams.delete('category')
-      link.setAttribute('href', `${url.pathname}${url.search}`)
-    }
-
-    bar.querySelector('.filter-chip.active')
-      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' })
-
-    if (location.hash === '#products') wrap.scrollIntoView({ block: 'start', behavior: 'instant' })
-  }
-
-  sync()
-</script>

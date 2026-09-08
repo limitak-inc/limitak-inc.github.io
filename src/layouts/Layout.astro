@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
-import { imageSrc, getSite, resolveTheme } from '../lib/content.js'
+import { resolveTheme } from '../lib/content.js'
+import { assetSrc, share } from '../lib/image.js'
 import { resolveMeta } from '../lib/seo.js'
 
 const {
@@ -10,12 +11,12 @@ const {
   image,
   seo = {},
   siteSeo = {},
+  theme: themeConfig = {},
   type = 'website',
   noindex = false,
-  preload,
 } = Astro.props
 
-const theme = resolveTheme((await getSite())?.data?.theme)
+const theme = resolveTheme(themeConfig)
 const themeStyle = Object.entries(theme)
   .map(([key, value]) => value && `--color-${key}:${value}`)
   .filter(Boolean)
@@ -24,13 +25,12 @@ const favicon = company.favicon || '/assets/logo-mono.png'
 const meta = resolveMeta({
   title,
   description,
-  image,
+  image: await share(seo.image || image || siteSeo.image || company.logoFull),
   seo,
   siteSeo,
   company,
   site: Astro.site,
   canonicalPath: Astro.url.pathname,
-  type,
 })
 const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
 ---
@@ -53,10 +53,9 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     <meta name="twitter:title" content={meta.metaTitle} />
     <meta name="twitter:description" content={meta.metaDescription} />
     {meta.ogImage && <meta name="twitter:image" content={meta.ogImage} />}
-    <link rel="icon" href={imageSrc(favicon)} />
-    {preload && <link rel="preload" as="image" href={preload} fetchpriority="high" />}
+    <link rel="icon" href={assetSrc(favicon)} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
-    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700|zain:700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700&display=swap" rel="stylesheet" />
     <title>{meta.metaTitle}</title>
     <slot name="head" />
   </head>

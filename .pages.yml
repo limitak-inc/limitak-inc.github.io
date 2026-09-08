@@ -4,13 +4,13 @@
 media:
   - name: images
     label: تصاویر
-    input: public/images
+    input: src/assets/images
     output: /images
     rename: safe
     extensions: [jpg, jpeg, png, webp, avif]
   - name: logos
     label: لوگوها
-    input: public/assets
+    input: src/assets/logos
     output: /assets
     rename: safe
     extensions: [png, svg, webp]
@@ -162,7 +162,6 @@ content:
         type: rich-text
         options:
           format: markdown
-          media: images
       - name: seo
         component: seo
         label: SEO
@@ -301,7 +300,6 @@ content:
         type: rich-text
         options:
           format: markdown
-          media: images
       - name: faq
         label: سوالات متداول
         type: object

@@ -2,7 +2,6 @@ node_modules/
 dist/
 .astro/
 .pnpm-store/
-.pnpm-store/
 .dev/
 .env
 .env.*

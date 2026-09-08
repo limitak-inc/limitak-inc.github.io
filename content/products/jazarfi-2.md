@@ -1,6 +1,6 @@
 ---
 slug: jazarfi-2
-title: " Proجاظرفی یک طبقه مدل"
+title: جاظرفی یک طبقه مدل
 image: /images/img_13.jpg
 model: "502"
 pcs: 6

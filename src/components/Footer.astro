@@ -1,5 +1,6 @@
 ---
-import { imageSrc } from '../lib/content.js'
+import { Image } from 'astro:assets'
+import { asset } from '../lib/image.js'
 
 const { company, social = {} } = Astro.props
 const phones = (company.phones ?? []).filter(Boolean)
@@ -15,7 +16,9 @@ const networks = [
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href={home}>
-        {logoFooter ? <img src={imageSrc(logoFooter)} alt={company.name} width="120" height="40" /> : company.name}
+        {logoFooter
+          ? <Image src={asset(logoFooter)} alt={company.name} format="webp" loading="lazy" />
+          : company.name}
       </a>
     </div>
     {(social.handle || networks.length) && (
