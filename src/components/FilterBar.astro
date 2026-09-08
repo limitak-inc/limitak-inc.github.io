@@ -3,7 +3,7 @@ const { categories } = Astro.props
 const chips = [
   { id: '', label: 'همه' },
   ...categories.map((cat) => ({
-    id: cat.id,
+    id: cat.data.slug,
     label: cat.data.label,
   })),
 ]

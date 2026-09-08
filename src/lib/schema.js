@@ -51,19 +51,6 @@ export const breadcrumbSchema = ({ site, items }) => ({
   })),
 })
 
-/** @param {{ site: URL, category: object, products: object[] }} props */
-export const itemListSchema = ({ site, category, products }) => ({
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: category.data.label,
-  itemListElement: products.map((product, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    url: absUrl(site, `products/${product.id}/`),
-    name: product.data.title,
-  })),
-})
-
 /** @param {{ faqs: { q: string, a: string }[] }} props */
 export const faqSchema = ({ faqs }) => ({
   '@context': 'https://schema.org',

@@ -19,7 +19,7 @@ export const getProducts = () =>
   )
 
 export const categoryLabel = (categories, slug) =>
-  categories.find((item) => item.id === slug)?.data.label ?? slug
+  categories.find((item) => item.data.slug === slug)?.data.label ?? slug
 
 export const productHref = (slug) => `${import.meta.env.BASE_URL}products/${slug}/`
 

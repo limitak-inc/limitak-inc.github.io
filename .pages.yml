@@ -65,12 +65,6 @@ content:
         type: number
         options:
           min: 0
-      - name: description
-        label: توضیح دسته
-        type: text
-      - name: seo
-        component: seo
-        label: SEO
 
   - name: products
     label: محصولات

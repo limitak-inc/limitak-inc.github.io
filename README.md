@@ -134,7 +134,7 @@ Then update `Sitemap:` in [`public/robots.txt`](public/robots.txt) to match.
 1. Open [Google Search Console](https://search.google.com/search-console) and add the site property
 2. Submit `https://limitak-inc.github.io/sitemap-index.xml`
 3. Open [Bing Webmaster Tools](https://www.bing.com/webmasters) and submit the same sitemap
-4. Check indexing after a few days (home, products, categories)
+4. Check indexing after a few days (home, products)
 
 ### Analytics (optional)
 
@@ -154,7 +154,7 @@ Copy [`.env.example`](.env.example) to `.env` and set:
 
 ### CMS SEO fields
 
-Pages CMS exposes per-page SEO under **SEO** on site settings, products, and categories. Leave fields empty to use auto-generated titles and descriptions.
+Pages CMS exposes per-page SEO under **SEO** on site settings and products. Leave fields empty to use auto-generated titles and descriptions.
 
 ### AI discovery
 

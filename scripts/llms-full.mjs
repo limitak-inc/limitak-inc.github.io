@@ -34,7 +34,7 @@ const lines = [
   `Instagram: ${site.instagram ?? ''}`,
   '',
   '## Categories',
-  ...categories.map((c) => `- ${c.label} (${c.slug})${c.description ? `: ${c.description}` : ''}`),
+  ...categories.map((c) => `- ${c.label} (${c.slug})`),
   '',
   '## Products',
   ...products.map((p) =>
