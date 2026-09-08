@@ -12,7 +12,6 @@ const home = import.meta.env.BASE_URL
       <a href={home}>
         {logoFooter ? <img src={imageSrc(logoFooter)} alt={company.name} /> : company.name}
       </a>
-      {logoFooter && <span class="footer-name">{company.name}</span>}
     </div>
     {(social.handle || social.instagram || social.telegram) && (
       <div class="footer-social">

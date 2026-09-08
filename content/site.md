@@ -1,7 +1,7 @@
 ---
 company:
   name: LimitakSteel
-  logo: /assets/logo-origin-white.png
+  logo: /assets/logo-origin-black.png
   logoFooter: /assets/logo-mono.png
   logoFull: /assets/logo-origin-black.png
   email: Limitaksteel@gmail.com
@@ -16,4 +16,5 @@ social:
   telegram: https://t.me/limitaksteel
   handle: "@Limitaksteel"
 ---
+
 تولیدکننده محصولات فلزی و چوبی آشپزخانه با کیفیت و رنگ کوره‌ای.

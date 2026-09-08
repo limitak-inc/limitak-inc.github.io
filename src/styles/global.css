@@ -122,6 +122,10 @@ a {
   & .hero-brand {
     display: flex;
     align-items: center;
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    padding: 10px 14px;
+    background: #ffffff33;
     gap: 0.85rem;
     width: fit-content;
     margin-block-end: clamp(1.5rem, 5vh, 2.75rem);
@@ -135,10 +139,9 @@ a {
       border-radius: var(--radius-sm);
     }
     & img {
-      height: clamp(3.5rem, 12vw, 6.5rem);
+      height: clamp(2rem, 8vw, 6rem);
       width: auto;
       object-fit: contain;
-      mix-blend-mode: lighten;
     }
   }
   & .hero-tagline {
@@ -148,12 +151,15 @@ a {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: var(--color-text-secondary);
+    /* color: var(--color-text-secondary); */
+    color: var(--color-accent-solid);
+    text-shadow: 0 0 10px black;
   }
   & .hero-desc p {
     margin: 0;
     max-width: 60ch;
     color: var(--color-text-secondary);
+    text-shadow: 0 0 8px black;
     font-size: 1.1875rem;
   }
 }
@@ -255,18 +261,19 @@ a {
       box-shadow 150ms var(--ease-out);
     &:hover {
       color: var(--color-text-primary);
-      background: var(--color-bg-elevated);
+      background: var(--color-accent-muted);
     }
     &.active {
       color: black;
       background: var(--color-accent-solid);
       border-color: hsl(from var(--color-accent-solid) h s calc(l - 12%));
-      box-shadow: 0 0 1rem
-        color-mix(in hsl, var(--color-accent-solid) 45%, transparent);
+      box-shadow: 0 0 1.2rem var(--color-accent-solid);
+      outline: solid 3px var(--color-accent-solid);
+      outline-offset: 3px;
     }
     &:focus-visible {
       outline: 2px solid var(--color-accent-solid);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
     & .filter-n {
       display: none;
@@ -492,14 +499,6 @@ a {
       }
     }
   }
-  & .footer-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    text-wrap: balance;
-    color: var(--color-text);
-  }
   & .footer-email,
   & .footer-phones a {
     user-select: text;
@@ -550,7 +549,7 @@ a {
   & .footer-social {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: start;
     gap: 0.75rem;
     direction: ltr;
     & .footer-handle {
@@ -582,6 +581,35 @@ a {
         height: 1.25rem;
         fill: currentColor;
       }
+    }
+  }
+  @media (max-width: 48rem) {
+    padding-block: 2rem;
+    & .footer-inner {
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: center;
+      text-align: center;
+      overflow-x: visible;
+      row-gap: 1rem;
+      & > * {
+        flex-shrink: 1;
+        min-width: 0;
+      }
+    }
+    & .footer-phones {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    & .footer-social {
+      justify-content: center;
+      & .footer-handle {
+        white-space: normal;
+      }
+    }
+    & .footer-email {
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
   }
 }
