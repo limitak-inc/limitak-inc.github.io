@@ -1,14 +1,14 @@
 :root {
-  --color-bg-page: oklch(0.13 0.015 280);
-  --color-bg-surface: oklch(0.17 0.018 280);
-  --color-bg-elevated: oklch(0.21 0.022 280);
-  --color-text-primary: oklch(0.97 0.008 280);
-  --color-text-secondary: oklch(0.72 0.02 280);
-  --color-text-tertiary: oklch(0.58 0.02 280);
-  --color-border: oklch(1 0 0 / 0.1);
-  --color-accent-solid: oklch(0.62 0.22 280);
-  --color-accent-muted: oklch(0.62 0.22 280 / 0.16);
-  --color-image-outline: oklch(1 0 0 / 0.1);
+  --color-bg-page: hsl(240 10% 14% / 1);
+  --color-bg-surface: hsl(240 25% 10% / 0.8);
+  --color-bg-elevated: hsl(240 20% 10%);
+  --color-text-primary: hsl(230 43% 100%);
+  --color-text-secondary: hsl(230 10% 70%);
+  --color-text-tertiary: hsl(230 6% 50%);
+  --color-border: hsl(0 0% 100% / 0.1);
+  --color-accent-solid: hsl(30 100% 45%);
+  --color-accent-muted: hsl(30 100% 45% / 0.16);
+  --color-image-outline: hsl(0 0% 100% / 0.1);
   --radius-lg: 1.25rem;
   --radius-md: 0.875rem;
   --radius-sm: 0.5rem;
@@ -18,9 +18,9 @@
   --max: 72rem;
   --card-min: 14rem;
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
-  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.24);
-  --shadow-md: 0 4px 12px oklch(0 0 0 / 0.28), 0 1px 2px oklch(0 0 0 / 0.2);
-  --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.36), 0 2px 6px oklch(0 0 0 / 0.2);
+  --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.24);
+  --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.28), 0 1px 2px hsl(0 0% 0% / 0.2);
+  --shadow-lg: 0 12px 32px hsl(0 0% 0% / 0.36), 0 2px 6px hsl(0 0% 0% / 0.2);
   --font-display: Zain, Vazirmatn, sans-serif;
   font-family: Vazirmatn, system-ui, sans-serif;
   color: var(--color-text-primary);
@@ -29,6 +29,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  user-select: none;
 }
 
 *,
@@ -105,9 +106,9 @@ a {
     position: absolute;
     inset: 0;
     background: linear-gradient(
-      in oklab,
-      oklch(0.13 0.015 280 / 0.15),
-      oklch(0.13 0.015 280 / 0.92)
+      in hsl,
+      hsl(236 35% 4% / 0.15),
+      hsl(236 35% 4% / 0.92)
     );
     z-index: 1;
   }
@@ -139,14 +140,6 @@ a {
       object-fit: contain;
       mix-blend-mode: lighten;
     }
-  }
-  & .hero-name {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(2.25rem, 7vw, 4rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: 0.01em;
   }
   & .hero-tagline {
     margin: 0 0 1rem;
@@ -183,9 +176,8 @@ a {
   width: 100%;
   min-width: 0;
   margin-block-end: var(--space-group);
-  background: color-mix(in oklch, var(--color-bg-page) 28%, transparent);
+  background: color-mix(in hsl, var(--color-bg-page) 28%, transparent);
   backdrop-filter: blur(1.25rem) saturate(1.35);
-  user-select: none;
   &.is-scrollable {
     cursor: grab;
     & .filter-chip {
@@ -245,11 +237,13 @@ a {
     flex: 0 0 auto;
     min-height: 2.25rem;
     padding: 0.375rem 0.875rem;
-    border: 1px solid oklch(0 0 0 / 0.45);
-    border-radius: 999px;
+    /* border: 1px solid hsl(0 0% 0% / 0.45); */
+    /* border-radius: 999px; */
+    border-radius: 16px;
+    border: none;
     background: var(--color-bg-surface);
     color: var(--color-text-secondary);
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.4);
+    box-shadow: 0 1px 2px hsl(0 0% 0% / 0.4);
     font: inherit;
     font-size: 1rem;
     font-weight: 600;
@@ -264,16 +258,11 @@ a {
       background: var(--color-bg-elevated);
     }
     &.active {
-      color: var(--color-text-primary);
-      border-color: var(--color-accent-solid);
-      background: color-mix(
-        in oklch,
-        var(--color-accent-solid) 58%,
-        var(--color-bg-page)
-      );
-      box-shadow:
-        0 0 0 1px var(--color-accent-solid),
-        0 0 1rem color-mix(in oklch, var(--color-accent-solid) 55%, transparent);
+      color: black;
+      background: var(--color-accent-solid);
+      border-color: hsl(from var(--color-accent-solid) h s calc(l - 12%));
+      box-shadow: 0 0 1rem
+        color-mix(in hsl, var(--color-accent-solid) 45%, transparent);
     }
     &:focus-visible {
       outline: 2px solid var(--color-accent-solid);
@@ -284,16 +273,18 @@ a {
       position: absolute;
       inset-block-start: calc(100% + 0.45rem);
       inset-inline: 0;
+      width: fit-content;
+      margin-inline: auto;
+      padding: 0.2rem 0.6rem 0.2rem 0.6rem;
+      border-radius: 14px;
+      background: var(--color-bg-page);
+      color: var(--color-accent-solid);
       font-size: 0.6875rem;
       font-weight: 700;
+      font-variant-numeric: tabular-nums;
       line-height: 1;
-      color: var(--color-accent-solid);
       text-align: center;
       pointer-events: none;
-      text-shadow:
-        0 0 0.55rem
-          color-mix(in oklch, var(--color-accent-solid) 80%, transparent),
-        0 1px 2px oklch(0 0 0 / 0.7);
     }
     &.active .filter-n {
       display: block;
@@ -396,9 +387,6 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   gap: var(--space-group);
   align-items: start;
-  & > * {
-    cursor: auto;
-  }
   & > img {
     width: 100%;
     border-radius: var(--radius-lg);
@@ -407,6 +395,7 @@ a {
     box-shadow: var(--shadow-md);
   }
   & h1 {
+    color: var(--color-accent-solid);
     margin: 0 0 1rem;
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
@@ -428,6 +417,7 @@ a {
   }
   & dd {
     margin: 0;
+    color: coral;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
@@ -459,7 +449,7 @@ a {
   padding-block: 1.25rem;
   background: var(--color-bg-surface);
   border-block-start: 1px solid var(--color-border);
-  box-shadow: 0 -4px 24px oklch(0 0 0 / 0.18);
+  box-shadow: 0 -4px 24px hsl(0 0% 0% / 0.18);
   & .footer-inner {
     display: flex;
     flex-wrap: nowrap;
@@ -512,16 +502,28 @@ a {
   }
   & .footer-email,
   & .footer-phones a {
+    user-select: text;
     color: var(--color-text-secondary);
     white-space: nowrap;
-    text-decoration: underline;
-    text-decoration-thickness: from-font;
-    text-underline-offset: 0.2em;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: auto;
-    transition: color 150ms var(--ease-out);
-    &:hover {
+    text-decoration: none;
+    padding-block-end: 0.2em;
+    background-image:
+      linear-gradient(currentColor, currentColor),
+      radial-gradient(circle closest-side, currentColor 90%, transparent 91%);
+    background-size:
+      0% 0.09em,
+      0.28em 0.09em;
+    background-position: 0 100%;
+    background-repeat: no-repeat, repeat-x;
+    transition:
+      color 150ms var(--ease-out),
+      background-size 280ms var(--ease-out);
+    &:hover,
+    &:focus-visible {
       color: var(--color-accent-solid);
+      background-size:
+        100% 0.09em,
+        0.28em 0.09em;
     }
     &:focus-visible {
       outline: 2px solid var(--color-accent-solid);

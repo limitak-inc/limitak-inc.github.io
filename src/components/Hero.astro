@@ -6,10 +6,9 @@ const home = import.meta.env.BASE_URL
   <img class="hero-bg" src={hero.imageSrc} alt="" aria-hidden="true" loading="eager" decoding="async" />
   <div class="container hero-inner">
     <a class="hero-brand" href={home}>
-      {hero.logoSrc && <img src={hero.logoSrc} alt="" />}
-      <h1 class="hero-name">{hero.name}</h1>
+      {hero.logoSrc && <img src={hero.logoSrc} alt={hero.name} />}
     </a>
-    <p class="hero-tagline">{hero.title}</p>
+    <h1 class="hero-tagline">{hero.title}</h1>
     <div class="hero-desc"><slot /></div>
   </div>
 </section>
