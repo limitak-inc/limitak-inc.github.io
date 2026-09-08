@@ -108,13 +108,16 @@ a {
   &::after {
     content: "";
     position: absolute;
-    inset: 0;
+    inset-inline: 0;
+    bottom: 0;
+    height: 6rem;
     background: linear-gradient(
-      in hsl,
-      hsl(236 35% 4% / 0.15),
-      hsl(236 35% 4% / 0.92)
+      to top in hsl,
+      var(--color-bg-page),
+      hsl(from var(--color-bg-page) h s l / 0)
     );
     z-index: 1;
+    pointer-events: none;
   }
   & .hero-inner {
     position: relative;
@@ -208,6 +211,7 @@ a {
 
 .filter-bar {
   --filter-fade: 3rem;
+  --chip-glow: 1.2rem;
   display: flex;
   flex-wrap: nowrap;
   gap: 0.5rem;
@@ -218,7 +222,7 @@ a {
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  padding-block: 1rem;
+  padding-block: calc(var(--chip-glow) + 0.25rem);
   scroll-padding-inline: var(--filter-fade);
   mask-image: linear-gradient(
     to right,
@@ -262,14 +266,16 @@ a {
       border-color 150ms var(--ease-out),
       box-shadow 150ms var(--ease-out);
     &:hover {
+      /* color: var(--color-text-primary); */
+      /* background: var(--color-accent-muted); */
       color: var(--color-text-primary);
-      background: var(--color-accent-muted);
+      background: var(--color-bg-page);
     }
     &.active {
       color: black;
       background: var(--color-accent-solid);
       border-color: hsl(from var(--color-accent-solid) h s calc(l - 12%));
-      box-shadow: 0 0 1.2rem var(--color-accent-solid);
+      box-shadow: 0 0 var(--chip-glow) var(--color-accent-solid);
       outline: solid 3px var(--color-accent-solid);
       outline-offset: 3px;
     }
@@ -441,8 +447,7 @@ a {
   margin-top: auto;
   padding-block: 1.25rem;
   background: var(--color-bg-surface);
-  border-block-start: 1px solid var(--color-border);
-  box-shadow: 0 -4px 24px hsl(0 0% 0% / 0.18);
+  box-shadow: 0 -4px 24px var(--color-bg-elevated);
   & .footer-inner {
     display: flex;
     flex-wrap: nowrap;
@@ -482,19 +487,6 @@ a {
         width: auto;
         object-fit: contain;
         mix-blend-mode: lighten;
-      }
-    }
-  }
-  & .footer-cats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    & a {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      white-space: nowrap;
-      &:hover {
-        color: var(--color-accent-solid);
       }
     }
   }
@@ -610,19 +602,6 @@ a {
       white-space: normal;
       overflow-wrap: anywhere;
     }
-  }
-}
-
-.category-page {
-  padding-block: var(--space-group) 0;
-  & h1 {
-    margin: 0.5rem 0;
-    color: var(--color-accent-solid);
-  }
-  & .category-desc {
-    margin: 0;
-    max-width: 65ch;
-    color: var(--color-text-secondary);
   }
 }
 

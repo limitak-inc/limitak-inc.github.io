@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Footer from '../components/Footer.astro'
-import { getSite, getCategories } from '../lib/content.js'
+import { getSite } from '../lib/content.js'
 
 const siteEntry = await getSite()
-const categories = await getCategories()
 const { company, social } = siteEntry.data
 const home = import.meta.env.BASE_URL
 ---
@@ -13,5 +12,5 @@ const home = import.meta.env.BASE_URL
     <a class="back" href={home}>بازگشت به کاتالوگ</a>
     <h1 class="section-title">صفحه پیدا نشد</h1>
   </div>
-  <Footer slot="footer" company={company} social={social} categories={categories} />
+  <Footer slot="footer" company={company} social={social} />
 </Layout>

@@ -23,6 +23,7 @@ export const categoryLabel = (categories, slug) =>
 
 export const productHref = (slug) => `${import.meta.env.BASE_URL}products/${slug}/`
 
-export const categoryHref = (slug) => `${import.meta.env.BASE_URL}categories/${slug}/`
+export const categoryHref = (slug) =>
+  `${import.meta.env.BASE_URL}?category=${slug}#products`
 
 export const imageSrc = (path) => import.meta.env.BASE_URL + path.replace(/^\//, '')
