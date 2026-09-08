@@ -156,6 +156,11 @@ content:
             type: image
             options:
               media: logos
+          - name: favicon
+            label: آیکون تب
+            type: image
+            options:
+              media: logos
           - name: email
             label: ایمیل
             type: string

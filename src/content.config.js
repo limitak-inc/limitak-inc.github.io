@@ -34,6 +34,7 @@ const site = defineCollection({
       logo: z.string().optional(),
       logoFooter: z.string().optional(),
       logoFull: z.string().optional(),
+      favicon: z.string().optional(),
       email: z.string().optional(),
       phones: z.array(z.string()),
     }),

@@ -6,6 +6,7 @@ import { imageSrc } from '../lib/content.js'
 const { title, description = '', company = {}, image } = Astro.props
 const name = company.name ?? 'لیمیتک'
 const logoFull = company.logoFull
+const favicon = company.favicon || '/assets/logo-mono.png'
 const pageTitle = title ? `${title} | ${name}` : name
 const ogImage = Astro.site && (image || logoFull)
   ? new URL(imageSrc(image || logoFull), Astro.site).href
@@ -21,7 +22,7 @@ const ogImage = Astro.site && (image || logoFull)
     <meta property="og:title" content={pageTitle} />
     {description && <meta property="og:description" content={description} />}
     {ogImage && <meta property="og:image" content={ogImage} />}
-    <link rel="icon" href={imageSrc(logoFull || '/assets/logo-origin.png')} />
+    <link rel="icon" href={imageSrc(favicon)} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
     <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700|zain:700,800" rel="stylesheet" />
     <title>{pageTitle}</title>

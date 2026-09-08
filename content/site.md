@@ -4,6 +4,7 @@ company:
   logo: /assets/logo-origin-black.png
   logoFooter: /assets/logo-mono.png
   logoFull: /assets/logo-origin-black.png
+  favicon: /assets/logo-mono.png
   email: Limitaksteel@gmail.com
   phones:
     - "09394401029"
