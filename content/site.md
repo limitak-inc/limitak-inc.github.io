@@ -8,9 +8,8 @@ company:
   email: Limitaksteel@gmail.com
   phones:
     - "09394401029"
-    - "0214401029"
 hero:
-  title: استانداردی نوین در لوازم خانه و آشپزخانه
+  title: لیمیتاک استیل
   image: /images/banner.jpg
 theme:
   bg-page: "hsl(240 10% 14% / 1)"
@@ -21,6 +20,10 @@ social:
   instagram: https://instagram.com/limitaksteel
   telegram: https://t.me/limitaksteel
   handle: "@Limitaksteel"
+seo:
+  noindex: false
 ---
+- **کیفیت ماندگار، برای خانه‌ای مدرن**  
+- **استانداردی نوین در تولید لوازم خانه و آشپزخانه**  
+- **ترکیب هنر، کیفیت و ماندگاری**
 
-تولیدکننده محصولات فلزی و چوبی آشپزخانه با کیفیت و رنگ کوره‌ای.
