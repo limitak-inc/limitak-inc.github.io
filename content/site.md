@@ -8,7 +8,6 @@ company:
   email: Limitaksteel@gmail.com
   phones:
     - "09394401029"
-    - "0214401029"
 hero:
   title: لیمیتاک استیل
   image: /images/banner.jpg
@@ -19,7 +18,7 @@ social:
 seo:
   noindex: false
 ---
-  
 - **کیفیت ماندگار، برای خانه‌ای مدرن**  
 - **استانداردی نوین در تولید لوازم خانه و آشپزخانه**  
 - **ترکیب هنر، کیفیت و ماندگاری**
+
