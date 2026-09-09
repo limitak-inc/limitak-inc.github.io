@@ -255,7 +255,6 @@ content:
             options:
               values:
                 - { name: lead, label: سربی }
-                - { name: metal, label: فلزی }
                 - { name: stone, label: سنگی }
                 - { name: lilac, label: یاسی }
                 - { name: mist, label: مه‌آلود }
@@ -267,7 +266,10 @@ content:
               values:
                 - { name: orange, label: نارنجی }
                 - { name: copper, label: مسی }
-                - { name: gold, label: طلایی }
+                - { name: crimson, label: سرخ }
+                - { name: teal, label: فیروزه‌ای }
+                - { name: lime, label: فسفری }
+                - { name: indigo, label: نیلی }
 
       # ──────────────────────────────────────────────────────────────────
 

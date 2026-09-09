@@ -54,8 +54,8 @@ const site = defineCollection({
       image: z.string(),
     }),
     theme: z.object({
-      bg: z.enum(['lead', 'metal', 'stone', 'lilac', 'mist', 'olive']).optional(),
-      accent: z.enum(['orange', 'copper', 'gold']).optional(),
+      bg: z.enum(['lead', 'stone', 'lilac', 'mist', 'olive']).optional(),
+      accent: z.enum(['orange', 'copper', 'crimson', 'teal', 'lime', 'indigo']).optional(),
     }).optional(),
     social: z.object({
       instagram: z.string().optional(),
