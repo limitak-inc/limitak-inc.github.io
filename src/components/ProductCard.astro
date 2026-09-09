@@ -6,7 +6,7 @@ const { id, href, title, image, category, hidden = false } = Astro.props
 ---
 <article class="card" data-category={category} hidden={hidden || undefined}>
   <a class="card-link" href={href}>
-    <div class="card-media" style={`view-transition-name: product-${id}`}>
+    <div class="card-media" data-product={id}>
       <Image
         src={asset(image)}
         alt={title}

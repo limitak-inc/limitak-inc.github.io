@@ -45,6 +45,26 @@ const description = plainText([
   />
   <JsonLd slot="head" data={websiteSchema({ site: Astro.site, company })} />
   {faq.length > 0 && <JsonLd slot="head" data={faqSchema({ faqs: faq })} />}
+  <script is:inline slot="head">
+    const productId = (url) => url && new URL(url, location.origin).pathname.match(/\/products\/([^/]+)/)?.[1]
+    const media = (id) => id && document.querySelector(`[data-product="${id}"]`)
+    const name = (id) => {
+      const el = media(id)
+      if (el) el.style.viewTransitionName = `product-${id}`
+      return el
+    }
+    const clear = (el) => { if (el) el.style.viewTransitionName = 'none' }
+    addEventListener('pageswap', (e) => {
+      if (!e.viewTransition) return
+      const el = name(productId(e.activation?.entry?.url))
+      e.viewTransition.finished.then(() => clear(el))
+    })
+    addEventListener('pagereveal', (e) => {
+      if (!e.viewTransition) return
+      const el = name(productId(globalThis.navigation?.activation?.from?.url))
+      e.viewTransition.finished.then(() => clear(el))
+    })
+  </script>
   <Hero hero={{ title: hero.title, image: hero.image, logo: company.logo, name: company.name }}>
     <HeroBody />
   </Hero>

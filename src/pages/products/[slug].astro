@@ -74,6 +74,14 @@ const crumbs = [
   <JsonLd slot="head" data={breadcrumbSchema({ site: Astro.site, items: crumbs })} />
   <div class="container product-page">
     <a class="back" href={categoryHref(catSlug)}>← بازگشت به کاتالوگ</a>
+    <script>
+      document.querySelector('.back')?.addEventListener('click', (event) => {
+        if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+        if (!globalThis.navigation?.canGoBack) return
+        event.preventDefault()
+        history.back()
+      })
+    </script>
     <article class="product-detail">
       <div class="product-media" style={`view-transition-name: product-${product.id}`}>
         <Image
