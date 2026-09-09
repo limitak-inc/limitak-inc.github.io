@@ -246,30 +246,30 @@ content:
       #  THEME  |
       #---------+
       - name: theme
-        label: ظاهر
+        label: theme - ظاهر
         type: object
         fields:
           - name: bg
-            label: پس‌زمینه
+            label: bg - پس‌زمینه
             type: select
             options:
               values:
-                - { name: mist, label: مه‌آلود }
-                - { name: lead, label: سربی }
-                - { name: lilac, label: بنفش }
-                - { name: olive, label: زیتونی }
-                - { name: stone, label: سنگی }
+                - { name: mist, label: mist - مه‌آلود }
+                - { name: lead, label: lead - سربی }
+                - { name: lilac, label: lilac - بنفش }
+                - { name: olive, label: olive - زیتونی }
+                - { name: stone, label: stone - سنگی }
           - name: accent
-            label: تاکید
+            label: accent - تاکید
             type: select
             options:
               values:
-                - { name: orange, label: نارنجی }
-                - { name: copper, label: مسی }
-                - { name: crimson, label: سرخ }
-                - { name: teal, label: فیروزه‌ای }
-                - { name: lime, label: فسفری }
-                - { name: indigo, label: نیلی }
+                - { name: orange, label: orange - نارنجی }
+                - { name: copper, label: copper - مسی }
+                - { name: crimson, label: crimson - سرخ }
+                - { name: teal, label: teal - فیروزه‌ای }
+                - { name: lime, label: lime - فسفری }
+                - { name: indigo, label: indigo - نیلی }
 
       # ──────────────────────────────────────────────────────────────────
 
