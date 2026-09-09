@@ -1,24 +1,20 @@
 ---
 import { render } from 'astro:content'
 import FilterBar from '../components/FilterBar.astro'
-import Footer from '../components/Footer.astro'
 import Hero from '../components/Hero.astro'
 import JsonLd from '../components/JsonLd.astro'
 import ProductCard from '../components/ProductCard.astro'
-import { getCategories, getProducts, getSite, productHref } from '../lib/content.js'
+import { getCatalog, productHref } from '../lib/content.js'
 import { assetSrc } from '../lib/image.js'
 import { faqSchema, organizationSchema, websiteSchema } from '../lib/schema.js'
 import { plainText } from '../lib/seo.js'
 import Layout from './Layout.astro'
 
 const { category } = Astro.props
-const siteEntry = await getSite()
-const [allProducts, allCategories] = await Promise.all([getProducts(), getCategories()])
+const { siteEntry, products, categories } = await getCatalog()
 const { company, hero, social, theme, seo: siteSeo, faq = [] } = siteEntry.data
 const { Content: HeroBody } = await render(siteEntry)
 const active = category?.data.slug ?? ''
-const used = new Set(allProducts.map((product) => product.data.category))
-const categories = allCategories.filter((item) => used.has(item.data.slug))
 const description = plainText([
   category && `محصولات ${category.data.label} ${company.name}.`,
   siteEntry.body,
@@ -50,10 +46,10 @@ const description = plainText([
     const media = (id) => id && document.querySelector(`[data-product="${id}"]`)
     const name = (id) => {
       const el = media(id)
-      if (el) el.style.viewTransitionName = `product-${id}`
+      el && (el.style.viewTransitionName = `product-${id}`)
       return el
     }
-    const clear = (el) => { if (el) el.style.viewTransitionName = 'none' }
+    const clear = (el) => el && (el.style.viewTransitionName = 'none')
     addEventListener('pageswap', (e) => {
       if (!e.viewTransition) return
       const el = name(productId(e.activation?.entry?.url))
@@ -71,14 +67,14 @@ const description = plainText([
   <section class="products-section" aria-label={category?.data.label ?? 'محصولات'}>
     <FilterBar categories={categories} active={active} />
     <div class="container products">
-      {allProducts.map((product) => (
+      {products.map((product) => (
         <ProductCard
           id={product.id}
           href={productHref(product.id)}
           title={product.data.title}
           image={product.data.image}
           category={product.data.category}
-          hidden={active && product.data.category !== active}
+          hidden={Boolean(active) && product.data.category !== active}
         />
       ))}
     </div>
@@ -94,5 +90,4 @@ const description = plainText([
       ))}
     </section>
   )}
-  <Footer slot="footer" company={company} social={social} />
 </Layout>

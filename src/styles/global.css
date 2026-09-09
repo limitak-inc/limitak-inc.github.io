@@ -34,6 +34,11 @@
   box-sizing: border-box;
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-solid) transparent;
+}
+
 body {
   margin: 0;
 }
@@ -126,11 +131,6 @@ a {
     column-gap: clamp(1rem, 2vw, 2rem);
     row-gap: 0.75rem;
     padding-block-end: 0.5rem;
-    @media (width < 64rem) {
-      grid-template-areas:
-        "tagline brand"
-        "desc desc";
-    }
     @media (width < 40rem) {
       grid-template-columns: 1fr;
       grid-template-areas:
@@ -145,15 +145,12 @@ a {
     align-items: center;
     gap: 0.85rem;
     width: fit-content;
+    align-self: center;
     justify-self: left;
     transition: opacity 150ms var(--ease-out);
+    filter: drop-shadow(0px 1px 0px #161616);
     &:hover {
       opacity: 0.85;
-    }
-    &:focus-visible {
-      outline: 2px solid var(--color-accent-solid);
-      outline-offset: 3px;
-      border-radius: var(--radius-sm);
     }
     & img {
       height: clamp(4.25rem, 2.5rem + 6.5vw, 10rem);
@@ -163,9 +160,9 @@ a {
   }
   & .hero-tagline {
     grid-area: tagline;
-    margin: 0;
+    margin: clamp(1.25rem, 4vw, 3rem) 0 0;
     max-width: 18ch;
-    font-size: clamp(1.5rem, 0.7rem + 2.4vw, 3.5rem);
+    font-size: clamp(2rem, 1.1rem + 3.8vw, 5rem);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -217,7 +214,9 @@ a {
   user-select: none;
   &.is-scrollable {
     cursor: grab;
-    & .filter-chip { cursor: grab; }
+    & .filter-chip {
+      cursor: grab;
+    }
   }
   &.is-dragging {
     cursor: grabbing;
@@ -293,10 +292,6 @@ a {
       background: var(--color-accent-solid);
       box-shadow: 0 0 var(--chip-glow) var(--color-accent-solid);
       outline: solid 3px var(--color-accent-solid);
-      outline-offset: 3px;
-    }
-    &:focus-visible {
-      outline: 2px solid var(--color-accent-solid);
       outline-offset: 3px;
     }
   }
@@ -386,10 +381,6 @@ a {
   }
   &:active {
     transform: scale(0.96);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--color-accent-solid);
-    outline-offset: 3px;
   }
 }
 
@@ -495,11 +486,6 @@ a {
         color: inherit;
         opacity: 0.85;
       }
-      &:focus-visible {
-        outline: 2px solid var(--color-accent-solid);
-        outline-offset: 3px;
-        border-radius: var(--radius-sm);
-      }
       & img {
         height: clamp(2rem, 6vw, 3rem);
         width: auto;
@@ -531,11 +517,6 @@ a {
       background-size:
         100% 0.09em,
         0.28em 0.09em;
-    }
-    &:focus-visible {
-      outline: 2px solid var(--color-accent-solid);
-      outline-offset: 2px;
-      border-radius: var(--radius-sm);
     }
   }
   & .footer-email {
@@ -577,11 +558,6 @@ a {
         transition: color 150ms var(--ease-out);
         &:hover {
           color: var(--brand, var(--color-accent-solid));
-        }
-        &:focus-visible {
-          outline: 2px solid var(--color-accent-solid);
-          outline-offset: 3px;
-          border-radius: var(--radius-sm);
         }
       }
       & svg {
@@ -638,6 +614,20 @@ a {
     margin: 0.75rem 0 0;
     color: var(--color-text-secondary);
   }
+}
+
+:is(
+  .hero-brand,
+  .filter-bar .filter-chip,
+  .back,
+  .footer-brand a,
+  .footer-email,
+  .footer-phones a,
+  .footer-icons a
+):focus-visible {
+  outline: 2px solid var(--color-accent-solid);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
 @media (prefers-reduced-motion: no-preference) {

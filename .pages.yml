@@ -165,6 +165,7 @@ content:
         type: rich-text
         options:
           format: markdown
+          media: false
       - name: seo
         component: seo
         label: SEO
@@ -303,6 +304,7 @@ content:
         type: rich-text
         options:
           format: markdown
+          media: false
       - name: faq
         label: سوالات متداول
         type: object

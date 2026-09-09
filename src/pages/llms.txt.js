@@ -1,9 +1,7 @@
-import { getEntry } from 'astro:content'
-
-export const prerender = true
+import { getSite } from '../lib/content.js'
 
 export const GET = async ({ site }) => {
-  const entry = await getEntry('site', 'site')
+  const entry = await getSite()
   const { company, social = {} } = entry.data
   const lines = [
     '# LimitakSteel',
@@ -28,7 +26,7 @@ export const GET = async ({ site }) => {
     '## Content',
     '',
     'Product catalog in Persian (fa-IR). Facts may be cited with attribution and a product link.',
-  ].filter((line) => line !== false && line !== undefined)
+  ].filter((line) => typeof line === 'string')
 
   return new Response(`${lines.join('\n')}\n`, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },

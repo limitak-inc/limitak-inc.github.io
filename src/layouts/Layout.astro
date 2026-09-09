@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import Footer from '../components/Footer.astro'
 import { resolveTheme } from '../lib/content.js'
 import { assetSrc, share } from '../lib/image.js'
 import { resolveMeta } from '../lib/seo.js'
@@ -14,14 +15,12 @@ const {
   social = {},
   theme: themeConfig = {},
   type = 'website',
-  noindex = false,
 } = Astro.props
 
 const theme = resolveTheme(themeConfig)
 const themeStyle = Object.entries(theme)
-  .map(([key, value]) => value && `--color-${key}:${value}`)
-  .filter(Boolean)
-  .join(';')
+  .map(([key, value]) => `--color-${key}:${value}`)
+  .join(';') || undefined
 const favicon = company.favicon || '/assets/logo-mono.png'
 const meta = resolveMeta({
   title,
@@ -33,29 +32,32 @@ const meta = resolveMeta({
   site: Astro.site,
   canonicalPath: Astro.url.pathname,
 })
-const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
+const robots = meta.noindex ? 'noindex, nofollow' : 'index, follow'
+const tags = [
+  { charset: 'utf-8' },
+  { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+  { name: 'description', content: meta.metaDescription },
+  { name: 'robots', content: robots },
+  { name: 'theme-color', content: theme['bg-page'] || 'hsl(240 10% 14%)' },
+  { property: 'og:title', content: meta.metaTitle },
+  { property: 'og:description', content: meta.metaDescription },
+  { property: 'og:type', content: type },
+  { property: 'og:locale', content: 'fa_IR' },
+  company.name && { property: 'og:site_name', content: company.name },
+  meta.canonical && { property: 'og:url', content: meta.canonical },
+  meta.ogImage && { property: 'og:image', content: meta.ogImage },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:title', content: meta.metaTitle },
+  { name: 'twitter:description', content: meta.metaDescription },
+  meta.ogImage && { name: 'twitter:image', content: meta.ogImage },
+  social.handle && { name: 'twitter:site', content: social.handle },
+].filter(Boolean)
 ---
 <!doctype html>
-<html lang="fa" dir="rtl" style={themeStyle || undefined}>
+<html lang="fa" dir="rtl" style={themeStyle}>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={meta.metaDescription} />
-    <meta name="robots" content={robots} />
-    <meta name="theme-color" content={theme['bg-page'] || 'hsl(240 10% 14%)'} />
-    <meta property="og:title" content={meta.metaTitle} />
-    <meta property="og:description" content={meta.metaDescription} />
-    <meta property="og:type" content={type} />
-    <meta property="og:locale" content="fa_IR" />
-    {company.name && <meta property="og:site_name" content={company.name} />}
-    {meta.canonical && <meta property="og:url" content={meta.canonical} />}
+    {tags.map((attrs) => <meta {...attrs} />)}
     {meta.canonical && <link rel="canonical" href={meta.canonical} />}
-    {meta.ogImage && <meta property="og:image" content={meta.ogImage} />}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={meta.metaTitle} />
-    <meta name="twitter:description" content={meta.metaDescription} />
-    {meta.ogImage && <meta name="twitter:image" content={meta.ogImage} />}
-    {social.handle && <meta name="twitter:site" content={social.handle} />}
     <link rel="icon" href={assetSrc(favicon)} />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
     <link href="https://fonts.bunny.net/css?family=vazirmatn:400,600,700&display=swap" rel="stylesheet" />
@@ -67,7 +69,7 @@ const robots = meta.noindex || noindex ? 'noindex, nofollow' : 'index, follow'
     <main id="main" class="site-main">
       <slot />
     </main>
-    <slot name="footer" />
+    <Footer company={company} social={social} />
     {import.meta.env.PROD && import.meta.env.PUBLIC_ANALYTICS && (
       <script defer src={import.meta.env.PUBLIC_ANALYTICS} data-domain={import.meta.env.PUBLIC_ANALYTICS_DOMAIN} />
     )}

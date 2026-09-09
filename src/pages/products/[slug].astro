@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import Footer from '../../components/Footer.astro'
 import { Image } from 'astro:assets'
 import JsonLd from '../../components/JsonLd.astro'
 import {
@@ -25,25 +24,24 @@ export const getStaticPaths = async () => {
 }
 
 const { product } = Astro.props
-const siteEntry = await getSite()
-const categories = await getCategories()
+const [siteEntry, categories, { Content }, shareImage] = await Promise.all([
+  getSite(),
+  getCategories(),
+  render(product),
+  share(product.data.image),
+])
 const { company, social, theme, seo: siteSeo } = siteEntry.data
-const { Content } = await render(product)
 const home = import.meta.env.BASE_URL
 const catSlug = product.data.category
 const catName = categoryLabel(categories, catSlug)
 const description = productDescription(product, catName)
-const shareImage = await share(product.data.image)
 
-const fields = [
-  ['model', 'کد کالا'],
-  ['material', 'جنس'],
-  ['size', 'ابعاد'],
-  ['pcs', 'تعداد در کارتن'],
-]
-const specs = fields
-  .map(([key, label]) => [label, product.data[key]])
-  .filter(([, value]) => value !== undefined && value !== '')
+const specs = [
+  ['کد کالا', product.data.model],
+  ['جنس', product.data.material],
+  ['ابعاد', product.data.size],
+  ['تعداد در کارتن', product.data.pcs],
+].filter(([, value]) => value != null && value !== '')
 
 const crumbs = [
   { name: 'خانه', url: home },
@@ -118,5 +116,4 @@ const crumbs = [
       </div>
     </article>
   </div>
-  <Footer slot="footer" company={company} social={social} />
 </Layout>

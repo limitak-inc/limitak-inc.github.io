@@ -24,23 +24,31 @@ export const resolveTheme = (theme = {}) => {
   }
 }
 
+const byOrder = (key) => (a, b) =>
+  (a.data.order ?? 999) - (b.data.order ?? 999)
+  || a.data[key].localeCompare(b.data[key], 'fa')
+
 export const getSite = () => getEntry('site', 'site')
 
 export const getCategories = () =>
-  getCollection('categories').then((items) =>
-    items.sort((a, b) =>
-      (a.data.order ?? 999) - (b.data.order ?? 999)
-      || a.data.label.localeCompare(b.data.label, 'fa')
-    )
-  )
+  getCollection('categories').then((items) => items.toSorted(byOrder('label')))
 
 export const getProducts = () =>
-  getCollection('products').then((items) =>
-    items.sort((a, b) =>
-      (a.data.order ?? 999) - (b.data.order ?? 999)
-      || a.data.title.localeCompare(b.data.title, 'fa')
-    )
-  )
+  getCollection('products').then((items) => items.toSorted(byOrder('title')))
+
+export const getCatalog = async () => {
+  const [siteEntry, categories, products] = await Promise.all([
+    getSite(),
+    getCategories(),
+    getProducts(),
+  ])
+  const used = new Set(products.map((product) => product.data.category))
+  return {
+    siteEntry,
+    products,
+    categories: categories.filter((category) => used.has(category.data.slug)),
+  }
+}
 
 export const categoryLabel = (categories, slug) =>
   categories.find((item) => item.data.slug === slug)?.data.label ?? slug

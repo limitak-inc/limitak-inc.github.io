@@ -6,7 +6,7 @@ export const organizationSchema = ({ site, company, social = {}, logo }) => ({
   '@type': 'Organization',
   name: company.name,
   url: site.href,
-  logo: logo ? absUrl(site, logo) : undefined,
+  ...(logo && { logo: absUrl(site, logo) }),
   email: company.email,
   telephone: company.phones?.[0],
   contactPoint: company.phones?.map((phone) => ({
