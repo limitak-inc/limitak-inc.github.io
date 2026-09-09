@@ -17,9 +17,6 @@ const [allProducts, allCategories] = await Promise.all([getProducts(), getCatego
 const { company, hero, social, theme, seo: siteSeo, faq = [] } = siteEntry.data
 const { Content: HeroBody } = await render(siteEntry)
 const active = category?.data.slug ?? ''
-const products = active
-  ? allProducts.filter((product) => product.data.category === active)
-  : allProducts
 const used = new Set(allProducts.map((product) => product.data.category))
 const categories = allCategories.filter((item) => used.has(item.data.slug))
 const description = plainText([
@@ -54,12 +51,14 @@ const description = plainText([
   <section class="products-section" aria-label={category?.data.label ?? 'محصولات'}>
     <FilterBar categories={categories} active={active} />
     <div class="container products">
-      {products.map((product) => (
+      {allProducts.map((product) => (
         <ProductCard
           id={product.id}
           href={productHref(product.id)}
           title={product.data.title}
           image={product.data.image}
+          category={product.data.category}
+          hidden={active && product.data.category !== active}
         />
       ))}
     </div>

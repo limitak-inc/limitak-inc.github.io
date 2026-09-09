@@ -18,6 +18,7 @@ const chips = [
       <a
         class:list={['filter-chip', { active: chip.id === active }]}
         href={chip.href}
+        data-category={chip.id}
         draggable="false"
         aria-current={chip.id === active ? 'page' : undefined}
       >
@@ -29,8 +30,21 @@ const chips = [
 <script>
   const wrap = document.querySelector('.filter-scroll')
   const bar = wrap.querySelector('.filter-bar')
+  const grid = document.querySelector('.products')
   const overflow = () => bar.scrollWidth > bar.clientWidth
   const drag = { x: 0, scroll: 0, pressing: false, moved: false }
+
+  const apply = (chip) => {
+    const id = chip.dataset.category ?? ''
+    bar.querySelectorAll('.filter-chip').forEach((el) => {
+      el.classList.toggle('active', el === chip)
+      el.toggleAttribute('aria-current', el === chip)
+    })
+    grid.querySelectorAll('[data-category]').forEach((card) => {
+      card.hidden = id && card.dataset.category !== id
+    })
+    chip.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+  }
 
   const sync = () => wrap.classList.toggle('is-scrollable', overflow())
   new ResizeObserver(sync).observe(bar)
@@ -72,4 +86,22 @@ const chips = [
     bar.scrollLeft += document.documentElement.dir === 'rtl' ? -event.deltaY : event.deltaY
     event.preventDefault()
   }, { passive: false })
+
+  bar.addEventListener('click', (event) => {
+    const chip = event.target.closest('.filter-chip')
+    if (!chip || drag.moved) return
+    event.preventDefault()
+    apply(chip)
+    history.pushState(null, '', chip.href)
+  })
+
+  addEventListener('popstate', () => {
+    const slug = location.pathname.match(/categories\/([^/]+)/)?.[1] ?? ''
+    const chip = bar.querySelector(slug ? `[data-category="${slug}"]` : '[data-category=""]')
+    if (chip) apply(chip)
+  })
+
+  requestAnimationFrame(() =>
+    bar.querySelector('.filter-chip.active')?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+  )
 </script>

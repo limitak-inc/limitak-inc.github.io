@@ -2,9 +2,9 @@
 import { Image } from 'astro:assets'
 import { asset } from '../lib/image.js'
 
-const { id, href, title, image } = Astro.props
+const { id, href, title, image, category, hidden = false } = Astro.props
 ---
-<article class="card">
+<article class="card" data-category={category} hidden={hidden || undefined}>
   <a class="card-link" href={href}>
     <div class="card-media" style={`view-transition-name: product-${id}`}>
       <Image
