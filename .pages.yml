@@ -254,11 +254,11 @@ content:
             type: select
             options:
               values:
-                - { name: lead, label: سربی }
-                - { name: stone, label: سنگی }
-                - { name: lilac, label: یاسی }
                 - { name: mist, label: مه‌آلود }
+                - { name: lead, label: سربی }
+                - { name: lilac, label: بنفش }
                 - { name: olive, label: زیتونی }
+                - { name: stone, label: سنگی }
           - name: accent
             label: تاکید
             type: select

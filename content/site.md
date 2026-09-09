@@ -12,7 +12,7 @@ hero:
   title: لیمیتاک استیل
   image: /images/banner.jpg
 theme:
-  bg: lilac
+  bg: stone
   accent: orange
 social:
   instagram: https://instagram.com/limitaksteel
