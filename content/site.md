@@ -13,7 +13,7 @@ hero:
   image: /images/banner.jpg
 theme:
   bg: lilac
-  accent: orange
+  accent: indigo
 social:
   instagram: https://instagram.com/limitaksteel
   telegram: https://t.me/limitaksteel
