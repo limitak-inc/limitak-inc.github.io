@@ -7,4 +7,5 @@ model: "506"
 pcs: 12
 seo:
   noindex: false
+order: 22
 ---
