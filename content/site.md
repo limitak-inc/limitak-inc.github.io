@@ -12,7 +12,7 @@ hero:
   title: لیمیتاک استیل
   image: /images/banner.jpg
 theme:
-  bg: stone
+  bg: mist
   accent: orange
 social:
   instagram: https://instagram.com/limitaksteel
@@ -22,7 +22,7 @@ social:
 seo:
   noindex: false
 ---
-
 - **کیفیت ماندگار، برای خانه‌ای مدرن**
 - **استانداردی نوین در تولید لوازم خانه و آشپزخانه**
 - **ترکیب هنر، کیفیت و ماندگاری**
+
